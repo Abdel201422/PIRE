@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Documento{% endblock %}
+
+{% block body %}
+    <h1>Documento</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ documento.id }}</td>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <td>{{ documento.titulo }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ documento.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Ruta_archivo</th>
+                <td>{{ documento.rutaArchivo }}</td>
+            </tr>
+            <tr>
+                <th>Fecha_subida</th>
+                <td>{{ documento.fechaSubida ? documento.fechaSubida|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Aprobado</th>
+                <td>{{ documento.aprobado ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_documento_index') }}">back to list</a>
+
+    <a href="{{ path('app_documento_edit', {'id': documento.id}) }}">edit</a>
+
+    {{ include('documento/_delete_form.html.twig') }}
+{% endblock %}

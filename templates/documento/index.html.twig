@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Documento index{% endblock %}
+
+{% block body %}
+    <h1>Documento index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Descripcion</th>
+                <th>Ruta_archivo</th>
+                <th>Fecha_subida</th>
+                <th>Aprobado</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for documento in documentos %}
+            <tr>
+                <td>{{ documento.id }}</td>
+                <td>{{ documento.titulo }}</td>
+                <td>{{ documento.descripcion }}</td>
+                <td>{{ documento.rutaArchivo }}</td>
+                <td>{{ documento.fechaSubida ? documento.fechaSubida|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ documento.aprobado ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_documento_show', {'id': documento.id}) }}">show</a>
+                    <a href="{{ path('app_documento_edit', {'id': documento.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_documento_new') }}">Create new</a>
+{% endblock %}
