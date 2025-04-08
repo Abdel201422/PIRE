@@ -18,7 +18,6 @@ class DocumentoType extends AbstractType
         $builder
             ->add('titulo')
             ->add('descripcion')
-            ->add('ruta_archivo')
             ->add('fecha_subida', null, [
                 'widget' => 'single_text',
             ])
@@ -31,7 +30,7 @@ class DocumentoType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'id',
             ])
-            ->add('archivo', FileType::class, [
+            ->add('ruta_archivo', FileType::class, [
                 'label' => 'Archivo',
 
                 

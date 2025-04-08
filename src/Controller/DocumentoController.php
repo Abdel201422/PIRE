@@ -52,8 +52,8 @@ final class DocumentoController extends AbstractController
             $targetPath = $params->get('app_path_files');
             $service = new FileUploader($targetPath, $slugger);
             //lo que se va a guardar en la base de datos
-            $archivo_db = $service->upload($archivoRaw->get('documento')['archivo']);
-            $documento->setArchivo($targetPath . $archivo_db);
+            $archivo_db = $service->upload($archivoRaw->get('documento')['ruta_archivo']);
+            $documento->setRutaArchivo($targetPath . $archivo_db);
             $entityManager->persist($documento);
             $entityManager->flush();
 

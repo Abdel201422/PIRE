@@ -19,15 +19,12 @@
                 <th>Descripcion</th>
                 <td>{{ documento.descripcion }}</td>
             </tr>
-            <tr>
-                <th>Ruta_archivo</th>
-                <td>{{ documento.rutaArchivo }}</td>
-            </tr>
+            
             <tr>
                 <th>Archivo</th>
                 <td>
-                    {% if documento.archivo %}
-                        <a href="{{ asset(documento.archivo) }}" target="_blank">Descargar archivo</a>
+                    {% if documento.rutaArchivo %}
+                        <a href="{{ asset(documento.rutaArchivo) }}" target="_blank">Descargar Archivo</a>
                     {% else %}
                         No hay archivo disponible
                     {% endif %}
