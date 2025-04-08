@@ -75,12 +75,22 @@ final class DocumentoController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_documento_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Documento $documento, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Documento $documento, EntityManagerInterface $entityManager, ParameterBagInterface $params, SluggerInterface $slugger): Response
     {
-        $form = $this->createForm(DocumentoType::class, $documento);
+        $form = $this->createForm(DocumentoType::class, $documento, [
+            'is_edit' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $archivoRaw = $request->files;
+            if ($archivoRaw->get('documento') && $archivoRaw->get('documento')['ruta_archivo']) {
+                $targetPath = $params->get('app_path_files');
+                $service = new FileUploader($targetPath, $slugger);
+                $archivo_db = $service->upload($archivoRaw->get('documento')['ruta_archivo']);
+                $documento->setRutaArchivo($targetPath . $archivo_db);
+            }
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_documento_index', [], Response::HTTP_SEE_OTHER);

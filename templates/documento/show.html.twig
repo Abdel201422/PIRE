@@ -24,7 +24,7 @@
                 <th>Archivo</th>
                 <td>
                     {% if documento.rutaArchivo %}
-                        <a href="{{ asset(documento.rutaArchivo) }}" target="_blank">Descargar Archivo</a>
+                        <a href="{{ documento.rutaArchivo }}" target="_blank">Descargar Archivo</a>
                     {% else %}
                         No hay archivo disponible
                     {% endif %}

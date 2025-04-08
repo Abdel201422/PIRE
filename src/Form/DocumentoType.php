@@ -32,8 +32,9 @@ class DocumentoType extends AbstractType
             ])
             ->add('ruta_archivo', FileType::class, [
                 'label' => 'Archivo',
-
-                
+                'mapped' => false,
+                'required' => !$options['is_edit'],
+                'data_class' => null,
             ])
         ;
     }
@@ -42,6 +43,7 @@ class DocumentoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Documento::class,
+            'is_edit' => false,
         ]);
     }
 }

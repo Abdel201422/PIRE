@@ -25,7 +25,7 @@
                 <td>{{ documento.descripcion }}</td>
                 <td>
                     {% if documento.rutaArchivo %}
-                        <a href="{{ asset(documento.rutaArchivo) }}" target="_blank">Descargar</a>
+                        <a href="{{ documento.rutaArchivo }}" target="_blank">Descargar</a>
                     {% else %}
                         No disponible
                     {% endif %}
