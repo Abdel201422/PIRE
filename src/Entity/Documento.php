@@ -40,6 +40,9 @@ class Documento
     #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Valoracion::class)]
     private Collection $valoraciones;
 
+    #[ORM\Column(length: 255)]
+    private ?string $archivo = null;
+
     public function __construct()
     {
         $this->valoraciones = new ArrayCollection();
@@ -122,6 +125,18 @@ class Documento
                 $valoracion->setDocumento(null);
             }
         }
+        return $this;
+    }
+
+    public function getArchivo(): ?string
+    {
+        return $this->archivo;
+    }
+
+    public function setArchivo(string $archivo): static
+    {
+        $this->archivo = $archivo;
+
         return $this;
     }
 }
