@@ -9,6 +9,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class FileUploader
 {
     public function __construct(
+        //ruta del archivo
         private string $targetDirectory,
         private SluggerInterface $slugger,
     ) {

@@ -10,7 +10,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Validator\Constraints\File;
 
 class DocumentoType extends AbstractType
 {
@@ -33,17 +32,9 @@ class DocumentoType extends AbstractType
                 'choice_label' => 'id',
             ])
             ->add('archivo', FileType::class, [
-                'label' => 'Archivo (PDF)',
-                'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid PDF document',
-                    ])
-                ],
+                'label' => 'Archivo',
+
+                
             ])
         ;
     }

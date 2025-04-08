@@ -24,6 +24,16 @@
                 <td>{{ documento.rutaArchivo }}</td>
             </tr>
             <tr>
+                <th>Archivo</th>
+                <td>
+                    {% if documento.archivo %}
+                        <a href="{{ asset(documento.archivo) }}" target="_blank">Descargar archivo</a>
+                    {% else %}
+                        No hay archivo disponible
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>Fecha_subida</th>
                 <td>{{ documento.fechaSubida ? documento.fechaSubida|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
