@@ -16,23 +16,51 @@ use App\Repository\DocumentoRepository;
 final class DocumentoController extends AbstractController
 {
     #[Route(name: 'app_documento_index', methods: ['GET'])]
-    public function index(DocumentoRepository $documentoRepository): Response
-    {
-        return $this->render('documento/index.html.twig', [
-            'documentos' => $documentoRepository->findAll(),
-        ]);
+public function index(DocumentoRepository $documentoRepository): Response
+{
+    $documentos = $documentoRepository->findAll();
+    $data = [];
+    foreach ($documentos as $documento) {
+        $data[] = [
+            'id' => $documento->getId(),
+            'titulo' => $documento->getTitulo(),
+            'ruta' => $documento->getRutaArchivo(),
+            'asignatura' => $documento->getAsignatura()->getNombre(),
+        ];
     }
 
-    #[Route('/asignatura/{id}', name: 'app_documento_asignatura', methods: ['GET'])]
-    public function documentosPorAsignatura(
-        Asignatura $asignatura,
-        DocumentoRepository $documentoRepository
-    ): Response {
-        return $this->render('documento/index.html.twig', [
-            'documentos' => $documentoRepository->findByAsignatura($asignatura),
-            'asignatura' => $asignatura, // Opcional: para mostrar el nombre en la plantilla
-        ]);
+    return $this->json(
+        $data, 
+        Response::HTTP_OK, // Código 200
+        ['Access-Control-Allow-Origin' => '*'] // Headers aquí
+    );
+}
+
+#[Route('/asignatura/{id}', name: 'app_documento_asignatura', methods: ['GET'])]
+public function documentosPorAsignatura(
+    Asignatura $asignatura,
+    DocumentoRepository $documentoRepository
+): Response {
+    $documentos = $documentoRepository->findByAsignatura($asignatura);
+    $data = [];
+    foreach ($documentos as $documento) {
+        $data[] = [
+            'id' => $documento->getId(),
+            'nombre' => $documento->getTitulo(),
+            'ruta' => $documento->getRuta(),
+            'asignatura' => $asignatura->getNombre(),
+        ];
     }
+
+    return $this->json(
+        $data, 
+        Response::HTTP_OK,
+        ['Access-Control-Allow-Origin' => '*']
+    );
+}
+    
+    // ... otros métodos permanecen igual
+
 
     #[Route('/new', name: 'app_documento_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
