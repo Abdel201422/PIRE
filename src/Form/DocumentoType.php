@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class DocumentoType extends AbstractType
 {
@@ -17,7 +18,6 @@ class DocumentoType extends AbstractType
         $builder
             ->add('titulo')
             ->add('descripcion')
-            ->add('ruta_archivo')
             ->add('fecha_subida', null, [
                 'widget' => 'single_text',
             ])
@@ -30,6 +30,12 @@ class DocumentoType extends AbstractType
                 'class' => User::class,
                 'choice_label' => 'id',
             ])
+            ->add('ruta_archivo', FileType::class, [
+                'label' => 'Archivo',
+                'mapped' => false,
+                'required' => !$options['is_edit'],
+                'data_class' => null,
+            ])
         ;
     }
 
@@ -37,6 +43,7 @@ class DocumentoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Documento::class,
+            'is_edit' => false,
         ]);
     }
 }

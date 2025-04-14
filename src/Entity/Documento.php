@@ -40,6 +40,8 @@ class Documento
     #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Valoracion::class)]
     private Collection $valoraciones;
 
+    
+
     public function __construct()
     {
         $this->valoraciones = new ArrayCollection();
@@ -63,10 +65,14 @@ class Documento
         return $this;
     }
 
-    public function getRutaArchivo(): ?string { return $this->ruta_archivo; }
-    public function setRutaArchivo(string $ruta_archivo): self
+    public function getRutaArchivo(): ?string 
+    { 
+        return $this->ruta_archivo; 
+    }
+    public function setRutaArchivo(string $ruta_archivo): static
     {
         $this->ruta_archivo = $ruta_archivo;
+
         return $this;
     }
 
@@ -124,4 +130,6 @@ class Documento
         }
         return $this;
     }
+
+    
 }

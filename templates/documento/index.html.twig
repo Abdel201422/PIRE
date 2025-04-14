@@ -11,7 +11,7 @@
                 <th>Id</th>
                 <th>Titulo</th>
                 <th>Descripcion</th>
-                <th>Ruta_archivo</th>
+                <th>Archivo</th>
                 <th>Fecha_subida</th>
                 <th>Aprobado</th>
                 <th>actions</th>
@@ -23,7 +23,13 @@
                 <td>{{ documento.id }}</td>
                 <td>{{ documento.titulo }}</td>
                 <td>{{ documento.descripcion }}</td>
-                <td>{{ documento.rutaArchivo }}</td>
+                <td>
+                    {% if documento.rutaArchivo %}
+                        <a href="{{ documento.rutaArchivo }}" target="_blank">Descargar</a>
+                    {% else %}
+                        No disponible
+                    {% endif %}
+                </td>
                 <td>{{ documento.fechaSubida ? documento.fechaSubida|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ documento.aprobado ? 'Yes' : 'No' }}</td>
                 <td>

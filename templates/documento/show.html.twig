@@ -19,9 +19,16 @@
                 <th>Descripcion</th>
                 <td>{{ documento.descripcion }}</td>
             </tr>
+            
             <tr>
-                <th>Ruta_archivo</th>
-                <td>{{ documento.rutaArchivo }}</td>
+                <th>Archivo</th>
+                <td>
+                    {% if documento.rutaArchivo %}
+                        <a href="{{ documento.rutaArchivo }}" target="_blank">Descargar Archivo</a>
+                    {% else %}
+                        No hay archivo disponible
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Fecha_subida</th>

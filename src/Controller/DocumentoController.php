@@ -5,12 +5,17 @@ namespace App\Controller;
 use App\Entity\Documento;
 use App\Entity\Asignatura;
 use App\Form\DocumentoType;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\DocumentoRepository;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 #[Route('/documento')]
 final class DocumentoController extends AbstractController
@@ -35,13 +40,20 @@ final class DocumentoController extends AbstractController
     }
 
     #[Route('/new', name: 'app_documento_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $params, SluggerInterface $slugger): Response
     {
         $documento = new Documento();
         $form = $this->createForm(DocumentoType::class, $documento);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $archivoRaw = $request->files;
+           
+            $targetPath = $params->get('app_path_files');
+            $service = new FileUploader($targetPath, $slugger);
+            //lo que se va a guardar en la base de datos
+            $archivo_db = $service->upload($archivoRaw->get('documento')['ruta_archivo']);
+            $documento->setRutaArchivo($targetPath . $archivo_db);
             $entityManager->persist($documento);
             $entityManager->flush();
 
@@ -63,12 +75,22 @@ final class DocumentoController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_documento_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Documento $documento, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Documento $documento, EntityManagerInterface $entityManager, ParameterBagInterface $params, SluggerInterface $slugger): Response
     {
-        $form = $this->createForm(DocumentoType::class, $documento);
+        $form = $this->createForm(DocumentoType::class, $documento, [
+            'is_edit' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $archivoRaw = $request->files;
+            if ($archivoRaw->get('documento') && $archivoRaw->get('documento')['ruta_archivo']) {
+                $targetPath = $params->get('app_path_files');
+                $service = new FileUploader($targetPath, $slugger);
+                $archivo_db = $service->upload($archivoRaw->get('documento')['ruta_archivo']);
+                $documento->setRutaArchivo($targetPath . $archivo_db);
+            }
+            
             $entityManager->flush();
 
             return $this->redirectToRoute('app_documento_index', [], Response::HTTP_SEE_OTHER);
