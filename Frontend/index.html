@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentos API</title>
+    <style>
+        .documento {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .ruta {
+            color: #6c757d;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Listado de Documentos (API)</h1>
+    <div id="documentos"></div>
+
+    <script>
+        const renderDocumentos = (documentos) => {
+            const container = document.getElementById('documentos');
+            container.innerHTML = ''; // Limpiar contenido
+
+            documentos.forEach(doc => {
+                const div = document.createElement('div');
+                div.className = 'documento';
+                div.innerHTML = `
+                    <h3>${doc.nombre}</h3>
+                    <p class="ruta">${doc.ruta}</p>
+                    <p>Asignatura: ${doc.asignatura}</p>
+                `;
+                container.appendChild(div);
+            });
+        };
+
+        // Fetch a la API
+        fetch('http://localhost:8000/documento')
+            .then(response => {
+                if (!response.ok) throw new Error('Error en la respuesta');
+                return response.json();
+            })
+            .then(renderDocumentos)
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('documentos').innerHTML = 
+                    `<p style="color: red">Error cargando documentos</p>`;
+            });
+    </script>
+</body>
+</html>
