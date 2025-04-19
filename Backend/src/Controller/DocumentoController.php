@@ -15,6 +15,7 @@ use App\Repository\DocumentoRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 #[Route('/documento')]
@@ -139,5 +140,26 @@ public function documentosPorAsignatura(
         }
 
         return $this->redirectToRoute('app_documento_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/api/documentos/upload', name: 'upload_document', methods: ['POST'])]
+    public function upload(Request $request): JsonResponse
+    {
+        $file = $request->files->get('file');
+
+        if (!$file) {
+            return new JsonResponse(['error' => 'No se ha enviado ningún archivo'], 400);
+        }
+
+        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads';
+        $fileName = uniqid() . '.' . $file->guessExtension();
+
+        try {
+            $file->move($uploadDir, $fileName);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al subir el archivo: ' . $e->getMessage()], 500);
+        }
+
+        return new JsonResponse(['message' => 'Archivo subido exitosamente', 'fileName' => $fileName], 201);
     }
 }
