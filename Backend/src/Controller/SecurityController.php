@@ -3,35 +3,40 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    #[Route(path: '/api/login', name: 'api_login', methods: ['POST'])]
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): JsonResponse
     {
-        // If the user is already logged in, redirect to home
+        // Si el usuario ya está autenticado, devolver un mensaje
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_main');
+            return new JsonResponse(['message' => 'Ya estás autenticado'], 200);
         }
 
-        // get the login error if there is one
+        // Obtener el error de inicio de sesión si existe
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // last username entered by the user
+        // Último nombre de usuario ingresado
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error,
-        ]);
+        if ($error) {
+            return new JsonResponse([
+                'error' => $error->getMessageKey(),
+                'last_username' => $lastUsername,
+            ], 401);
+        }
+
+        return new JsonResponse(['message' => 'Inicio de sesión exitoso'], 200);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/api/logout', name: 'api_logout', methods: ['POST'])]
     public function logout(): void
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new \LogicException('Este método será interceptado por la configuración de cierre de sesión en el firewall.');
     }
 }
