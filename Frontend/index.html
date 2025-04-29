@@ -10,10 +10,22 @@
             margin: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .ruta {
             color: #6c757d;
             font-family: monospace;
+        }
+        .descargar {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+        .descargar:hover {
+            color: #0056b3;
         }
     </style>
 </head>
@@ -30,9 +42,17 @@
                 const div = document.createElement('div');
                 div.className = 'documento';
                 div.innerHTML = `
-                    <h3>${doc.nombre}</h3>
-                    <p class="ruta">${doc.ruta}</p>
-                    <p>Asignatura: ${doc.asignatura}</p>
+                    <div>
+                        <h3>${doc.nombre}</h3>
+                        <p class="ruta">${doc.ruta}</p>
+                        <p>Asignatura: ${doc.asignatura}</p>
+                    </div>
+                    <a href="http://localhost:8000/api/documentos/download/${doc.ruta}" 
+                       class="descargar" 
+                       target="_blank" 
+                       title="Descargar">
+                        &#x2193; <!-- Flecha hacia abajo -->
+                    </a>
                 `;
                 container.appendChild(div);
             });

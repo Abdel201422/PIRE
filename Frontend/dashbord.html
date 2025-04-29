@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Bienvenido al Dashboard</h1>
+    <div id="userInfo">
+        <p>Cargando información del usuario...</p>
+    </div>
+
+    <script>
+        // Obtener los datos del usuario desde el backend
+        fetch('http://127.0.0.1:8000/dashboard', {
+            method: 'GET',
+            credentials: 'include', // Incluye cookies si es necesario
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo obtener la información del usuario');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const userInfo = document.getElementById('userInfo');
+                if (data.error) {
+                    userInfo.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                } else {
+                    userInfo.innerHTML = `
+                        <p><strong>ID:</strong> ${data.id}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                        <p><strong>Roles:</strong> ${data.roles.join(', ')}</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('userInfo').innerHTML = `<p style="color: red;">Error al cargar el dashboard.</p>`;
+            });
+    </script>
+</body>
+</html>
