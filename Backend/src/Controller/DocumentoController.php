@@ -162,4 +162,16 @@ public function documentosPorAsignatura(
 
         return new JsonResponse(['message' => 'Archivo subido exitosamente', 'fileName' => $fileName], 201);
     }
+
+    #[Route('/api/documentos/download/{fileName}', name: 'download_document', methods: ['GET'])]
+    public function download(string $fileName): Response
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $fileName;
+
+        if (!file_exists($filePath)) {
+            return new JsonResponse(['error' => 'El archivo no existe'], 404);
+        }
+
+        return $this->file($filePath);
+    }
 }

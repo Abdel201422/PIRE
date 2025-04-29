@@ -22,31 +22,63 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
-
+        
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
+        
+            // 1) Construimos form data como si fuera un <form>
+            const formData = new URLSearchParams();
+            formData.append('_username', username);   // coincide con username_parameter en form_login
+            formData.append('_password', password);   // coincide con password_parameter
+        
             fetch('http://127.0.0.1:8000/api/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: JSON.stringify({ username, password }),
+                body: formData,
+                credentials: 'include',   // para sesiones/cookies
+                redirect: 'manual'        // no siga el 302 automáticamente
             })
-                .then(response => response.json())
-                .then(data => {
-                    const responseDiv = document.getElementById('response');
-                    if (data.error) {
-                        responseDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
-                    } else {
-                        responseDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('response').innerHTML = `<p style="color: red;">Error al iniciar sesión.</p>`;
-                });
+            .then(response => {
+                // 2) Si Symfony devuelve un 302, tomamos la cabecera Location y redirigimos
+                if (response.status === 302) {
+                    const location = response.headers.get('Location');
+                    window.location.href = location;
+                    return null;  // cortamos la cadena de then
+                }
+                // 3) Si no hay 302, asumimos JSON de error ó JSON con { redirect, message }
+                return response.json();
+            })
+            .then(data => {
+                if (!data) {
+                    // Ya redirigimos en el 302
+                    return;
+                }
+        
+                const responseDiv = document.getElementById('response');
+        
+                if (data.error) {
+                    responseDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                    return;
+                }
+        
+                // Si tu API JSON devuelve también { redirect: "/dashboard" }
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                    return;
+                }
+        
+                // Mensaje genérico
+                responseDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('response').innerHTML =
+                    `<p style="color: red;">Error al iniciar sesión.</p>`;
+            });
         });
-    </script>
+        </script>
+        
 </body>
 </html>
