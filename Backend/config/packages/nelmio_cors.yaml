@@ -1,14 +1,25 @@
+# config/packages/nelmio_cors.yaml
 nelmio_cors:
     defaults:
         origin_regex: true
-        allow_origin: ['*'] # Permite solicitudes desde cualquier origen
+        allow_origin: ['http://localhost:3000']   # mejor especificar tu front
+        allow_credentials: true                   # <<< habilita envío de cookies
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
         allow_headers: ['Content-Type', 'Authorization']
         expose_headers: ['Link']
         max_age: 3600
+
     paths:
-        '^/api/': # Aplica CORS a todas las rutas que comienzan con /api/
-            allow_origin: ['*']
+        '^/api/':
+            allow_origin: ['http://localhost:3000']
+            allow_credentials: true
             allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+            allow_headers: ['Content-Type', 'Authorization']
+            max_age: 3600
+
+        '^/dashboard$':        # añade tu ruta de dashboard
+            allow_origin: ['http://localhost:3000']
+            allow_credentials: true
+            allow_methods: ['GET', 'OPTIONS']
             allow_headers: ['Content-Type', 'Authorization']
             max_age: 3600
