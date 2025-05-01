@@ -12,33 +12,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/api/login', name: 'api_login', methods: ['POST'])]
-    
-    public function login(Request $request, AuthenticationUtils $authenticationUtils): JsonResponse
-{
-    // Si ya estoy logueado, devuelvo la URL del dashboard
-    if ($this->getUser()) {
+    public function login(): JsonResponse
+    {
+        // Symfony maneja automáticamente la autenticación con json_login
+        $user = $this->getUser();
+
+        if (!$user instanceof \App\Entity\User) {
+            return new JsonResponse(['error' => 'Usuario no autenticado o tipo incorrecto'], 401);
+        }
+
+        // Ahora puedes usar $user->getId() y $user->getEmail() sin problemas
         return new JsonResponse([
-            'redirect' => $this->generateUrl('dashboard'),
-        ], 200);
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
+        ]);
     }
-
-    // Obtener el posible error
-    $error = $authenticationUtils->getLastAuthenticationError();
-    $lastUsername = $authenticationUtils->getLastUsername();
-
-    if ($error) {
-        return new JsonResponse([
-            'error'         => $error->getMessageKey(),
-            'last_username' => $lastUsername,
-        ], 401);
-    }
-
-    // Aquí Symfony ya habría autenticado por el firewall, así que:
-    return new JsonResponse([
-        'message'  => 'Inicio de sesión exitoso',
-        'redirect' => $this->generateUrl('dashboard'),
-    ], 200);
-}
 
     #[Route(path: '/api/logout', name: 'api_logout', methods: ['POST'])]
     public function logout(): void
