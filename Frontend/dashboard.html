@@ -35,10 +35,13 @@
         if (data.error) {
           ui.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
         } else {
+          console.log(data);
           ui.innerHTML = `
-            <p><strong>ID:</strong> ${data.id}</p>
-            <p><strong>Email:</strong> ${data.email}</p>
-            <p><strong>Roles:</strong> ${data.roles.join(', ')}</p>
+            <p><strong>ID:</strong> ${data.user.id}</p>
+            <p><strong>Nombre:</strong> ${data.user.nombre}</p>
+            <p><strong>Email:</strong> ${data.user.email}</p>
+            <p><strong>Roles:</strong> ${data.user.roles.join(', ')}</p>
+            <p><strong>Nº Documentos:</strong> ${data.user.nDocumentos}</p>
           `;
         }
       })
