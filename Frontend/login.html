@@ -45,7 +45,7 @@
                 } else {
                     responseDiv.innerHTML = `<p style="color: green;">Inicio de sesión exitoso. Redirigiendo...</p>`;
                     // Redirigir al dashboard
-                    window.location.href = `${BACKEND_URL}/dashboard`;
+                    window.location.href = `${BACKEND_URL}/api/dashboard`;
                 }
             })
             .catch(error => {

@@ -21,7 +21,7 @@ security:
     # b) API REST JSON (stateless + json_login)
     api:
       pattern: ^/api
-      stateless: true
+      stateless: false  
       provider: app_user_provider
       json_login:
         check_path: /api/login
@@ -29,29 +29,16 @@ security:
         password_path: password
       logout:
         path: /api/logout
+        invalidate_session: true
 
-    # c) Web tradicional con formularios
-    main:
-      pattern: ^/(?!api)
-      provider: app_user_provider
-      lazy: true
-      logout:
-        path: /logout
-        target: /login.html
-      # Habilitar el uso de cookies para compartir el estado de autenticación
-      remember_me:
-        secret: '%kernel.secret%'
-        lifetime: 604800 # 1 semana
-        path: /
+    
 
   # 4) Control de acceso (solo la primera regla que coincida)
   access_control:
     - { path: ^/api/register, roles: PUBLIC_ACCESS }
     - { path: ^/api/login,    roles: PUBLIC_ACCESS }
     - { path: ^/api,          roles: IS_AUTHENTICATED_FULLY }
-    - { path: ^/dashboard,    roles: IS_AUTHENTICATED_FULLY }
-    - { path: ^/login,        roles: PUBLIC_ACCESS }
-    - { path: ^/register,     roles: PUBLIC_ACCESS }
+   
 
 # 5) Overrides para tests (acelerar hashing)
 when@test:
