@@ -44,6 +44,10 @@
                         responseDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
                     } else {
                         responseDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
+                        // Redirige al login
+                        setTimeout(() => {
+                            window.location.href = '/login.html';
+                        }, 2000); // Espera 2 segundos antes de redirigir
                     }
                 })
                 .catch((error) => {
