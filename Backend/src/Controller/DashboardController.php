@@ -9,18 +9,15 @@ use App\Entity\User;
 
 class DashboardController extends AbstractController
 {
-    #[Route('/dashboard', name: 'dashboard', methods: ['GET'])]
+    #[Route('/api/dashboard', name: 'api_dashboard', methods: ['GET'])]
     public function index(): JsonResponse
     {
         $user = $this->getUser();
 
-       
-
-        if (!$user instanceof User) {
+        if (!$user instanceof \App\Entity\User) {
             return new JsonResponse(['error' => 'Usuario no autenticado o tipo incorrecto'], 401);
         }
 
-        // Devuelve los datos del usuario en formato JSON
         return new JsonResponse([
             'id' => $user->getId(),
             'email' => $user->getEmail(),

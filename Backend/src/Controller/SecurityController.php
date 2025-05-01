@@ -14,18 +14,17 @@ class SecurityController extends AbstractController
     #[Route(path: '/api/login', name: 'api_login', methods: ['POST'])]
     public function login(): JsonResponse
     {
-        // Symfony maneja automáticamente la autenticación con json_login
         $user = $this->getUser();
 
         if (!$user instanceof \App\Entity\User) {
-            return new JsonResponse(['error' => 'Usuario no autenticado o tipo incorrecto'], 401);
+            return new JsonResponse(['error' => 'Usuario no autenticado'], 401);
         }
 
-        // Ahora puedes usar $user->getId() y $user->getEmail() sin problemas
+        // Generar el token JWT
+        $token = $this->container->get('lexik_jwt_authentication.jwt_manager')->create($user);
+
         return new JsonResponse([
-            'id' => $user->getId(),
-            'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
+            'token' => $token,
         ]);
     }
 
