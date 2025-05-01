@@ -1,58 +1,58 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login</title>
-</head>
-<body>
-  <h1>Iniciar Sesión</h1>
-  <form id="loginForm">
-    <label for="username">Correo Electrónico:</label>
-    <input type="email" id="username" name="username" required><br><br>
-
-    <label for="password">Contraseña:</label>
-    <input type="password" id="password" name="password" required><br><br>
-
-    <button type="submit">Iniciar Sesión</button>
-  </form>
-
-  <div id="response"></div>
-
-  <script>
-    const BACKEND_URL = 'http://127.0.0.1:8000';
-
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-
-      try {
-        const res = await fetch(`${BACKEND_URL}/api/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password }),
-        });
-        const data = await res.json();
-
-        const responseDiv = document.getElementById('response');
-        if (!res.ok) {
-          responseDiv.innerHTML = `<p style="color: red;">Error: ${data.message || data.error}</p>`;
-          return;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión - PIRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                    }
+                }
+            }
         }
+    </script>
+</head>
+<body class="h-screen flex flex-col">
+    <div class="flex-1 flex relative">
+        <!-- Imagen de fondo con overlay verde -->
+        <div class="absolute inset-0 bg-cover bg-center brightness-90" style="background-image: url('imagenes/imagen_inicio_sesion.jpg'); background-color: rgba(109, 209, 109, 0.3); background-blend-mode: multiply;"></div>
+        
+        <!-- Contenedor del formulario -->
+        <div class="relative w-full h-full flex justify-center items-center">
+            <div class="bg-pire-background rounded-3xl p-8 shadow-lg w-full sm:w-[90%] md:w-[70%] lg:w-[40rem] max-w-[40rem] mx-auto md:mx-0 md:ml-[2rem] lg:ml-[10rem] xl:ml-[40rem]">
+                <h1 id="titulo-login" class="text-4xl md:text-5xl font-bold mb-5 font-heading">Inicio de sesión</h1>
+                <p class="text-base md:text-lg mb-6 font-body">¿Eres un usuario nuevo? <a id="enlace-registro" href="./register.html" class="text-pire-green hover:underline">Crear una cuenta</a></p>
+                
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm md:text-base mb-2 font-body">Dirección de correo electrónico</label>
+                        <input type="email" id="username" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-full text-sm md:text-base" placeholder="Correo electrónico" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm md:text-base mb-2 font-body">Contraseña</label>
+                        <input type="password" id="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-full text-sm md:text-base" placeholder="Contraseña" required>
+                    </div>
+                    
+                    <button id="boton-login" type="submit" class="w-full py-3 bg-pire-green text-white rounded-full hover:bg-green-600 transition duration-300 text-base md:text-lg font-body">Iniciar sesión</button>
+                </form>
+                
+                <div id="response" class="mt-4 text-center text-sm md:text-base font-body"></div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="py-4 px-6 bg-white flex justify-between items-center">
+        <div class="text-sm md:text-base text-gray-700 font-body">© 2025 PIRE. Todos los derechos reservados.</div>
+        <button id="boton-login-footer" class="bg-gray-800 text-white px-5 py-2 rounded-full text-sm md:text-base font-body">Iniciar sesión</button>
+    </footer>
 
-        // Guarda el token y redirige a la página HTML del dashboard
-        localStorage.setItem('jwt', data.token);
-        window.location.href = '/dashboard.html';
-
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('response').innerHTML =
-          `<p style="color: red;">Error al iniciar sesión.</p>`;
-      }
-    });
-  </script>
+    <script src="js/login.js"></script>
 </body>
 </html>
