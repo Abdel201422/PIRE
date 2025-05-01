@@ -36,3 +36,22 @@ export function setupLoginForm() {
     }
   });
 }
+
+export function setupLogout() {
+  const logoutLink = document.getElementById('logoutLink')
+
+  if (logoutLink) {
+    logoutLink.addEventListener('click', function (e) {
+      console.log('Logout link clicked')
+      // Prevenir la acción predeterminada del enlace (que sería navegar a otra página)
+      e.preventDefault()
+
+      // Eliminar el token de localStorage
+      localStorage.removeItem('jwt')
+
+      // Redirigir a la página de inicio
+      window.location.href = '/index.html'
+    });
+  }
+}
+

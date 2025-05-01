@@ -19,11 +19,13 @@ export function infoDashboard() {
                 return response.json();
             })
             .then(data => {
-                const ui = document.getElementById('userInfo');
+                const ui = document.getElementById('userInfo')
+                const usernameHeader = document.getElementById('userNameHeader')
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
                 } else {
-                    console.log(data);
+                    console.log(data)
+                    usernameHeader.textContent = data.user.nombre
                     ui.innerHTML = `
             <p><strong>ID:</strong> ${data.user.id}</p>
             <p><strong>Nombre:</strong> ${data.user.nombre}</p>

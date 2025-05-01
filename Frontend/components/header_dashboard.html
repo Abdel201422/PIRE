@@ -1,30 +1,25 @@
 <!-- components/header.html -->
-<div class="flex items-center justify-between bg-gray-800 text-white p-4">
+<div class="flex items-center justify-between bg-[var(--color-bg-primary)] text-[var(--color-gray-dark-800)] p-4 border-b-2 border-[var(--color-grey-300)]">
     <!-- Buscador -->
     <div class="flex items-center space-x-2">
         <input type="text" placeholder="Buscar..." class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none">
-        <button class="bg-blue-500 p-2 rounded-lg text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 16h4M10 12h4M10 8h4M10 4h4M6 20h12" />
-            </svg>
-        </button>
     </div>
 
     <!-- Menú del Usuario -->
     <div class="relative">
-        <button class="flex items-center space-x-2 p-2 rounded-full bg-gray-700 hover:bg-gray-600">
+        <button class="flex items-center space-x-2 p-2 hover:bg-gray-600">
             <img src="https://i.pravatar.cc/150?img=3" alt="Usuario" class="h-8 w-8 rounded-full">
-            <span class="hidden sm:inline-block">Usuario</span>
+            <span class="sm:inline-block" id="userNameHeader"></span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
         </button>
-        <div class="absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded-lg shadow-lg">
+        <!-- <div class="absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded-lg shadow-lg">
             <ul class="p-2">
                 <li><a href="#" class="block p-2 hover:bg-gray-600">Mi Perfil</a></li>
                 <li><a href="#" class="block p-2 hover:bg-gray-600">Ajustes</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-600">Cerrar Sesión</a></li>
+                <li><a href="#" id="logoutLink" class="block p-2 hover:bg-gray-600">Cerrar Sesión</a></li>
             </ul>
-        </div>
+        </div> -->
     </div>
 </div>
