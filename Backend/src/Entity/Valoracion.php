@@ -17,8 +17,8 @@ class Valoracion
     #[ORM\Column(type: 'smallint')]
     private $puntuacion;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private $comentario;
+    #[ORM\Column(type: 'datetime', nullable: true, options: ["default" => "CURRENT_TIMESTAMP"])]
+    private $fecha;
 
     #[ORM\ManyToOne(targetEntity: Documento::class, inversedBy: 'valoraciones')]
     #[ORM\JoinColumn(nullable: false)]
@@ -28,12 +28,17 @@ class Valoracion
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
+    public function __construct()
+    {
+        $this->fecha = new \DateTime();
+    }
+
     // Getters y Setters
     public function getId(): ?int { return $this->id; }
     public function getPuntuacion(): ?int { return $this->puntuacion; }
     public function setPuntuacion(int $puntuacion): self { $this->puntuacion = $puntuacion; return $this; }
-    public function getComentario(): ?string { return $this->comentario; }
-    public function setComentario(?string $comentario): self { $this->comentario = $comentario; return $this; }
+    public function getFecha(): ?\DateTimeInterface { return $this->fecha; }
+    public function setFecha(\DateTimeInterface $fecha): self { $this->fecha = $fecha; return $this; }
     public function getDocumento(): ?Documento { return $this->documento; }
     public function setDocumento(?Documento $documento): self { $this->documento = $documento; return $this; }
     public function getUser(): ?User { return $this->user; }

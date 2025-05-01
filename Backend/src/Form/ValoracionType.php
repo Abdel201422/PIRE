@@ -16,7 +16,6 @@ class ValoracionType extends AbstractType
     {
         $builder
             ->add('puntuacion')
-            ->add('comentario')
             ->add('documento', EntityType::class, [
                 'class' => Documento::class,
                 'choice_label' => 'id',
