@@ -1,39 +1,43 @@
+<!-- /index.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Documentos API</title>
-    <style>
-        .documento {
-            background: #f8f9fa;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .ruta {
-            color: #6c757d;
-            font-family: monospace;
-        }
-        .descargar {
-            text-decoration: none;
-            color: #007bff;
-            font-size: 20px;
-            margin-left: 10px;
-        }
-        .descargar:hover {
-            color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1>Listado de Documentos (API)</h1>
-    <div id="documentos"></div>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Página Principal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-background': '#FAF8F4',
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- El Header se insertará aquí mediante JavaScript -->
+    <div id="header"></div>
+
+    <main class="container mx-auto mt-8 p-4">
+        <h1 class="text-4xl font-bold text-center mb-4">Sube, descarga y aprende: la educación en tus manos</h1>
+        <p class="text-lg text-center">Comparte, descarga y descubre recursos educativos creados por estudiantes como
+            tú. Totalmente gratis, colaborativo y accesible.</p>
+    </main>
+
+    <script type="module" src="./assets/js/includes.js"></script>
+</body>
+
+</html>
+
+<!-- <script>
         const renderDocumentos = (documentos) => {
             const container = document.getElementById('documentos');
             container.innerHTML = ''; // Limpiar contenido
@@ -51,14 +55,14 @@
                        class="descargar" 
                        target="_blank" 
                        title="Descargar">
-                        &#x2193; <!-- Flecha hacia abajo -->
+                        &#x2193; Flecha hacia abajo
                     </a>
                 `;
                 container.appendChild(div);
             });
         };
 
-        // Fetch a la API
+     // Fetch a la API
         fetch('http://localhost:8000/documento')
             .then(response => {
                 if (!response.ok) throw new Error('Error en la respuesta');
@@ -69,7 +73,5 @@
                 console.error('Error:', error);
                 document.getElementById('documentos').innerHTML = 
                     `<p style="color: red">Error cargando documentos</p>`;
-            });
-    </script>
-</body>
-</html>
+            }); -->
+<!--   </script> -->
