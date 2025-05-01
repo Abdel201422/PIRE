@@ -18,27 +18,49 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
-    # b) API REST JSON (stateless + json_login)
-    api:
-      pattern: ^/api
-      stateless: false  
+    # b) Login JSON para emitir el JWT
+    login:
+      pattern: ^/api/login$
+      stateless: true
       provider: app_user_provider
       json_login:
         check_path: /api/login
         username_path: username
         password_path: password
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+    # c) API REST protegida por JWT
+    api:
+      pattern: ^/api
+      stateless: true
+      provider: app_user_provider
+      jwt: ~
       logout:
         path: /api/logout
-        invalidate_session: true
 
-    
+    # d) Firewall para la web tradicional
+    main:
+      pattern: ^/(?!api)
+      provider: app_user_provider
+      lazy: true
+      entry_point: form_login
+      form_login:
+        login_path: /login
+        check_path: /login_check
+      logout:
+        path: /logout
+        target: /login.html
+      remember_me:
+        secret: '%kernel.secret%'
+        lifetime: 604800 # 1 semana
+        path: /
 
   # 4) Control de acceso (solo la primera regla que coincida)
   access_control:
-    - { path: ^/api/register, roles: PUBLIC_ACCESS }
-    - { path: ^/api/login,    roles: PUBLIC_ACCESS }
-    - { path: ^/api,          roles: IS_AUTHENTICATED_FULLY }
-   
+    - { path: ^/api/login$,    roles: PUBLIC_ACCESS }
+    - { path: ^/api/register,  roles: PUBLIC_ACCESS }
+    - { path: ^/api,           roles: IS_AUTHENTICATED_FULLY }
 
 # 5) Overrides para tests (acelerar hashing)
 when@test:
