@@ -30,11 +30,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 100)]
     private $nombre;
 
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private $apellido;
+
+    #[ORM\Column(type: 'datetime', nullable: true, options: ["default" => "CURRENT_TIMESTAMP"])]
+    private $fecha_registro;
+
+    #[ORM\Column(type: 'boolean')]
+    private $activo = true;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $avatar;
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Documento::class)]
     private $documentos;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Valoracion::class)]
     private $valoraciones;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comentario::class)]
+    private $comentarios;
 
     #[ORM\Column]
     private bool $isVerified = false;
@@ -43,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->documentos = new ArrayCollection();
         $this->valoraciones = new ArrayCollection();
+        $this->comentarios = new ArrayCollection();
+        $this->fecha_registro = new \DateTime();
+        $this->activo = true;
     }
 
     // Métodos requeridos por UserInterface
@@ -113,6 +131,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getApellido(): ?string
+    {
+        return $this->apellido;
+    }
+
+    public function setApellido(?string $apellido): self
+    {
+        $this->apellido = $apellido;
+        return $this;
+    }
+
+    public function getFechaRegistro(): ?\DateTimeInterface
+    {
+        return $this->fecha_registro;
+    }
+
+    public function setFechaRegistro(\DateTimeInterface $fecha_registro): self
+    {
+        $this->fecha_registro = $fecha_registro;
+        return $this;
+    }
+
+    public function isActivo(): bool
+    {
+        return $this->activo;
+    }
+
+    public function setActivo(bool $activo): self
+    {
+        $this->activo = $activo;
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
     /**
      * @return Collection<int, Documento>
      */
@@ -130,7 +192,61 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // ... (métodos para valoraciones si son necesarios)
+    /**
+     * @return Collection<int, Valoracion>
+     */
+    public function getValoraciones(): Collection
+    {
+        return $this->valoraciones;
+    }
+
+    public function addValoracion(Valoracion $valoracion): self
+    {
+        if (!$this->valoraciones->contains($valoracion)) {
+            $this->valoraciones[] = $valoracion;
+            $valoracion->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeValoracion(Valoracion $valoracion): self
+    {
+        if ($this->valoraciones->removeElement($valoracion)) {
+            // set the owning side to null (unless already changed)
+            if ($valoracion->getUser() === $this) {
+                $valoracion->setUser(null);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comentario>
+     */
+    public function getComentarios(): Collection
+    {
+        return $this->comentarios;
+    }
+
+    public function addComentario(Comentario $comentario): self
+    {
+        if (!$this->comentarios->contains($comentario)) {
+            $this->comentarios[] = $comentario;
+            $comentario->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeComentario(Comentario $comentario): self
+    {
+        if ($this->comentarios->removeElement($comentario)) {
+            // set the owning side to null (unless already changed)
+            if ($comentario->getUser() === $this) {
+                $comentario->setUser(null);
+            }
+        }
+        return $this;
+    }
 
     public function isVerified(): bool
     {

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Valoracion;
-use App\Entity\ValoracionRepository;
+use App\Repository\ValoracionRepository;
 use App\Form\ValoracionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -31,21 +31,36 @@ class Documento
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', nullable: true, options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $fecha_subida = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $aprobado = false;
 
+    #[ORM\Column(type: 'integer')]
+    private int $numero_descargas = 0;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $activo = true;
+
+    #[ORM\Column(length: 50)]
+    private ?string $tipo_archivo = null;
+
     #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Valoracion::class)]
     private Collection $valoraciones;
+
+    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Comentario::class)]
+    private Collection $comentarios;
 
     
 
     public function __construct()
     {
         $this->valoraciones = new ArrayCollection();
+        $this->comentarios = new ArrayCollection();
         $this->fecha_subida = new \DateTime(); // Auto-set fecha de subida
+        $this->numero_descargas = 0;
+        $this->activo = true;
     }
 
     // Getters y Setters
@@ -104,6 +119,45 @@ class Documento
         return $this;
     }
 
+    public function getNumeroDescargas(): int
+    {
+        return $this->numero_descargas;
+    }
+
+    public function setNumeroDescargas(int $numero_descargas): self
+    {
+        $this->numero_descargas = $numero_descargas;
+        return $this;
+    }
+
+    public function incrementNumeroDescargas(): self
+    {
+        $this->numero_descargas++;
+        return $this;
+    }
+
+    public function isActivo(): bool
+    {
+        return $this->activo;
+    }
+
+    public function setActivo(bool $activo): self
+    {
+        $this->activo = $activo;
+        return $this;
+    }
+
+    public function getTipoArchivo(): ?string
+    {
+        return $this->tipo_archivo;
+    }
+
+    public function setTipoArchivo(string $tipo_archivo): self
+    {
+        $this->tipo_archivo = $tipo_archivo;
+        return $this;
+    }
+
     /**
      * @return Collection<int, Valoracion>
      */
@@ -126,6 +180,33 @@ class Documento
         if ($this->valoraciones->removeElement($valoracion)) {
             if ($valoracion->getDocumento() === $this) {
                 $valoracion->setDocumento(null);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comentario>
+     */
+    public function getComentarios(): Collection
+    {
+        return $this->comentarios;
+    }
+
+    public function addComentario(Comentario $comentario): self
+    {
+        if (!$this->comentarios->contains($comentario)) {
+            $this->comentarios->add($comentario);
+            $comentario->setDocumento($this);
+        }
+        return $this;
+    }
+
+    public function removeComentario(Comentario $comentario): self
+    {
+        if ($this->comentarios->removeElement($comentario)) {
+            if ($comentario->getDocumento() === $this) {
+                $comentario->setDocumento(null);
             }
         }
         return $this;
