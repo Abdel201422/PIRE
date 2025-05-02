@@ -11,6 +11,8 @@ use App\Repository\UserRepository;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ORM\Index(name: "idx_user_nombre", fields: ["nombre"])]
+#[ORM\Index(name: "idx_user_apellido", fields: ["apellido"])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

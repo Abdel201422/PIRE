@@ -10,15 +10,14 @@ use App\Repository\CursoRepository;
 class Curso
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name: "cod_curso", length: 4, unique: true, nullable: false)]
+    private string $cod_curso;
 
     #[ORM\Column(length: 50)]
     private ?string $nombre = null;
 
     #[ORM\ManyToOne(targetEntity: Ciclo::class, inversedBy: 'cursos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "ciclo_cod_ciclo", referencedColumnName: "cod_ciclo", nullable: false)]
     private ?Ciclo $ciclo = null;
 
     #[ORM\OneToMany(mappedBy: 'curso', targetEntity: Asignatura::class)]
@@ -30,7 +29,8 @@ class Curso
     }
 
     // Getters y Setters
-    public function getId(): ?int { return $this->id; }
+    public function getCodCurso(): string { return $this->cod_curso; }
+    public function setCodCurso(string $cod_curso): self { $this->cod_curso = $cod_curso; return $this; }
     public function getNombre(): ?string { return $this->nombre; }
     public function setNombre(string $nombre): self { $this->nombre = $nombre; return $this; }
     public function getCiclo(): ?Ciclo { return $this->ciclo; }

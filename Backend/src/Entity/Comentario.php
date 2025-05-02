@@ -7,6 +7,7 @@ use App\Entity\Documento;
 use App\Repository\ComentarioRepository;
 
 #[ORM\Entity(repositoryClass: ComentarioRepository::class)]
+#[ORM\Index(name: "idx_comentario_fecha", fields: ["fecha"])]
 class Comentario
 {
     #[ORM\Id]

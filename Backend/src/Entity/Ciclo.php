@@ -10,9 +10,8 @@ use App\Repository\CicloRepository;
 class Ciclo
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(name: "cod_ciclo", length: 4, unique: true, nullable: false)]
+    private string $cod_ciclo;
 
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
@@ -29,7 +28,8 @@ class Ciclo
     }
 
     // Getters y Setters
-    public function getId(): ?int { return $this->id; }
+    public function getCodCiclo(): string { return $this->cod_ciclo; }
+    public function setCodCiclo(string $cod_ciclo): self { $this->cod_ciclo = $cod_ciclo; return $this; }
     public function getNombre(): ?string { return $this->nombre; }
     public function setNombre(string $nombre): self { $this->nombre = $nombre; return $this; }
     public function getDescripcion(): ?string { return $this->descripcion; }
