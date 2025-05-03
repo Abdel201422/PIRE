@@ -8,8 +8,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/input.css">
     <script type="module" src="./assets/js/dashboard.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-pire-background font-sans">
 
   <div class="flex h-screen">
     <!-- Sidebar -->
@@ -21,12 +34,171 @@
       <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
       <!-- Dashboard Content -->
-      <main class="p-6">
-          <h1 class="text-2xl font-bold">Bienvenido al Dashboard</h1>
-          <div id="userInfo" class="mt-4">
-              <!-- Aquí se mostrarán los detalles del usuario -->
-          </div>
-      </main>
+      <main class="flex-1 overflow-y-auto p-0 flex flex-col">
+        <!-- Sección superior: Bienvenida y Actividad reciente -->
+        <div class="grid grid-cols-3 gap-4 p-4">
+            <!-- Bienvenida -->
+            <div id="seccion-bienvenida" class="col-span-2 bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <h1 class="text-4xl font-bold mb-2">Bienvenido, <span id="userName" class="text-green-400">user</span></h1>
+                <h2 class="text-xl font-semibold mb-4">¿Listo para compartir, descubrir y aprender algo nuevo hoy?</h2>
+                <div id="userInfo" class="mt-4">
+                    <!-- Aquí se mostrarán los detalles del usuario -->
+                </div>
+            </div>
+            
+            <!-- Actividad reciente -->
+            <div id="seccion-actividad" class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="flex items-center mb-4">
+                    <div class="bg-green-100 p-3 rounded-full mr-3">
+                        <i class="fas fa-file-alt text-green-500"></i>
+                    </div>
+                    <h2 class="text-lg font-semibold">Actividad reciente</h2>
+                </div>
+                
+                <ul id="lista-actividad" class="space-y-3 ml-4">
+                    <!-- Pillar de la base de datos el ultimo recurso subido por el usuario e insertarlo con esta estructura de ejemplo: -->
+                    <li class="flex items-center">
+                        <span class="text-brown-600 mr-2">📚</span>
+                        Subiste "Apuntes de Historia" hace 1 día
+                    </li>
+                    <!-- Pillar de la base de datos la ultima valoración recibida e insertarla con esta estructura de ejemplo: -->
+                    <li class="flex items-center">
+                        <span class="text-yellow-500 mr-2">⭐</span>
+                        Recibiste una valoración de 5 estrellas
+                    </li>
+                    <!-- Si queremos hacer este apartado necesitamos CREAR OTRA ENTIDAD BIBLIOTECA que almacene los recursos descargados por el usuario, habría que pillar de la base de datos el ultimo recurso descargado por el usuario e insertarlo con esta estructura de ejemplo: -->
+                    <li class="flex items-center">
+                        <span class="text-blue-500 mr-2">📥</span>
+                        Descargaste "Resumen de Matemáticas"
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Estadísticas -->
+        <div id="seccion-estadisticas" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 px-4">
+            <!-- Recursos subidos -->
+            <div id="card-recursos" class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="flex items-center mb-3">
+                    <div class="bg-green-100 p-3 rounded-full mr-3">
+                        <i class="fas fa-file-upload text-green-500"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold">Recursos subidos</h3>
+                </div>
+                <div class="ml-2">
+                    <h2 class="text-4xl font-bold">12</h2>
+                    <p class="text-gray-500">documentos subidos</p>
+                </div>
+            </div>
+            
+            <!-- Valoraciones -->
+            <div id="card-valoraciones" class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="flex items-center mb-3">
+                    <div class="bg-green-100 p-3 rounded-full mr-3">
+                        <i class="fas fa-star text-green-500"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold">Valoraciones totales</h3>
+                </div>
+                <div class="ml-2">
+                    <h2 class="text-4xl font-bold">4.7</h2>
+                    <p class="text-gray-500">estrellas</p>
+                </div>
+            </div>
+            
+            <!-- Comentarios -->
+            <div id="card-comentarios" class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="flex items-center mb-3">
+                    <div class="bg-green-100 p-3 rounded-full mr-3">
+                        <i class="fas fa-comments text-green-500"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold">Comentarios</h3>
+                </div>
+                <div class="ml-2">
+                    <h2 class="text-4xl font-bold">5</h2>
+                    <p class="text-gray-500">comentarios</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Asignaturas -->
+
+        <!-- Pillar de la base de datos algunas asignaturas e insertarlas con esta estructura dentro del div con id "seccion-asignaturas"  -->
+        <div id="seccion-asignaturas" class="flex flex-wrap gap-3 mb-4 px-4">
+            <div class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="bg-green-100 p-2 rounded-full mr-2">
+                    <i class="fas fa-file text-green-500 text-sm"></i>
+                </div>
+                <span class="text-sm font-medium">Todos</span>
+            </div>
+            
+            <div id="asignatura-uno" class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="bg-green-100 p-2 rounded-full mr-2">
+                    <i class="fas fa-file text-green-500 text-sm"></i>
+                </div>
+                <span class="text-sm font-medium">Asignatura 1</span>
+            </div>
+            
+            <div id="asignatura-dos" class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="bg-green-100 p-2 rounded-full mr-2">
+                    <i class="fas fa-file text-green-500 text-sm"></i>
+                </div>
+                <span class="text-sm font-medium">Asignatura 2</span>
+            </div>
+            
+            <div id="asignatura-tres" class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                <div class="bg-green-100 p-2 rounded-full mr-2">
+                    <i class="fas fa-file text-green-500 text-sm"></i>
+                </div>
+                <span class="text-sm font-medium">Asignatura 3</span>
+            </div>
+        </div>
+        
+        <!-- Recursos populares -->
+        <div id="seccion-populares" class="bg-white rounded-xl p-6 border border-gray-300 mx-4 mb-4 flex-grow hover:border-pire-green transition-all duration-200">
+            <h2 class="text-xl font-semibold mb-4">Los recursos más populares</h2>
+            <!-- Obtenemos los 10 recursos mas populaes (por ejemplo), y los insertamos dentro del div con id "grid-recursos" usaremos la estructura de estos tres recursos de ejemplo-->
+            
+            
+            <div id="grid-recursos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Recurso 1 -->
+                <div  class="bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                    <!-- Nombre asignatura -->
+                    <div class="mb-2 text-xs text-green-600">Desarrollo Web en Entorno Servidor</div><!-- Nombre Asignatura  -->
+                    <h3 class="font-medium mb-2">Proyecto CRUD de gestión de usuarios (Symfony)</h3><!-- Titulo del documento  -->
+                    <div class="flex items-center mt-4">
+                        <div class="bg-gray-100 px-3 py-1 rounded-full flex items-center">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>4.8</span><!-- / Valoración del documento  -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recurso 2 -->
+                <div  class="bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                    <div class="mb-2 text-xs text-green-600">Programación de servicios y procesos</div>
+                    <h3 class="font-medium mb-2">Examen de programación de servicios y procesos</h3>
+                    <div class="flex items-center mt-4">
+                        <div class="bg-gray-100 px-3 py-1 rounded-full flex items-center">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>4.2</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recurso 3 -->
+                <div  class="bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                    <div class="mb-2 text-xs text-green-600">Bases de datos</div>
+                    <h3 class="font-medium mb-2">Script de creación de base de datos MySQL</h3>
+                    <div class="flex items-center mt-4">
+                        <div class="bg-gray-100 px-3 py-1 rounded-full flex items-center">
+                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                            <span>4.2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
     </div>
   </div>
 </body>

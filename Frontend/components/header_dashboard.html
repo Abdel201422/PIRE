@@ -1,25 +1,27 @@
 <!-- components/header.html -->
-<div class="flex items-center justify-between bg-[var(--color-bg-primary)] text-[var(--color-gray-dark-800)] p-4 border-b-2 border-[var(--color-grey-300)]">
-    <!-- Buscador -->
-    <div class="flex items-center space-x-2">
-        <input type="text" placeholder="Buscar..." class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none">
-    </div>
-
-    <!-- Menú del Usuario -->
-    <div class="relative">
-        <button class="flex items-center space-x-2 p-2 hover:bg-gray-600">
-            <img src="https://i.pravatar.cc/150?img=3" alt="Usuario" class="h-8 w-8 rounded-full">
-            <span class="sm:inline-block" id="userNameHeader"></span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-        </button>
-        <!-- <div class="absolute right-0 mt-2 w-48 bg-gray-700 text-white rounded-lg shadow-lg">
-            <ul class="p-2">
-                <li><a href="#" class="block p-2 hover:bg-gray-600">Mi Perfil</a></li>
-                <li><a href="#" class="block p-2 hover:bg-gray-600">Ajustes</a></li>
-                <li><a href="#" id="logoutLink" class="block p-2 hover:bg-gray-600">Cerrar Sesión</a></li>
-            </ul>
-        </div> -->
-    </div>
-</div>
+ <header class="bg-pire-background shadow-sm z-10">
+        <div class="px-4 py-3 flex items-center justify-between">
+            <!-- Barra de búsqueda -->
+            <div id="barra-busqueda" class="relative flex-1 max-w-lg">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                    <i class="fas fa-search text-gray-400"></i>
+                </span>
+                <input id="input-busqueda" type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full bg-gray-100 focus:outline-none focus:border-gray-300 text-sm" placeholder="Busca asignaturas o documentos">
+            </div>
+            
+            <!-- User Info -->
+            <div class="flex items-center">
+                <button id="boton-notificaciones" class="p-1 rounded-full text-gray-400 hover:bg-pire-green/10 focus:outline-none mr-4">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <div class="flex items-center">
+                    <div class="mr-3 text-right">
+                        <div id="userNameHeader" class="text-sm font-medium text-gray-700">Nombre Usuario</div>
+                    </div>
+                    <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
