@@ -16,13 +16,13 @@ class Documento
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 70)]
     private ?string $titulo = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $descripcion = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 150)]
     private ?string $ruta_archivo = null;
 
     #[ORM\ManyToOne(targetEntity: Asignatura::class, inversedBy: 'documentos')]
