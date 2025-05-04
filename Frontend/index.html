@@ -15,7 +15,7 @@
                     colors: {
                         'pire-background': '#FAF8F4',
                         'pire-green': '#85E28C',
-                        'pire-background': '#FAF8F4',
+                        
                     }
                 }
             }
@@ -23,19 +23,174 @@
     </script>
 </head>
 
-<body>
+<body class="bg-white">
     <!-- El Header se insertará aquí mediante JavaScript -->
     <div id="header_main"></div>
 
-    <main class="container mx-auto mt-8 p-4">
-        <h1 class="text-4xl font-bold text-center mb-4">Sube, descarga y aprende: la educación en tus manos</h1>
-        <p class="text-lg text-center">Comparte, descarga y descubre recursos educativos creados por estudiantes como
-            tú. Totalmente gratis, colaborativo y accesible.</p>
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <!-- Sección Hero -->
+        <section class="py-12 text-center">
+            <h1 class="text-4xl font-bold mb-4">Sube, descarga y aprende:<br>la educación en tus manos</h1>
+            <p class="text-lg max-w-3xl mx-auto mb-8">
+                Comparte, descarga y descubre recursos educativos creados por estudiantes como tú. Totalmente gratis, colaborativo y accesible.
+            </p>
+            <button class="bg-green-400 hover:bg-green-500 text-black font-bold py-2 px-8 rounded-full">
+                ¡Empezar ya!
+            </button>
+        </section>
+
+        <!-- Sección de características -->
+        <section class="py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Primera columna - Imagen con texto superpuesto -->
+            <div class="md:col-span-2 relative overflow-hidden rounded-lg">
+                <img src="./assets/images/Imagen_index_Estudiantes.png" alt="Estudiantes en biblioteca" class="w-full h-64 md:h-full object-cover">
+                <div class="absolute inset-0 flex items-start justify-end p-4">
+                    <div class="bg-white bg-opacity-90 px-6 py-4 rounded-lg shadow-md">
+                        <div class="inline-block border border-gray-200 rounded-lg px-3 py-1 text-sm shadow-sm mb-2">
+                            <img src="./assets/images/logo.svg" alt="Logo Pire" class="h-4">
+                        </div>
+                        <h3 class="text-xl font-bold">Aprende desde cualquier lugar</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Segunda columna - Cada vez somos más... -->
+            <div class="bg-green-400 rounded-lg p-8 flex flex-col items-center justify-center">
+                <div class="flex items-center mb-4">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 border-2 border-white"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-300 border-2 border-white"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-400 border-2 border-white"></div>
+                    </div>
+                    <span class="ml-2 text-sm font-bold"> + 56</span>
+                </div>
+                <h3 class="text-2xl font-bold text-white text-center">Cada vez somos más en la comunidad</h3>
+            </div>
+        </section>
+
+        <!-- Sección de categorías -->
+        <section class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Donde las preguntas<br>encuentran respuestas</h2>
+                <p class="text-lg max-w-2xl mx-auto">
+                    Puedes encontrar multitud de recursos para facilitarte el estudio.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Base de datos</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Empresa e iniciativa emprendedora</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Entorno de Desarrollo</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Formación y orientación laboral</h3>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Programación</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Sistemas Informáticos</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Desarrollo Web en Entorno Cliente</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Diseño de Interfaz Web</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Despliegue de Aplicaciones Web</h3>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <div class="bg-gray-200 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-medium">Lenguaje de Marcas</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de comunidad -->
+        <section class="py-12 relative">
+            <div class="absolute inset-0 -z-10 overflow-hidden">
+                <!-- Elementos de fondo decorativos -->
+                <div class="absolute top-0 left-0 w-1/2 h-full transform -skew-x-12 bg-gray-100 -translate-x-1/4"></div>
+                <div class="absolute top-0 right-0 w-1/2 h-full transform skew-x-12 bg-gray-100 translate-x-1/4"></div>
+                
+                <!-- Iconos y elementos decorativos -->
+                <div class="absolute top-1/4 right-1/4 bg-green-400 rounded-full w-8 h-8"></div>
+                <div class="absolute bottom-1/4 left-1/4 bg-green-400 rounded-full w-6 h-6"></div>
+                <div class="absolute top-1/2 right-1/3 border-2 border-green-400 rounded w-10 h-10"></div>
+                <div class="absolute bottom-1/3 right-1/4 bg-amber-300 rounded-full w-5 h-5"></div>
+                <div class="absolute top-1/3 left-1/3 bg-white rounded-lg w-12 h-12 border border-gray-200"></div>
+                <div class="absolute bottom-0 left-0 translate-x-12 -translate-y-12 border-4 border-green-400 rounded-lg w-12 h-12"></div>
+            </div>
+
+            <div class="relative z-10 text-center">
+                <div class="bg-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold mb-8">Únete a nuestra<br>gran comunidad</h2>
+                <button class="bg-green-400 hover:bg-green-500 text-black font-bold py-2 px-8 rounded-full">
+                    Comenzar Ahora
+                </button>
+            </div>
+        </section>
     </main>
+
+    <footer class="bg-white pt-8 pb-6 border-t">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">© 2025 PIRE. Todos los derechos reservados.</p>
+            <a href="#" class="inline-block mt-4 bg-black text-white rounded-full px-4 py-2 text-sm font-medium">
+                Iniciar sesión
+            </a>
+        </div>
+    </footer>
 </body>
 
 </html>
-
 <!-- <script>
         const renderDocumentos = (documentos) => {
             const container = document.getElementById('documentos');
