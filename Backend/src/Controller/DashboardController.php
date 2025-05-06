@@ -27,7 +27,8 @@ class DashboardController extends AbstractController
             return new JsonResponse(['error' => 'Usuario no autenticado o tipo incorrecto'], 401);
         }
 
-        $documentos = $this->documentoRepository->findAll();
+        $userNumDocumentos = $this->documentoRepository->count(['user' => $user]);
+        /* $documentos = $this->documentoRepository->findAll();
 
         // Mapear los documentos para devolverlos en el JSON
         $documentosData = array_map(function ($documento) {
@@ -36,17 +37,17 @@ class DashboardController extends AbstractController
                 'titulo' => $documento->getTitulo(),
                 'fechaSubida' => $documento->getFechaSubida()->format('Y-m-d H:i:s'),
             ];
-        }, $documentos);
+        }, $documentos); */
 
         return new JsonResponse([
             'user' => [
                 'id' => $user->getId(),
-            'nombre' => $user->getNombre(),
+                'nombre' => $user->getNombre(),
+            'nombreCompleto' => $user->getNombre() . ' ' . $user->getApellido(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
-            'nDocumentos' => $user->getDocumentos()->count(),
-            ],
-            'documentosData' => $documentosData,
+            'nDocumentos' => $userNumDocumentos
+            ]
         ]);
     }
 }
