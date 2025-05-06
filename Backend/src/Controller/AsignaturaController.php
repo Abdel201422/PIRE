@@ -17,7 +17,7 @@ final class AsignaturaController extends AbstractController
 
         $data = array_map(function ($asignatura) {
             return [
-                'id' => $asignatura->getCodigo(), // Usa el método correcto para obtener el ID
+                'codigo' => $asignatura->getCodigo(), // Usa el método correcto para obtener el ID
                 'nombre' => $asignatura->getNombre(),
             ];
         }, $asignaturas);
