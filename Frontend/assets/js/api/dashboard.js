@@ -1,4 +1,8 @@
 import { BACKEND_URL } from '../config.js';
+import { setupLogout } from './auth.js'
+
+infoDashboard()
+setupLogout()
 
 export function infoDashboard() {
 
@@ -20,20 +24,31 @@ export function infoDashboard() {
             })
             .then(data => {
                 const ui = document.getElementById('userInfo')
-                const usernameHeader = document.getElementById('userNameHeader')
+                const userNameComplete = document.getElementById('userNameComplete')
                 const userName = document.getElementById('userName')
+                const userNumDocumentos = document.getElementById('userNumDocumentos')
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
                 } else {
                     console.log(data)
-                    usernameHeader.textContent = data.user.nombre
-                    userName.textContent = data.user.nombre
-                    ui.innerHTML = `
+                    if (userName) {
+                        userName.textContent = data.user.nombre
+                    }
+                    
+                    if (userNameComplete) {
+                        userNameComplete.textContent = data.user.nombreCompleto
+                    }
+                    
+                    if (userNumDocumentos) {
+                        userNumDocumentos.textContent = data.user.nDocumentos
+                    }
+                    
+                   /*  ui.innerHTML = `
             <p><strong>ID:</strong> ${data.user.id}</p>
             <p><strong>Nombre:</strong> ${data.user.nombre}</p>
             <p><strong>Email:</strong> ${data.user.email}</p>
             <p><strong>Roles:</strong> ${data.user.roles.join(', ')}</p>
-            <p><strong>Nº Documentos:</strong> ${data.user.nDocumentos}</p>`;
+            <p><strong>Nº Documentos:</strong> ${data.user.nDocumentos}</p>`; */
                 }
             })
             .catch(err => {

@@ -1,29 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subir Documento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/input.css">
+    <script type="module" src="./assets/js/dashboard.js"></script>
+    <script type="module" src="./assets/js/api/dashboard.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Subir Documento</h1>
-    <form id="uploadForm">
-        <input type="file" id="file" name="file" required>
-        <button type="submit">Subir</button>
-    </form>
-    <div id="response"></div>
+
+<body class="bg-pire-background font-sans">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
+
+        <!-- Contenido principal -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-0 flex flex-col gap-4 p-4">
+                <!-- Sección: Formulario -->
+                <div class="col-span-2 bg-[#FDFDFD] rounded-xl p-6 border-2 border-gray-300">
+                    <h1 class="text-xl font-semibold mb-4">Subir un nuevo documento</h1>
+                    <form id="uploadForm">
+                        <label for="asignatura">Asignatura:</label>
+                        <select id="asignatura" name="asignatura" required>
+                            <option value="">Cargando asignaturas...</option>
+                        </select>
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" placeholder="Descripción del documento"
+                            required></textarea>
+                        
+                        <label for="file">Archivo:</label>
+                        <input type="file" id="file" name="file" required>
+
+                        <button type="submit">Subir</button>
+                    </form>
+                    <div id="response"></div>
+                </div>
+            </main>
+        </div>
+    </div>
 
     <script>
+        // Cargar asignaturas desde el backend
+        document.addEventListener('DOMContentLoaded', function () {
+            const asignaturaSelect = document.getElementById('asignatura');
+            const token = localStorage.getItem('jwt');
+
+            fetch('http://127.0.0.1:8000/asignaturas/get', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    asignaturaSelect.innerHTML = ''; // Limpiar opciones
+                    data.forEach(asignatura => {
+                        const option = document.createElement('option');
+                        option.value = asignatura.id; // Usa el ID de la asignatura
+                        option.textContent = asignatura.nombre; // Usa el nombre de la asignatura
+                        asignaturaSelect.appendChild(option);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error al cargar las asignaturas:', err);
+                    asignaturaSelect.innerHTML = '<option value="">Error al cargar asignaturas</option>';
+                });
+        });
+
+        // Manejar el envío del formulario
         document.getElementById('uploadForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
-            const formData = new FormData();
-            const fileInput = document.getElementById('file');
-            formData.append('file', fileInput.files[0]);
+            const formData = new FormData(this);
+            const token = localStorage.getItem('jwt');
 
             fetch('http://127.0.0.1:8000/api/documentos/upload', {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
             })
                 .then(response => response.json())
                 .then(data => {
@@ -34,8 +111,12 @@
                         responseDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
                     }
                 })
-                .catch(error => console.error('Error:', error));
-        });
+                .catch(err => {
+                    console.error('Error:', err);
+                    alert('Error al subir el recurso');
+                });
+        }); 
     </script>
 </body>
+
 </html>

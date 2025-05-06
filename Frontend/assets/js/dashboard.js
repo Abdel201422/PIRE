@@ -1,11 +1,5 @@
 // js/dashboard.js
 
-import { infoDashboard } from './api/dashboard.js'
-import { setupLogout } from './api/auth.js'
-
-infoDashboard()
-setupLogout()
-
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
 
