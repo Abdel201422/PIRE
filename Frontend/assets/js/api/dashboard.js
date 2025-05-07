@@ -24,7 +24,6 @@ export function infoDashboard() {
             })
             .then(data => {
                 const ui = document.getElementById('userInfo')
-                const userNameComplete = document.getElementById('userNameComplete')
                 const userName = document.getElementById('userName')
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
                 if (data.error) {
@@ -33,10 +32,6 @@ export function infoDashboard() {
                     console.log(data)
                     if (userName) {
                         userName.textContent = data.user.nombre
-                    }
-                    
-                    if (userNameComplete) {
-                        userNameComplete.textContent = data.user.nombreCompleto
                     }
                     
                     if (userNumDocumentos) {

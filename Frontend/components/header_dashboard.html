@@ -14,12 +14,35 @@
                 <button id="boton-notificaciones" class="p-1 rounded-full text-gray-400 hover:bg-pire-green/10 focus:outline-none mr-4">
                     <i class="fas fa-bell"></i>
                 </button>
-                <div class="flex items-center">
+                <div class="flex items-center relative cursor-pointer" id="user-info">
                     <div class="mr-3 text-right">
                         <div id="userNameComplete" class="text-sm font-medium text-gray-700">Nombre Usuario</div>
                     </div>
-                    <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
+                    <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center cursor-pointer" id="user-avatar">
                         <i class="fas fa-user text-gray-600 text-xs"></i>
+                    </div>
+                    
+                    <!-- User Dropdown Menu -->
+                    <div id="user-dropdown" class="absolute right-0 top-full mt-2 w-60 bg-white rounded-lg shadow-lg p-4 hidden z-20">
+                        <div class="border-b pb-3 mb-3">
+                            <div class="font-medium text-gray-800" id="dropdown-userName">Nombre Usuario</div>
+                            <div class="text-sm text-gray-500" id="dropdown-userEmail">Email</div>
+                        </div>
+                        <div class="space-y-2">
+                            <a href="#" class="flex items-center py-2 px-4 rounded-lg hover:bg-pire-green/10 text-gray-700">
+                                <i class="fas fa-user-edit mr-3 text-gray-500"></i>
+                                <span>Editar perfil</span>
+                            </a>
+                            <a href="#" class="flex items-center py-2 px-4 rounded-lg hover:bg-pire-green/10 text-gray-700">
+                                <i class="fas fa-cog mr-3 text-gray-500"></i>
+                                <span>Ajustes</span>
+                            </a>
+                            <div class="border-t my-2"></div>
+                            <a href="#" id="logout-button" class="flex items-center py-2 px-4 rounded-lg hover:bg-pire-green/10 text-gray-700">
+                                <i class="fas fa-sign-out-alt mr-3 text-gray-500"></i>
+                                <span>Cerrar sesión</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
