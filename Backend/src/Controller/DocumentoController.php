@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-#[Route('/documento')]
 final class DocumentoController extends AbstractController
 {
     #[Route(name: 'app_documento_index', methods: ['GET'])]
@@ -143,9 +142,69 @@ public function documentosPorAsignatura(
     }
 
     #[Route('/api/documentos/upload', name: 'upload_document', methods: ['POST'])]
-    public function upload(Request $request): JsonResponse
+    public function upload(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
+
+        $user = $this->getUser();
+
+        if (!$user instanceof \App\Entity\User) {
+            return new JsonResponse(['error' => 'Usuario no autenticado'], 401);
+        }
+
+        $descripcion = $request->request->get('descripcion');
+        $asignaturaId = $request->request->get('asignatura');
         $file = $request->files->get('file');
+
+        // Crear carpeta del usuario
+        $userDir = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $user->getId();
+        if (!is_dir($userDir)) {
+            mkdir($userDir, 0777, true);
+        }
+
+        // Verificar si el archivo ya existe
+        $originalFileName = $file->getClientOriginalName(); // Nombre original del archivo con extensión
+        $filePath = $userDir . '/' . $originalFileName;
+
+        if (file_exists($filePath)) {
+            return new JsonResponse(['error' => 'Ya existe un archivo con el mismo nombre'], 409); // Código 409: Conflicto
+        }
+        
+        // Guardar el archivo
+        try {
+            $file->move($userDir, $originalFileName);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al guardar el archivo: ' . $e->getMessage()], 500);
+        }
+        $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Nombre original del archivo sin extensión
+        /*$fileName = uniqid() . '.' . $file->guessExtension(); // Nombre único para evitar colisiones
+        $file->move($userDir, $fileName); */
+
+        // Obtener el tipo MIME del archivo
+        $tipoArchivo = $file->getClientMimeType();
+
+        // Crear el documento en la base de datos
+        $documento = new Documento();
+        $asignatura = $entityManager->getRepository(Asignatura::class)->find($asignaturaId);
+        $documento->setAsignatura($asignatura); // Asignatura debe ser un objeto de la entidad Asignatura
+        $documento->setTitulo($originalFileName);
+        $documento->setDescripcion($descripcion);
+        $documento->setRutaArchivo('uploads/' . $originalFileName);
+        //$documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $fileName);
+        $documento->setUser($user);
+        $documento->setFechaSubida(new \DateTime());
+        $documento->setTipoArchivo($tipoArchivo);
+
+        $entityManager->persist($documento);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Documento subido exitosamente'], 201);
+        /* $user = $this->getUser();
+
+        if (!$user instanceof \App\Entity\User) {
+            return new JsonResponse(['error' => 'Usuario nddo autenticado'], 401);
+        }
+ */
+        /* $file = $request->files->get('file');
 
         if (!$file) {
             return new JsonResponse(['error' => 'No se ha enviado ningún archivo'], 400);
@@ -160,7 +219,7 @@ public function documentosPorAsignatura(
             return new JsonResponse(['error' => 'Error al subir el archivo: ' . $e->getMessage()], 500);
         }
 
-        return new JsonResponse(['message' => 'Archivo subido exitosamente', 'fileName' => $fileName], 201);
+        return new JsonResponse(['message' => 'Archivo subido exitosamente', 'fileName' => $fileName], 201); */
     }
 
     #[Route('/api/documentos/download/{fileName}', name: 'download_document', methods: ['GET'])]

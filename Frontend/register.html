@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario - PIRE</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="./assets/js/register.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -21,7 +22,7 @@
 <body class="h-screen flex flex-col">
     <div class="flex-1 flex relative">
         <!-- Imagen de fondo con overlay verde -->
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('imagenes/imagen_registro.jpg');"></div>
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('./assets/images/image_registro.webp');"></div>
         
         <!-- Contenedor principal centrado -->
         <div class="relative w-full h-full flex justify-center items-center">
@@ -62,7 +63,5 @@
         <div class="text-sm md:text-base text-gray-700 font-body">© 2025 PIRE. Todos los derechos reservados.</div>
         <button id="boton-login-footer" class="bg-gray-800 text-white px-5 py-2 rounded-full text-sm md:text-base font-body">Iniciar sesión</button>
     </footer>
-    
-    <script src="js/register.js"></script>
 </body>
 </html>

@@ -1,53 +1,248 @@
 <!-- dashboard.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/input.css">
+    <script type="module" src="./assets/js/dashboard.js"></script>
+    <script type="module" src="./assets/js/api/dashboard.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>Bienvenido al Dashboard</h1>
-  <div id="userInfo">
-    <p>Cargando información del usuario…</p>
-  </div>
 
-  <script>
-    const BACKEND_URL = 'http://127.0.0.1:8000';
-    const token = localStorage.getItem('jwt');
+<body class="bg-pire-background font-sans">
 
-    // Si no hay token, volvemos al login
-    if (!token) {
-      window.location.href = '/login.html';
-    } else {
-      fetch(`${BACKEND_URL}/api/dashboard`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${token}` },
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('No se pudo obtener la información del usuario');
-        }
-        return response.json();
-      })
-      .then(data => {
-        const ui = document.getElementById('userInfo');
-        if (data.error) {
-          ui.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
-        } else {
-          ui.innerHTML = `
-            <p><strong>ID:</strong> ${data.id}</p>
-            <p><strong>Email:</strong> ${data.email}</p>
-            <p><strong>Roles:</strong> ${data.roles.join(', ')}</p>
-          `;
-        }
-      })
-      .catch(err => {
-        console.error('Error:', err);
-        document.getElementById('userInfo').innerHTML =
-          `<p style="color: red;">Error al cargar el dashboard.</p>`;
-      });
-    }
-  </script>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
+
+        <!-- Contenido principal -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-0 flex flex-col">
+                <!-- Sección superior: Bienvenida y Actividad reciente -->
+                <div class="grid grid-cols-3 gap-4 p-4">
+                    <!-- Bienvenida -->
+                    <div id="seccion-bienvenida"
+                        class="col-span-2 bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <h1 class="text-4xl font-bold mb-2">Bienvenido, <span id="userName"
+                                class="text-green-400">user</span></h1>
+                        <h2 class="text-xl font-semibold mb-4">¿Listo para compartir, descubrir y aprender algo nuevo
+                            hoy?</h2>
+                        <div id="userInfo" class="mt-4">
+                            <!-- Aquí se mostrarán los detalles del usuario -->
+                        </div>
+                    </div>
+
+                    <!-- Actividad reciente -->
+                    <div id="seccion-actividad"
+                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-pire-green p-3 rounded-full mr-3">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
+                                </svg>
+                            </div>
+                            <h2 class="text-lg font-semibold">Actividad reciente</h2>
+                        </div>
+
+                        <ul id="lista-actividad" class="space-y-3 ml-4">
+                            <!-- Pillar de la base de datos el ultimo recurso subido por el usuario e insertarlo con esta estructura de ejemplo: -->
+                            <li class="flex items-center">
+                                <span class="text-brown-600 mr-2">📚</span>
+                                Subiste "Apuntes de Historia" hace 1 día
+                            </li>
+                            <!-- Pillar de la base de datos la ultima valoración recibida e insertarla con esta estructura de ejemplo: -->
+                            <li class="flex items-center">
+                                <span class="text-yellow-500 mr-2">⭐</span>
+                                Recibiste una valoración de 5 estrellas
+                            </li>
+                            <!-- Si queremos hacer este apartado necesitamos CREAR OTRA ENTIDAD BIBLIOTECA que almacene los recursos descargados por el usuario, habría que pillar de la base de datos el ultimo recurso descargado por el usuario e insertarlo con esta estructura de ejemplo: -->
+                            <li class="flex items-center">
+                                <span class="text-blue-500 mr-2">📥</span>
+                                Descargaste "Resumen de Matemáticas"
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Estadísticas -->
+                <div id="seccion-estadisticas" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 px-4">
+                    <!-- Recursos subidos -->
+                    <div id="card-recursos"
+                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-pire-green p-3 rounded-full mr-3">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#08660C"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold">Recursos subidos</h3>
+                        </div>
+                        <div class="ml-2">
+                            <h2 id="userNumDocumentos" class="text-4xl font-bold">XX</h2>
+                            <p class="text-gray-500">documentos subidos</p>
+                        </div>
+                    </div>
+
+                    <!-- Valoraciones -->
+                    <div id="card-valoraciones"
+                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-pire-green p-3 rounded-full mr-3">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.4807 3.50102C11.6729 3.03905 12.3273 3.03905 12.5195 3.50102L14.6454 8.61248C14.7264 8.80724 14.9096 8.94031 15.1199 8.95716L20.6381 9.39956C21.1369 9.43954 21.3391 10.062 20.9591 10.3875L16.7548 13.9889C16.5946 14.1261 16.5246 14.3414 16.5736 14.5466L17.858 19.9315C17.9741 20.4182 17.4447 20.8028 17.0177 20.542L12.2933 17.6564C12.1133 17.5465 11.8869 17.5465 11.7069 17.6564L6.98251 20.542C6.55551 20.8028 6.02606 20.4182 6.14215 19.9315L7.42664 14.5466C7.47558 14.3414 7.40562 14.1261 7.24543 13.9889L3.04111 10.3875C2.66112 10.062 2.86335 9.43954 3.36209 9.39956L8.88034 8.95716C9.0906 8.94031 9.27375 8.80724 9.35476 8.61248L11.4807 3.50102Z" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold">Valoraciones totales</h3>
+                        </div>
+                        <div class="ml-2">
+                            <h2 class="text-4xl font-bold">4.7</h2>
+                            <p class="text-gray-500">estrellas</p>
+                        </div>
+                    </div>
+
+                    <!-- Comentarios -->
+                    <div id="card-comentarios"
+                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-pire-green p-3 rounded-full mr-3">
+                                <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 17.2546C14.9706 17.2546 19 13.561 19 9.00464C19 4.44829 14.9706 0.754639 10 0.754639C5.02944 0.754639 1 4.44829 1 9.00464C1 11.1083 1.85891 13.028 3.2728 14.4852C3.70538 14.9311 4.01357 15.5238 3.85933 16.1256C3.68829 16.7929 3.368 17.4005 2.93579 17.9106C3.0918 17.9385 3.25 17.9604 3.40967 17.976C3.60376 17.9949 3.80078 18.0046 4 18.0046C5.28201 18.0046 6.47016 17.6025 7.44517 16.9175C8.25506 17.1369 9.11253 17.2546 10 17.2546Z" stroke="#0F172A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold">Comentarios</h3>
+                        </div>
+                        <div class="ml-2">
+                            <h2 class="text-4xl font-bold">5</h2>
+                            <p class="text-gray-500">comentarios</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asignaturas -->
+
+                <!-- Pillar de la base de datos algunas asignaturas e insertarlas con esta estructura dentro del div con id "seccion-asignaturas"  -->
+                <div id="seccion-asignaturas" class="flex flex-wrap gap-3 mb-4 px-4">
+                    <div
+                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="bg-green-100 p-2 rounded-full mr-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Todos</span>
+                    </div>
+
+                    <div id="asignatura-uno"
+                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="bg-green-100 p-2 rounded-full mr-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Asignatura 1</span>
+                    </div>
+
+                    <div id="asignatura-dos"
+                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="bg-green-100 p-2 rounded-full mr-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Asignatura 2</span>
+                    </div>
+
+                    <div id="asignatura-tres"
+                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="bg-green-100 p-2 rounded-full mr-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
+                            </svg>
+                        </div>
+                        <span class="text-sm font-medium">Asignatura 3</span>
+                    </div>
+                </div>
+
+                <!-- Recursos populares -->
+                <div id="seccion-populares"
+                    class="bg-white rounded-xl p-6 border border-gray-300 mx-4 mb-4 flex-grow hover:border-pire-green transition-all duration-200">
+                    <h2 class="text-xl font-semibold mb-4">Los recursos más populares</h2>
+                    <!-- Obtenemos los 10 recursos mas populaes (por ejemplo), y los insertamos dentro del div con id "grid-recursos" usaremos la estructura de estos tres recursos de ejemplo-->
+
+
+                    <div id="grid-recursos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Recurso 1 -->
+                        <div
+                            class="bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                            <!-- Nombre asignatura -->
+                            <div class="mb-2 text-xs text-green-600">Desarrollo Web en Entorno Servidor</div>
+                            <!-- Nombre Asignatura  -->
+                            <h3 class="font-medium mb-2">Proyecto CRUD de gestión de usuarios (Symfony)</h3>
+                            <!-- Titulo del documento  -->
+                            <div class="flex items-center mt-4">
+                                <div class="bg-[#FFEACB] px-3 py-1 rounded-full flex items-center">
+                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9.50516 0.25C9.79025 0.250313 10.0508 0.412325 10.177 0.667969L12.6018 5.58105L18.0247 6.36914C18.3069 6.41044 18.542 6.60862 18.6302 6.87988C18.7072 7.11731 18.6597 7.37518 18.51 7.56934L18.4397 7.64844L14.5159 11.4727L15.4427 16.873C15.4909 17.1543 15.3746 17.4386 15.1438 17.6064C14.9131 17.774 14.6073 17.7965 14.3548 17.6641L9.50418 15.1133L4.65458 17.6641C4.40207 17.7966 4.0963 17.774 3.86551 17.6064C3.63455 17.4386 3.51843 17.1544 3.56668 16.873L4.49247 11.4727L0.569615 7.64844C0.365202 7.44918 0.291971 7.15138 0.380161 6.87988C0.468444 6.6085 0.703203 6.41018 0.98563 6.36914L6.40653 5.58105L8.83231 0.667969L8.88602 0.576172C9.02453 0.374098 9.25568 0.25 9.50516 0.25Z" fill="#FFA53C"/>
+                                    </svg>
+                                    <span>4.8</span><!-- / Valoración del documento  -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recurso 2 -->
+                        <div
+                            class="bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                            <div class="mb-2 text-xs text-green-600">Programación de servicios y procesos</div>
+                            <h3 class="font-medium mb-2">Examen de programación de servicios y procesos</h3>
+                            <div class="flex items-center mt-4">
+                                <div class="bg-[#FFEACB] px-3 py-1 rounded-full flex items-center ">
+                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9.50516 0.25C9.79025 0.250313 10.0508 0.412325 10.177 0.667969L12.6018 5.58105L18.0247 6.36914C18.3069 6.41044 18.542 6.60862 18.6302 6.87988C18.7072 7.11731 18.6597 7.37518 18.51 7.56934L18.4397 7.64844L14.5159 11.4727L15.4427 16.873C15.4909 17.1543 15.3746 17.4386 15.1438 17.6064C14.9131 17.774 14.6073 17.7965 14.3548 17.6641L9.50418 15.1133L4.65458 17.6641C4.40207 17.7966 4.0963 17.774 3.86551 17.6064C3.63455 17.4386 3.51843 17.1544 3.56668 16.873L4.49247 11.4727L0.569615 7.64844C0.365202 7.44918 0.291971 7.15138 0.380161 6.87988C0.468444 6.6085 0.703203 6.41018 0.98563 6.36914L6.40653 5.58105L8.83231 0.667969L8.88602 0.576172C9.02453 0.374098 9.25568 0.25 9.50516 0.25Z" fill="#FFA53C"/>
+                                    </svg>
+                                    <span>4.2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recurso 3 -->
+                        <div
+                            class="bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                            <div class="mb-2 text-xs text-green-600">Bases de datos</div>
+                            <h3 class="font-medium mb-2">Script de creación de base de datos MySQL</h3>
+                            <div class="flex items-center mt-4">
+                                <div class="bg-[#FFEACB] px-3 py-1 rounded-full flex items-center">
+                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9.50516 0.25C9.79025 0.250313 10.0508 0.412325 10.177 0.667969L12.6018 5.58105L18.0247 6.36914C18.3069 6.41044 18.542 6.60862 18.6302 6.87988C18.7072 7.11731 18.6597 7.37518 18.51 7.56934L18.4397 7.64844L14.5159 11.4727L15.4427 16.873C15.4909 17.1543 15.3746 17.4386 15.1438 17.6064C14.9131 17.774 14.6073 17.7965 14.3548 17.6641L9.50418 15.1133L4.65458 17.6641C4.40207 17.7966 4.0963 17.774 3.86551 17.6064C3.63455 17.4386 3.51843 17.1544 3.56668 16.873L4.49247 11.4727L0.569615 7.64844C0.365202 7.44918 0.291971 7.15138 0.380161 6.87988C0.468444 6.6085 0.703203 6.41018 0.98563 6.36914L6.40653 5.58105L8.83231 0.667969L8.88602 0.576172C9.02453 0.374098 9.25568 0.25 9.50516 0.25Z" fill="#FFA53C"/>
+                                    </svg>
+                                    <span>4.2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
 </body>
+
 </html>

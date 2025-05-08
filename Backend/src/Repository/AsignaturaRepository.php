@@ -13,12 +13,12 @@ class AsignaturaRepository extends ServiceEntityRepository
     }
 
     // Ejemplo: Buscar asignaturas por código
-    public function findByCodigo(string $codigo): array
+    /* public function findByCodigo(string $codigo): array
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.codigo = :codigo')
             ->setParameter('codigo', $codigo)
             ->getQuery()
             ->getResult();
-    }
+    } */
 }

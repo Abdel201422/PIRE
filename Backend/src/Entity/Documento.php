@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\DocumentoRepository;
 
 #[ORM\Entity(repositoryClass: DocumentoRepository::class)]
+#[ORM\Index(name: "idx_documento_titulo", fields: ["titulo"])]
+#[ORM\Index(name: "idx_documento_fecha_subida", fields: ["fecha_subida"])]
 class Documento
 {
     #[ORM\Id]
@@ -14,17 +16,17 @@ class Documento
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 70)]
     private ?string $titulo = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $descripcion = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 150)]
     private ?string $ruta_archivo = null;
 
     #[ORM\ManyToOne(targetEntity: Asignatura::class, inversedBy: 'documentos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "asignatura_codigo", referencedColumnName: "codigo", nullable: false)]
     private ?Asignatura $asignatura = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'documentos')]
