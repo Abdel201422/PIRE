@@ -6,13 +6,13 @@ Este directorio contiene los fixtures para cargar datos de prueba en la aplicaci
 
 El archivo `AppFixtures.php` contiene fixtures para todas las entidades del sistema:
 
-- **Ciclos**: DAW, DAM, ASIR
-- **Cursos**: Primero y segundo de cada ciclo
-- **Asignaturas**: Varias asignaturas por curso
-- **Usuarios**: Admin, profesor y varios alumnos
-- **Documentos**: Ejemplos de documentos para diferentes asignaturas
+- **Ciclos**: DAW...
+- **Cursos**: Primero y segundo de cada ciclo..
+- **Asignaturas**: Varias asignaturas por curso..
+- **Usuarios**: Admin y varios alumnos
+<!-- - **Documentos**: Ejemplos de documentos para diferentes asignaturas
 - **Valoraciones**: Valoraciones de ejemplo para los documentos
-- **Comentarios**: Comentarios de ejemplo para los documentos
+- **Comentarios**: Comentarios de ejemplo para los documentos -->
 
 ## Cómo Cargar los Fixtures
 
