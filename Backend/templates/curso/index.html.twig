@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Curso index{% endblock %}
+
+{% block body %}
+    <h1>Curso index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cod_curso</th>
+                <th>Nombre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for curso in cursos %}
+            <tr>
+                <td>{{ curso.codCurso }}</td>
+                <td>{{ curso.nombre }}</td>
+                <td>
+                    <a href="{{ path('app_curso_show', {'cod_curso': curso.cod_curso}) }}">show</a>
+                    <a href="{{ path('app_curso_edit', {'cod_curso': curso.cod_curso}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_curso_new') }}">Create new</a>
+{% endblock %}

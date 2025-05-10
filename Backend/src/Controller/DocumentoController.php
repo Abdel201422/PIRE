@@ -222,15 +222,24 @@ public function documentosPorAsignatura(
         return new JsonResponse(['message' => 'Archivo subido exitosamente', 'fileName' => $fileName], 201); */
     }
 
-    #[Route('/api/documentos/download/{fileName}', name: 'download_document', methods: ['GET'])]
-    public function download(string $fileName): Response
+    #[Route('/api/documentos/download/{id}', name: 'download_document', methods: ['GET'])]
+    public function download(int $id, DocumentoRepository $documentoRepository): Response
     {
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $fileName;
+        // Buscar el documento por ID
+        $documento = $documentoRepository->find($id);
 
-        if (!file_exists($filePath)) {
-            return new JsonResponse(['error' => 'El archivo no existe'], 404);
+        if (!$documento) {
+            return new JsonResponse(['error' => 'Documento no encontrado'], 404);
         }
 
-        return $this->file($filePath);
+        // Obtener la ruta del archivo
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/' . $documento->getRutaArchivo();
+
+        if (!file_exists($filePath)) {
+            return new JsonResponse(['error' => 'El archivo no existe en el servidor'], 404);
+        }
+
+        // Retornar el archivo para su descarga
+        return $this->file($filePath, $documento->getTitulo() . '.' . pathinfo($filePath, PATHINFO_EXTENSION));
     }
 }
