@@ -88,9 +88,30 @@ final class CicloController extends AbstractController
 
         foreach ($ciclos as $ciclo) {
             $data[] = [
-                'id' => $ciclo->getId(),
+                'cod_ciclo' => $ciclo->getCodCiclo(),
                 'nombre' => $ciclo->getNombre(),
-                'tipo' => $ciclo->getTipo(), // Ejemplo: "Grado Medio", "Grado Superior"
+            ];
+        }
+
+        return $this->json($data, Response::HTTP_OK);
+    }
+
+    #[Route('/api/ciclos/{codCiclo}/cursos', name: 'api_cursos_por_ciclos', methods: ['GET'])]
+    public function getCursosPorCiclo(string $codCiclo, CicloRepository $cicloRepository): JsonResponse
+    {
+        $ciclo = $cicloRepository->findOneBy(['cod_ciclo' => $codCiclo]);
+        
+        if (!$ciclo) {
+            return new JsonResponse(['error' => 'Ciclo no encontrado'], Response::HTTP_NOT_FOUND);
+        }
+
+        $cursos = $ciclo->getCursos();
+
+        $data = [];
+        foreach ($cursos as $curso) {
+            $data[] = [
+                'cod_curso' => $curso->getCodCurso(),
+                'nombre' => $curso->getNombre(),
             ];
         }
 
