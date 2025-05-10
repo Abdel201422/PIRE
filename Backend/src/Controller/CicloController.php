@@ -109,21 +109,21 @@ final class CicloController extends AbstractController
                 $asignaturasData = [];
                 foreach ($curso->getAsignaturas() as $asignatura) {
                     $asignaturasData[] = [
-                        'id' => $asignatura->getCodigo(),
+                        'codigo' => $asignatura->getCodigo(), // Usar "codigo" como identificador
                         'nombre' => $asignatura->getNombre(),
                         'curso' => $curso->getNombre(), // Indica a qué curso pertenece
                     ];
                 }
 
                 $cursosData[] = [
-                    'id' => $curso->getCodCurso(),
+                    'cod_curso' => $curso->getCodCurso(), // Usar "cod_curso" como identificador
                     'nombre' => $curso->getNombre(),
                     'asignaturas' => $asignaturasData,
                 ];
             }
 
             $data[] = [
-                'id' => $ciclo->getCodCiclo(),
+                'cod_ciclo' => $ciclo->getCodCiclo(), // Usar "cod_ciclo" como identificador
                 'nombre' => $ciclo->getNombre(),
                 'descripcion' => $ciclo->getDescripcion(),
                 'cursos' => $cursosData,

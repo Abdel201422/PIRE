@@ -124,10 +124,10 @@ function cargarMisRecursos() {
                 cicloDiv.innerHTML = `
                     <h3 class="text-lg font-semibold mb-2">${ciclo.nombre}</h3>
                     <p class="text-sm text-gray-600 mb-4">${ciclo.descripcion || ''}</p>
-                    <button class="text-pire-green hover:text-pire-green-dark font-semibold" data-ciclo-id="${ciclo.id}">
+                    <button class="text-pire-green hover:text-pire-green-dark font-semibold" data-cod-ciclo="${ciclo.cod_ciclo}">
                         Ver asignaturas
                     </button>
-                    <div id="asignaturas-${ciclo.id}" class="mt-4 hidden">
+                    <div id="asignaturas-${ciclo.cod_ciclo}" class="mt-4 hidden">
                         <!-- Aquí se cargarán las asignaturas -->
                     </div>
                 `;
@@ -137,10 +137,10 @@ function cargarMisRecursos() {
                 // Evento para cargar asignaturas al hacer clic en "Ver asignaturas"
                 const verAsignaturasBtn = cicloDiv.querySelector('button');
                 verAsignaturasBtn.addEventListener('click', function () {
-                    const asignaturasContainer = document.getElementById(`asignaturas-${ciclo.id}`);
+                    const asignaturasContainer = document.getElementById(`asignaturas-${ciclo.cod_ciclo}`);
                     if (asignaturasContainer.classList.contains('hidden')) {
                         asignaturasContainer.classList.remove('hidden');
-                        cargarAsignaturas(ciclo.id, asignaturasContainer);
+                        cargarAsignaturas(ciclo.cod_ciclo, asignaturasContainer);
                     } else {
                         asignaturasContainer.classList.add('hidden');
                     }
@@ -153,14 +153,14 @@ function cargarMisRecursos() {
         });
 }
 
-function cargarAsignaturas(cicloId, container) {
+function cargarAsignaturas(codCiclo, container) {
     container.innerHTML = '<p class="text-gray-500">Cargando asignaturas...</p>';
 
     fetch(`http://127.0.0.1:8000/api/ciclos/completos`)
         .then(response => response.json())
         .then(data => {
             container.innerHTML = '';
-            const ciclo = data.find(c => c.id === cicloId);
+            const ciclo = data.find(c => c.cod_ciclo === codCiclo);
             ciclo.cursos.forEach(curso => {
                 const cursoDiv = document.createElement('div');
                 cursoDiv.classList.add('mb-4');
