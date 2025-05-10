@@ -9,7 +9,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/input.css">
     <script type="module" src="./assets/js/dashboard.js"></script>
-    <script type="module" src="./assets/js/api/dashboard.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -115,7 +114,7 @@
                             <h3 class="text-lg font-semibold">Valoraciones totales</h3>
                         </div>
                         <div class="ml-2">
-                            <h2 class="text-4xl font-bold">4.7</h2>
+                            <h2 id="userPuntuacion" class="text-4xl font-bold">4.7</h2>
                             <p class="text-gray-500">estrellas</p>
                         </div>
                     </div>
@@ -188,7 +187,6 @@
                     class="bg-white rounded-xl p-6 border border-gray-300 mx-4 mb-4 flex-grow hover:border-pire-green transition-all duration-200">
                     <h2 class="text-xl font-semibold mb-4">Los recursos más populares</h2>
                     <!-- Obtenemos los 10 recursos mas populaes (por ejemplo), y los insertamos dentro del div con id "grid-recursos" usaremos la estructura de estos tres recursos de ejemplo-->
-
 
                     <div id="grid-recursos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <!-- Recurso 1 -->
