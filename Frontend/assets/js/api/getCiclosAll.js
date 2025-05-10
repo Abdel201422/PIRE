@@ -7,36 +7,50 @@ if (!token) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    getCiclos(token)
-})
-
-document.getElementById('cicloSelect').addEventListener('change', function () {
-    
-    const codCiclo = this.value
-    const token = localStorage.getItem('jwt')
-
-    if (codCiclo) {
-        getCursosPorCiclo(codCiclo, token)
-    } else {
-        // Limpia el select si no se ha elegido nada
-        const cursoSelect = document.getElementById('cursoSelect')
-        cursoSelect.innerHTML = '<option value="">Selecciona curso</option>'
+    // Verificar si el elemento cicloSelect existe antes de llamar a getCiclos
+    const cicloSelect = document.getElementById('cicloSelect')
+    if (cicloSelect) {
+        getCiclos(token)
     }
 })
 
-document.getElementById('cursoSelect').addEventListener('change', function () {
-    
-    const codCurso = this.value
-    const token = localStorage.getItem('jwt')
+// Verificar si cicloSelect existe antes de añadir el evento
+const cicloSelect = document.getElementById('cicloSelect')
+if (cicloSelect) {
+    cicloSelect.addEventListener('change', function () {
+        const codCiclo = this.value
+        const token = localStorage.getItem('jwt')
 
-    if (codCurso) {
-        getAsignaturasPorCurso(codCurso, token)
-    } else {
-        // Limpia el select si no se ha elegido nada
-        const asignaturaSelect = document.getElementById('asignaturaSelect')
-        asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
-    }
-})
+        if (codCiclo) {
+            getCursosPorCiclo(codCiclo, token)
+        } else {
+            // Limpia el select si no se ha elegido nada
+            const cursoSelect = document.getElementById('cursoSelect')
+            if (cursoSelect) {
+                cursoSelect.innerHTML = '<option value="">Selecciona curso</option>'
+            }
+        }
+    })
+}
+
+// Verificar si cursoSelect existe antes de añadir el evento
+const cursoSelect = document.getElementById('cursoSelect')
+if (cursoSelect) {
+    cursoSelect.addEventListener('change', function () {
+        const codCurso = this.value
+        const token = localStorage.getItem('jwt')
+
+        if (codCurso) {
+            getAsignaturasPorCurso(codCurso, token)
+        } else {
+            // Limpia el select si no se ha elegido nada
+            const asignaturaSelect = document.getElementById('asignaturaSelect')
+            if (asignaturaSelect) {
+                asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
+            }
+        }
+    })
+}
 
 // Obtener los ciclos
 async function getCiclos(token) {
