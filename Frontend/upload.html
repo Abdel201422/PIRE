@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./assets/css/input.css">
     <script type="module" src="./assets/js/dashboard.js"></script>
     <script type="module" src="./assets/js/api/dashboard.js"></script>
+    <script type="module" src="./assets/js/api/getCiclosAll.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -46,7 +47,7 @@
                                 <!-- Ciclo -->
                                 <label for="ciclo" class="block text-sm font-medium text-gray-700 mb-1">Ciclo</label>
                                 <div class="relative">
-                                    <select id="ciclo" name="ciclo" required
+                                    <select id="cicloSelect" name="ciclo" required
                                         class="block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-700 focus:border-pire-green focus:ring-pire-green appearance-none">
                                         <option value="">Selecciona ciclo</option>
                                     </select>
@@ -59,7 +60,7 @@
                                 <!-- Curso -->
                                 <label for="curso" class="block text-sm font-medium text-gray-700 mb-1">Curso</label>
                             <div class="relative">
-                                <select id="curso" name="curso" required
+                                <select id="cursoSelect" name="curso" required
                                     class="block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-700 focus:border-pire-green focus:ring-pire-green appearance-none">
                                     <option value="">Selecciona curso</option>
                                 </select>
@@ -74,7 +75,7 @@
                         <div>
                             <label for="asignatura" class="block text-sm font-medium text-gray-700 mb-1">Asignatura</label>
                             <div class="relative">
-                                <select id="asignatura" name="asignatura" required
+                                <select id="asignaturaSelect" name="asignatura" required
                                     class="block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-700 focus:border-pire-green focus:ring-pire-green appearance-none">
                                     <option value="">Selecciona asignatura</option>
                                 </select>
@@ -123,6 +124,7 @@
             </main>
         </div>
     </div>
+    <script type="module" src="./assets/js/upload.js"></script>
 </body>
 
 </html>
