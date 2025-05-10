@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Ciclo{% endblock %}
+
+{% block body %}
+    <h1>Edit Ciclo</h1>
+
+    {{ include('ciclo/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_ciclo_index') }}">back to list</a>
+
+    {{ include('ciclo/_delete_form.html.twig') }}
+{% endblock %}
