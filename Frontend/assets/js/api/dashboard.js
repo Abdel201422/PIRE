@@ -20,11 +20,13 @@ export function infoDashboard() {
                 if (!response.ok) {
                     throw new Error('No se pudo obtener la información del usuario');
                 }
+                
                 return response.json();
             })
             .then(data => {
                 const ui = document.getElementById('userInfo')
                 const userName = document.getElementById('userName')
+                const userNameComplete = document.getElementById('userNameComplete')
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
@@ -32,18 +34,12 @@ export function infoDashboard() {
                     console.log(data)
                     if (userName) {
                         userName.textContent = data.user.nombre
+                        userNameComplete.textContent = data.user.nombreCompleto
                     }
                     
                     if (userNumDocumentos) {
                         userNumDocumentos.textContent = data.user.nDocumentos
                     }
-                    
-                   /*  ui.innerHTML = `
-            <p><strong>ID:</strong> ${data.user.id}</p>
-            <p><strong>Nombre:</strong> ${data.user.nombre}</p>
-            <p><strong>Email:</strong> ${data.user.email}</p>
-            <p><strong>Roles:</strong> ${data.user.roles.join(', ')}</p>
-            <p><strong>Nº Documentos:</strong> ${data.user.nDocumentos}</p>`; */
                 }
             })
             .catch(err => {
