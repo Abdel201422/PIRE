@@ -1,7 +1,12 @@
 // js/dashboard.js
+import { infoUser} from './api/dataDashboard.js';
+import { loadBestDocuments } from './api/dataDashboard.js';
 
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
+
+    infoUser()
+    loadBestDocuments()
 
     // Cargar dinámicamente el Header
     const headerContainer = document.getElementById('header_dashboard');
@@ -10,27 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.text())
             .then(html => {
                 headerContainer.innerHTML = html;
-
-                // Obtener datos del usuario para el header
-                // const token = localStorage.getItem('jwt');
-                // if (token) {
-                //     fetch('http://127.0.0.1:8000/api/dashboard', {
-                //         method: 'GET',
-                //         headers: { 'Authorization': `Bearer ${token}` },
-                //     })
-                //     .then(response => response.json())
-                //     .then(data => {
-                //         if (!data.error && data.user) {
-                //             const userNameComplete = document.getElementById('userNameComplete');
-                //             const dropdownUserName = document.getElementById('dropdown-userName');
-                //             const dropdownUserEmail = document.getElementById('dropdown-userEmail');
-                //             if (userNameComplete) userNameComplete.textContent = data.user.nombre;
-                //             if (dropdownUserName) dropdownUserName.textContent = data.user.nombre;
-                //             if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email;
-                //         }
-                //     })
-                //     .catch(err => console.error('No se pudo cargar el usuario en el header:', err));
-                // }
 
                 // Funcionalidad para alternar el menú desplegable del usuario
                 const userAvatar = document.getElementById('user-avatar');
