@@ -5,3 +5,12 @@
     --color-gray-50: #FDFDFD;
     --color-gray-dark-800: #1C1C1C;
 }
+
+.custom-scrollbar {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE y Edge */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;                  /* Chrome, Safari */
+}
