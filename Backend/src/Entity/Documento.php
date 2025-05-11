@@ -214,5 +214,22 @@ class Documento
         return $this;
     }
 
-    
+    /**
+     * Calcula la media de las valoraciones del documento.
+     *
+     * @return float La media de las valoraciones, o 0 si no hay valoraciones.
+     */
+    public function calcularMediaValoraciones(): float
+    {
+        if ($this->valoraciones->isEmpty()) {
+            return 0.0;
+        }
+
+        $total = 0;
+        foreach ($this->valoraciones as $valoracion) {
+            $total += $valoracion->getPuntuacion();
+        }
+
+        return $total / count($this->valoraciones);
+    }
 }
