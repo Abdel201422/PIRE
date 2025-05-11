@@ -1,7 +1,12 @@
 // js/dashboard.js
+import { infoUser} from './api/dataDashboard.js';
+import { loadBestDocuments } from './api/dataDashboard.js';
 
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
+
+    infoUser()
+    loadBestDocuments()
 
     // Cargar dinámicamente el Header
     const headerContainer = document.getElementById('header_dashboard');
@@ -10,27 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.text())
             .then(html => {
                 headerContainer.innerHTML = html;
-
-                // Obtener datos del usuario para el header
-                // const token = localStorage.getItem('jwt');
-                // if (token) {
-                //     fetch('http://127.0.0.1:8000/api/dashboard', {
-                //         method: 'GET',
-                //         headers: { 'Authorization': `Bearer ${token}` },
-                //     })
-                //     .then(response => response.json())
-                //     .then(data => {
-                //         if (!data.error && data.user) {
-                //             const userNameComplete = document.getElementById('userNameComplete');
-                //             const dropdownUserName = document.getElementById('dropdown-userName');
-                //             const dropdownUserEmail = document.getElementById('dropdown-userEmail');
-                //             if (userNameComplete) userNameComplete.textContent = data.user.nombre;
-                //             if (dropdownUserName) dropdownUserName.textContent = data.user.nombre;
-                //             if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email;
-                //         }
-                //     })
-                //     .catch(err => console.error('No se pudo cargar el usuario en el header:', err));
-                // }
 
                 // Funcionalidad para alternar el menú desplegable del usuario
                 const userAvatar = document.getElementById('user-avatar');
@@ -92,7 +76,93 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = '/';
                     });
                 }
+
+                // Asignar el evento de clic al enlace "Mis Recursos"
+                const enlaceMisRecursos = document.getElementById('enlace-recursos');
+                if (enlaceMisRecursos) {
+                    enlaceMisRecursos.addEventListener('click', function (e) {
+                        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                        cargarMisRecursos(); // Llama a la función para cargar los ciclos
+                    });
+                }
             })
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
-})
+
+    // MIS RECURSOS
+    
+});
+
+function cargarMisRecursos() {
+    const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
+
+    // Obtener los ciclos desde el backend
+    fetch('http://127.0.0.1:8000/api/ciclos/completos')
+        .then(response => response.json())
+        .then(data => {
+            mainContent.innerHTML = ''; // Limpia el contenido
+            data.forEach(ciclo => {
+                const cicloDiv = document.createElement('div');
+                cicloDiv.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md', 'mb-4');
+                cicloDiv.innerHTML = `
+                    <h3 class="text-lg font-semibold mb-2">${ciclo.nombre}</h3>
+                    <p class="text-sm text-gray-600 mb-4">${ciclo.descripcion || ''}</p>
+                    <button class="text-pire-green hover:text-pire-green-dark font-semibold" data-cod-ciclo="${ciclo.cod_ciclo}">
+                        Ver asignaturas
+                    </button>
+                    <div id="asignaturas-${ciclo.cod_ciclo}" class="mt-4 hidden">
+                        <!-- Aquí se cargarán las asignaturas -->
+                    </div>
+                `;
+
+                mainContent.appendChild(cicloDiv);
+
+                // Evento para cargar asignaturas al hacer clic en "Ver asignaturas"
+                const verAsignaturasBtn = cicloDiv.querySelector('button');
+                verAsignaturasBtn.addEventListener('click', function () {
+                    const asignaturasContainer = document.getElementById(`asignaturas-${ciclo.cod_ciclo}`);
+                    if (asignaturasContainer.classList.contains('hidden')) {
+                        asignaturasContainer.classList.remove('hidden');
+                        cargarAsignaturas(ciclo.cod_ciclo, asignaturasContainer);
+                    } else {
+                        asignaturasContainer.classList.add('hidden');
+                    }
+                });
+            });
+        })
+        .catch(err => {
+            console.error('Error al cargar los ciclos:', err);
+            mainContent.innerHTML = '<p class="text-red-500">Error al cargar los recursos.</p>';
+        });
+}
+
+function cargarAsignaturas(codCiclo, container) {
+    container.innerHTML = '<p class="text-gray-500">Cargando asignaturas...</p>';
+
+    fetch(`http://127.0.0.1:8000/api/ciclos/completos`)
+        .then(response => response.json())
+        .then(data => {
+            container.innerHTML = '';
+            const ciclo = data.find(c => c.cod_ciclo === codCiclo);
+            ciclo.cursos.forEach(curso => {
+                const cursoDiv = document.createElement('div');
+                cursoDiv.classList.add('mb-4');
+                cursoDiv.innerHTML = `
+                    <h4 class="text-md font-semibold mb-2">${curso.nombre}</h4>
+                    <ul class="space-y-2">
+                        ${curso.asignaturas.map(asignatura => `
+                            <li class="flex justify-between items-center bg-gray-100 p-2 rounded-md">
+                                <span>${asignatura.nombre} (${asignatura.curso})</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                container.appendChild(cursoDiv);
+            });
+        })
+        .catch(err => {
+            console.error('Error al cargar asignaturas:', err);
+            container.innerHTML = '<p class="text-red-500">Error al cargar las asignaturas.</p>';
+        });
+}

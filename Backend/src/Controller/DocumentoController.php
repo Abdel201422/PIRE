@@ -141,6 +141,34 @@ public function documentosPorAsignatura(
         return $this->redirectToRoute('app_documento_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    // Método para obtener los mejores documentos
+    #[Route('/api/documentos/mejores', name: 'api_documentos', methods: ['GET'])]
+    public function mejoresDocumentos(DocumentoRepository $documentoRepository): JsonResponse
+    {
+        $documentos = $documentoRepository->findBy(
+            [],
+            ['id' => 'DESC'],
+            3);
+
+        // Si no hay documentos
+        if (!$documentos) {
+            return new JsonResponse(['message' => 'No se encontraron documentos'], 404);
+        }
+
+        $data = [];
+        foreach ($documentos as $documento) {
+            $data[] = [
+                'id' => $documento->getId(),
+                'titulo' => $documento->getTitulo(),
+                'ruta' => $documento->getRutaArchivo(),
+                'asignatura' => $documento->getAsignatura()->getNombre(),
+                'puntuacion' => $documento->calcularMediaValoraciones(),
+            ];
+        }
+
+        return $this->json($data, Response::HTTP_OK);
+    }
+
     #[Route('/api/documentos/upload', name: 'upload_document', methods: ['POST'])]
     public function upload(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -188,7 +216,7 @@ public function documentosPorAsignatura(
         $documento->setAsignatura($asignatura); // Asignatura debe ser un objeto de la entidad Asignatura
         $documento->setTitulo($originalFileName);
         $documento->setDescripcion($descripcion);
-        $documento->setRutaArchivo('uploads/' . $originalFileName);
+        $documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $originalFileName);
         //$documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $fileName);
         $documento->setUser($user);
         $documento->setFechaSubida(new \DateTime());
@@ -222,15 +250,24 @@ public function documentosPorAsignatura(
         return new JsonResponse(['message' => 'Archivo subido exitosamente', 'fileName' => $fileName], 201); */
     }
 
-    #[Route('/api/documentos/download/{fileName}', name: 'download_document', methods: ['GET'])]
-    public function download(string $fileName): Response
+    #[Route('/api/documentos/download/{id}', name: 'download_document', methods: ['GET'])]
+    public function download(int $id, DocumentoRepository $documentoRepository): Response
     {
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $fileName;
+        // Buscar el documento por ID
+        $documento = $documentoRepository->find($id);
 
-        if (!file_exists($filePath)) {
-            return new JsonResponse(['error' => 'El archivo no existe'], 404);
+        if (!$documento) {
+            return new JsonResponse(['error' => 'Documento no encontrado'], 404);
         }
 
-        return $this->file($filePath);
+        // Obtener la ruta del archivo
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/' . $documento->getRutaArchivo();
+
+        if (!file_exists($filePath)) {
+            return new JsonResponse(['error' => 'El archivo no existe en el servidor'], 404);
+        }
+
+        // Retornar el archivo para su descarga
+        return $this->file($filePath, $documento->getTitulo() . '.' . pathinfo($filePath, PATHINFO_EXTENSION));
     }
 }
