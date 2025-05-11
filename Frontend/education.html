@@ -36,11 +36,18 @@
             <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
             <!-- Dashboard Content -->
-            <main class="flex-1 overflow-y-auto p-0 flex flex-col bg-pire-background-dashboard">    
-                <div class="bg-[var(--color-gray-50)] rounded-3xl flex flex-col gap-4 p-6 border-2 border-gray-300 mx-4 mb-4 mt-4 flex-grow">
-                    <div>
+            <main class="flex-1 overflow-y-auto p-0 bg-pire-background-dashboard">
+                <div
+                    class="bg-[var(--color-gray-50)] rounded-3xl flex flex-col gap-4 p-6 border-2 border-gray-300 mx-4 mb-4 mt-4 max-w-full">
+                    
                         <h2 class="text-xl font-semibold">Explorar ciclos</h2>
+                    
+
+                    <!-- Contenedor de pestañas dinámicas -->
+                    <div class="overflow-auto">
+                        <div id="tabsContainer" class="flex items-start overflow-x-auto custom-scrollbar"> </div>
                     </div>
+
                     <!-- Carga de los ciclos -->
                     <div id="explorarCiclos" class="gap-6 flex flex-col"></div>
                 </div>
