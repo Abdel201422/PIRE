@@ -16,6 +16,7 @@ export function setupRegisterForm() {
 
         const email = document.getElementById('email').value
         const nombre = document.getElementById('nombre').value
+        const apellido = document.getElementById('apellido').value
         const password = document.getElementById('password').value
 
         fetch(`${BACKEND_URL}/api/register`, {
@@ -23,7 +24,7 @@ export function setupRegisterForm() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, nombre, password }),
+            body: JSON.stringify({ email, nombre, apellido, password }),
         })
         .then((response) => response.json())
         .then((data) => {

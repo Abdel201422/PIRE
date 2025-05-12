@@ -41,6 +41,7 @@ class RegistrationController extends AbstractController
             $user = new User();
             $user->setEmail($data['email']);
             $user->setNombre($data['nombre']);
+            $user->setApellido($data['apellido'] ?? '');
             $user->setRoles(['ROLE_USER']); // Por defecto, asignamos el rol de usuario
             $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
             $user->setPassword($hashedPassword);
@@ -48,11 +49,55 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            // Generar el avatar automáticamente
+            $this->generarAvatar($user, $entityManager);
+
             return new JsonResponse(['message' => 'Usuario registrado exitosamente'], 201);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error interno: ' . $e->getMessage()], 500);
         }
-    }  
+    } 
+
+    // Función para generar el avatar
+    // Esta función crea un avatar con las iniciales del usuario y un color de fondo aleatorio
+    // y lo guarda en la carpeta del usuario
+    private function generarAvatar(User $user, EntityManagerInterface $entityManager): void
+{
+    // Obtener las iniciales del usuario
+    $nombre = $user->getNombre();
+    $apellido = $user->getApellido();
+    $iniciales = strtoupper(mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1));
+
+    // Generar un color de fondo aleatorio
+    $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+
+    // Generar el contenido SVG como una cadena
+        $svgContent = '
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+                <circle cx="25" cy="25" r="40" fill="' . $color . '" />
+                <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size="24" fill="white">' . $iniciales . '</text>
+            </svg>';
+
+    // Crear la carpeta del usuario si no existe
+    $userDir = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $user->getId();
+    if (!is_dir($userDir)) {
+        mkdir($userDir, 0775, true);
+    }
+    
+    $avatarDir = $userDir . '/avatar';
+    if (!is_dir($avatarDir)) {
+        mkdir($avatarDir, 0775, true);
+    }
+
+    // Guardar la imagen en la carpeta del usuario
+    $avatarPath = 'uploads/' . $user->getId() . '/avatar/avatar.svg';
+    $fullPath = $this->getParameter('kernel.project_dir') . '/public/' . $avatarPath;
+    file_put_contents($fullPath, $svgContent);
+
+    // Guardar la ruta del avatar en la base de datos
+    $user->setAvatar($avatarPath);
+    $entityManager->flush();
+}
 
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
