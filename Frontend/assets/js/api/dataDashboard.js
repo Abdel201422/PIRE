@@ -29,20 +29,26 @@ export function infoUser() {
                 const userName = document.getElementById('userName')
                 const userNameComplete = document.getElementById('userNameComplete')
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
+                // Nuevos elementos para el header
+                const dropdownUserName = document.getElementById('dropdown-userName')
+                const dropdownUserEmail = document.getElementById('dropdown-userEmail')
+                const userAvatar = document.getElementById('user-avatar')
                 //const userPuntuacion = document.getElementById('userPuntuacion')
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
-                    console.log(data)
-                    if (userName) {
-                        userName.textContent = data.user.nombre
-                        userNameComplete.textContent = data.user.nombreCompleto
-                    }
-
-                    if (userNumDocumentos) {
-                        userNumDocumentos.textContent = data.user.nDocumentos
-                    }
-
+                    
+                    if (userName) userName.textContent = data.user.nombre
+                    if (userNameComplete) userNameComplete.textContent = data.user.nombreCompleto
+                    
+                    if (dropdownUserName) dropdownUserName.textContent = data.user.nombreCompleto
+                    if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email
+                    
+                    // if (userAvatar && data.user.avatarUrl) {
+                    //     userAvatar.innerHTML = `<img src="${data.user.avatarUrl}" alt="Avatar" class="h-8 w-8 rounded-full" />`;
+                    // }
+                    
+                    if (userNumDocumentos) userNumDocumentos.textContent = data.user.nDocumentos
                     /* if (userPuntuacion) {
                         userPuntuacion.textContent = data.user.puntuacion
                     } */
