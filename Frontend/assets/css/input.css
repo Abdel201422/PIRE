@@ -14,3 +14,26 @@
 .custom-scrollbar::-webkit-scrollbar {
   display: none;                  /* Chrome, Safari */
 }
+
+/* Estilos para las estrellas de puntuación */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+
+.star {
+    font-size: 2rem;
+    color: var(--color-gray-300); /* Color de las estrellas no seleccionadas */
+    transition: color 0.2s;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    color: var(--color-pire-green); /* Color de las estrellas al pasar el mouse */
+}
+
+.star.selected {
+    color: var(--color-pire-green); /* Color de las estrellas seleccionadas */
+}
