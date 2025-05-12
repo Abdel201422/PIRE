@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use App\Entity\Valoracion;
 
 final class DocumentoController extends AbstractController
 {
@@ -183,24 +183,16 @@ public function index(DocumentoRepository $documentoRepository): Response
     #[Route('/api/documentos/mejores', name: 'api_documentos', methods: ['GET'])]
     public function mejoresDocumentos(DocumentoRepository $documentoRepository): JsonResponse
     {
-        $documentos = $documentoRepository->findBy(
-            [],
-            ['id' => 'DESC'],
-            3);
-
-        // Si no hay documentos
-        if (!$documentos) {
-            return new JsonResponse(['message' => 'No se encontraron documentos'], 404);
-        }
+        $documentos = $documentoRepository->findBy([], ['id' => 'DESC'], 10);
 
         $data = [];
         foreach ($documentos as $documento) {
             $data[] = [
                 'id' => $documento->getId(),
                 'titulo' => $documento->getTitulo(),
-                'ruta' => $documento->getRutaArchivo(),
+                'descripcion' => $documento->getDescripcion(),
                 'asignatura' => $documento->getAsignatura()->getNombre(),
-                'puntuacion' => $documento->calcularMediaValoraciones(),
+                'puntuacion' => $documento->calcularMediaValoraciones(), // Media de las valoraciones
             ];
         }
 
@@ -307,5 +299,53 @@ public function index(DocumentoRepository $documentoRepository): Response
 
         // Retornar el archivo para su descarga
         return $this->file($filePath, $documento->getTitulo() . '.' . pathinfo($filePath, PATHINFO_EXTENSION));
+    }
+
+    #[Route('/api/documentos/{id}/puntuar', name: 'puntuar_documento', methods: ['POST'])]
+    public function puntuarDocumento(
+        int $id,
+        Request $request,
+        DocumentoRepository $documentoRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        // Buscar el documento por ID
+        $documento = $documentoRepository->find($id);
+
+        if (!$documento) {
+            return new JsonResponse(['error' => 'Documento no encontrado'], 404);
+        }
+
+        // Obtener el usuario autenticado
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'Usuario no autenticado'], 401);
+        }
+
+        // Obtener la puntuación del cuerpo de la solicitud
+        $data = json_decode($request->getContent(), true);
+        $puntuacion = $data['puntuacion'] ?? null;
+
+        if (!$puntuacion || $puntuacion < 1 || $puntuacion > 5) {
+            return new JsonResponse(['error' => 'La puntuación debe estar entre 1 y 5.'], 400);
+        }
+
+        // Verificar si el usuario ya ha puntuado este documento
+        foreach ($documento->getValoraciones() as $valoracion) {
+            if ($valoracion->getUser() === $user) {
+                return new JsonResponse(['error' => 'Ya has puntuado este documento.'], 400);
+            }
+        }
+
+        // Crear una nueva valoración
+        $valoracion = new Valoracion();
+        $valoracion->setPuntuacion($puntuacion);
+        $valoracion->setDocumento($documento);
+        $valoracion->setUser($user);
+        $valoracion->setFecha(new \DateTime());
+
+        $entityManager->persist($valoracion);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Puntuación registrada exitosamente.'], 201);
     }
 }
