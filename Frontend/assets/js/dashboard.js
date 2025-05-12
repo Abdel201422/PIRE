@@ -89,8 +89,37 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
 
+    // Manejar la puntuación con estrellas
+    document.querySelectorAll('.rating').forEach(rating => {
+        rating.addEventListener('click', function (e) {
+            if (e.target.classList.contains('star')) {
+                const documentoId = this.closest('.documento').id.split('-')[1]; // Obtener el ID del documento
+                const puntuacion = e.target.getAttribute('data-value'); // Obtener el valor de la estrella seleccionada
+
+                // Marcar las estrellas seleccionadas
+                this.querySelectorAll('.star').forEach(star => {
+                    star.classList.remove('selected');
+                });
+                e.target.classList.add('selected');
+                e.target.nextElementSibling?.classList.add('selected');
+                e.target.previousElementSibling?.classList.add('selected');
+
+                // Enviar la puntuación al backend
+                puntuarDocumento(documentoId, puntuacion);
+            }
+        });
+    });
+
     // MIS RECURSOS
     
+    fetch('http://127.0.0.1:8000/api/documentos')
+        .then(response => response.json())
+        .then(data => {
+            renderDocumentos(data);
+        })
+        .catch(err => {
+            console.error('Error al cargar los documentos:', err);
+        });
 });
 
 function cargarMisRecursos() {
@@ -165,4 +194,75 @@ function cargarAsignaturas(codCiclo, container) {
             console.error('Error al cargar asignaturas:', err);
             container.innerHTML = '<p class="text-red-500">Error al cargar las asignaturas.</p>';
         });
+}
+
+function puntuarDocumento(documentoId, puntuacion) {
+    const token = localStorage.getItem('jwt'); // Asegúrate de que el usuario esté autenticado
+
+    fetch(`http://127.0.0.1:8000/api/documentos/${documentoId}/puntuar`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ puntuacion })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(`Error: ${data.error}`);
+        } else {
+            alert('Puntuación registrada exitosamente.');
+        }
+    })
+    .catch(err => {
+        console.error('Error al puntuar el documento:', err);
+    });
+}
+
+function renderDocumentos(documentos) {
+    const container = document.getElementById('grid-recursos');
+    container.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos documentos
+
+    documentos.forEach(documento => {
+        const documentoDiv = document.createElement('div');
+        documentoDiv.id = `documento-${documento.id}`;
+        documentoDiv.classList.add('bg-white', 'rounded-xl', 'p-5', 'border', 'border-gray-300', 'hover:bg-green-100', 'hover:border-pire-green', 'transition-all', 'duration-200');
+        documentoDiv.innerHTML = `
+            <div class="mb-2 text-xs text-green-600">${documento.asignatura}</div>
+            <h3 class="font-medium mb-2">${documento.titulo}</h3>
+            <div class="flex items-center mt-4">
+                <div class="rating flex">
+                    <span class="star" data-value="5">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="1">&#9733;</span>
+                </div>
+                <span class="ml-2 text-sm font-medium">${documento.puntuacion || 'Sin puntuación'}</span>
+            </div>
+        `;
+        container.appendChild(documentoDiv);
+    });
+
+    // Agregar funcionalidad para puntuar documentos
+    document.querySelectorAll('.rating').forEach(rating => {
+        rating.addEventListener('click', function (e) {
+            if (e.target.classList.contains('star')) {
+                const documentoId = this.closest('.bg-white').id.split('-')[1]; // Obtener el ID del documento
+                const puntuacion = e.target.getAttribute('data-value'); // Obtener el valor de la estrella seleccionada
+
+                // Marcar las estrellas seleccionadas
+                this.querySelectorAll('.star').forEach(star => {
+                    star.classList.remove('selected');
+                });
+                e.target.classList.add('selected');
+                e.target.nextElementSibling?.classList.add('selected');
+                e.target.previousElementSibling?.classList.add('selected');
+
+                // Enviar la puntuación al backend
+                puntuarDocumento(documentoId, puntuacion);
+            }
+        });
+    });
 }
