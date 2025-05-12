@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Documento</title>
+    <title>Asignatura</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/input.css">
     <script type="module" src="./assets/js/dashboard.js"></script>
-    <script type="module" src="./assets/js/api/dataDashboard.js"></script>
-    <script type="module" src="./assets/js/api/getExplorarCiclos.js"></script>
+    <script type="module" src="./assets/js/api/getDocumentos.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -41,16 +40,10 @@
                 <div
                     class="bg-[var(--color-gray-50)] rounded-3xl flex flex-col gap-4 p-6 border-2 border-gray-300 mx-4 mb-4 mt-4 max-w-full">
                     
-                        <h2 class="text-xl font-semibold">Explorar ciclos</h2>
-                    
-
-                    <!-- Contenedor de pestañas dinámicas -->
-                    <div class="overflow-auto">
-                        <div id="tabsContainer" class="flex items-start overflow-x-auto custom-scrollbar"> </div>
-                    </div>
-
-                    <!-- Carga de los ciclos -->
-                    <div id="explorarCiclos" class="gap-6 flex flex-col"></div>
+                        <h2 class="text-xl font-semibold">Asignatura</h2>
+                        <div id="documentosContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Aquí se cargarán los documentos dinámicamente -->
+        </div>
                 </div>
             </main>
         </div>

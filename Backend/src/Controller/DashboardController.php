@@ -43,10 +43,11 @@ class DashboardController extends AbstractController
             'user' => [
                 'id' => $user->getId(),
                 'nombre' => $user->getNombre(),
-            'nombreCompleto' => $user->getNombre() . ' ' . $user->getApellido(),
-            'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
-            'nDocumentos' => $userNumDocumentos
+                'nombreCompleto' => $user->getNombre() . ' ' . $user->getApellido(),
+                'email' => $user->getEmail(),
+                'avatar' => $user->getAvatar(),
+                'roles' => $user->getRoles(),
+                'nDocumentos' => $userNumDocumentos
             ]
         ]);
     }

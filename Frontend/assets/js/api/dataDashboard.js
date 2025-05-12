@@ -30,6 +30,12 @@ export function infoUser() {
                 const userNameComplete = document.getElementById('userNameComplete')
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
                 //const userPuntuacion = document.getElementById('userPuntuacion')
+
+                const userAvatar = document.getElementById('user-avatar')
+                console.log(`${BACKEND_URL}/${data.user.avatar}`)
+                userAvatar.src = `${BACKEND_URL}/${data.user.avatar}`
+
+
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
