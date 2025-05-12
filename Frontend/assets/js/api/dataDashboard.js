@@ -32,7 +32,7 @@ export function infoUser() {
                 // Nuevos elementos para el header
                 const dropdownUserName = document.getElementById('dropdown-userName')
                 const dropdownUserEmail = document.getElementById('dropdown-userEmail')
-                const userAvatar = document.getElementById('user-avatar')
+                // const userAvatar = document.getElementById('user-avatar')
                 //const userPuntuacion = document.getElementById('userPuntuacion')
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
@@ -45,7 +45,7 @@ export function infoUser() {
                     if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email
                     
                     // if (userAvatar && data.user.avatarUrl) {
-                    //     userAvatar.innerHTML = `<img src="${data.user.avatarUrl}" alt="Avatar" class="h-8 w-8 rounded-full" />`;
+                    //     userAvatar.innerHTML = `<img src="${data.user.avatar}" alt="Avatar" class="h-8 w-8 rounded-full" />`;
                     // }
                     
                     if (userNumDocumentos) userNumDocumentos.textContent = data.user.nDocumentos
