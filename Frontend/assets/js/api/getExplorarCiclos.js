@@ -68,6 +68,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <span class="text-base">${asignatura.nombre}</span>
                                         <span class="text-sm text-gray-400">${cursoCorto}</span>
                                     </div>`
+                        
+                        asignaturaDiv.addEventListener('click', () => {
+                            window.location.href = `/asignatura.html?codigo=${asignatura.codigo}`
+                        })
 
                         asignaturasWrapper.appendChild(asignaturaDiv)
                     })
