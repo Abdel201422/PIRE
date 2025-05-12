@@ -32,9 +32,6 @@ export function infoUser() {
                 //const userPuntuacion = document.getElementById('userPuntuacion')
 
                 const userAvatar = document.getElementById('user-avatar')
-                console.log(`${BACKEND_URL}/${data.user.avatar}`)
-                userAvatar.src = `${BACKEND_URL}/${data.user.avatar}`
-
 
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
@@ -42,6 +39,9 @@ export function infoUser() {
                     console.log(data)
                     if (userName) {
                         userName.textContent = data.user.nombre
+                    }
+
+                    if (userNameComplete) {
                         userNameComplete.textContent = data.user.nombreCompleto
                     }
 
@@ -52,6 +52,10 @@ export function infoUser() {
                     /* if (userPuntuacion) {
                         userPuntuacion.textContent = data.user.puntuacion
                     } */
+
+                    if (userAvatar) {
+                        userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.user.avatar}" alt="Avatar">`
+                    }
                 }
             })
             .catch(err => {
