@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\DocumentoRepository;
+use App\Repository\AsignaturaRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -41,28 +42,31 @@ public function index(DocumentoRepository $documentoRepository): Response
     );
 }
 
-#[Route('/asignatura/{id}', name: 'app_documento_asignatura', methods: ['GET'])]
-public function documentosPorAsignatura(
-    Asignatura $asignatura,
-    DocumentoRepository $documentoRepository
-): Response {
-    $documentos = $documentoRepository->findByAsignatura($asignatura);
-    $data = [];
-    foreach ($documentos as $documento) {
-        $data[] = [
-            'id' => $documento->getId(),
-            'nombre' => $documento->getTitulo(),
-            'ruta' => $documento->getRuta(),
-            'asignatura' => $asignatura->getNombre(),
-        ];
-    }
+    // Método para obtener documentos por asignatura
+    #[Route('/asignatura/{codigo}', name: 'app_documento_asignatura', methods: ['GET'])]
+    public function documentosPorAsignatura(string $codigo, AsignaturaRepository $asignaturaRepository, DocumentoRepository $documentoRepository): Response
+    {
+         // Buscar la asignatura por el código
+        $asignatura = $asignaturaRepository->findOneBy(['codigo' => $codigo]);
 
-    return $this->json(
-        $data, 
-        Response::HTTP_OK,
-        ['Access-Control-Allow-Origin' => '*']
-    );
-}
+        if (!$asignatura) {
+            return $this->json(['error' => 'Asignatura no encontrada'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Buscar documentos relacionados con la asignatura
+        $documentos = $documentoRepository->findBy(['asignatura' => $asignatura]);
+        
+        $data = [];
+        foreach ($documentos as $documento) {
+            $data[] = [
+                'id' => $documento->getId(),
+                'nombre' => $documento->getTitulo(),
+                'descripcion' => $documento->getDescripcion(),
+            ];
+        }
+
+        return $this->json($data, Response::HTTP_OK,['Access-Control-Allow-Origin' => '*']);
+    }
     
     // ... otros métodos permanecen igual
 
@@ -92,6 +96,40 @@ public function documentosPorAsignatura(
             'documento' => $documento,
             'form' => $form,
         ]);
+    }
+
+    // Método para consultar datos de un documento
+    #[Route('/api/documentos/{id}/data', name: 'api_documento', methods: ['GET'])]
+    public function getFileData(int $id, DocumentoRepository $documentoRepository): Response
+    {
+        // Buscar el documento por ID
+        $documento = $documentoRepository->find($id);
+
+        if (!$documento) {
+            return new JsonResponse(['error' => 'Documento no encontrado'], 404);
+        }
+
+        $asignatura = $documento->getAsignatura();
+        $user = $documento->getUser();
+
+        $usuario = [
+                'id' => $user->getId(),
+                'nombre' => $user->getNombre(),
+                'apellido' => $user->getApellido(),
+                'email' => $user->getEmail(),
+        ];
+
+        $data = [
+            'id' => $documento->getId(),
+            'titulo' => $documento->getTitulo(),
+            'descripcion' => $documento->getDescripcion(),
+            'asignatura' => $asignatura->getNombre(),
+            'curso' => $asignatura->getCurso()->getNombre(),
+            'ciclo' => $asignatura->getCurso()->getCiclo()->getNombre(),
+            'usuario' => $usuario,
+        ];
+
+        return $this->json($data, Response::HTTP_OK);
     }
 
     #[Route('/{id}', name: 'app_documento_show', methods: ['GET'])]
@@ -203,7 +241,7 @@ public function documentosPorAsignatura(
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al guardar el archivo: ' . $e->getMessage()], 500);
         }
-        $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Nombre original del archivo sin extensión
+        $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Nombre original del archivo sin extensión
         /*$fileName = uniqid() . '.' . $file->guessExtension(); // Nombre único para evitar colisiones
         $file->move($userDir, $fileName); */
 
@@ -214,7 +252,7 @@ public function documentosPorAsignatura(
         $documento = new Documento();
         $asignatura = $entityManager->getRepository(Asignatura::class)->find($asignaturaId);
         $documento->setAsignatura($asignatura); // Asignatura debe ser un objeto de la entidad Asignatura
-        $documento->setTitulo($originalFileName);
+        $documento->setTitulo($fileName);
         $documento->setDescripcion($descripcion);
         $documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $originalFileName);
         //$documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $fileName);
