@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
 use App\Entity\Documento;
 use App\Repository\ValoracionRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ValoracionRepository::class)]
 class Valoracion
@@ -15,6 +16,11 @@ class Valoracion
     private $id;
 
     #[ORM\Column(type: 'smallint')]
+    #[Assert\Range(
+        min: 1,
+        max: 5,
+        notInRangeMessage: 'La puntuación debe estar entre {{ min }} y {{ max }}.',
+    )]
     private $puntuacion;
 
     #[ORM\Column(type: 'datetime', nullable: true, options: ["default" => "CURRENT_TIMESTAMP"])]

@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\DocumentoRepository;
+use App\Repository\AsignaturaRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use App\Entity\Valoracion;
 
 final class DocumentoController extends AbstractController
 {
@@ -41,28 +42,31 @@ public function index(DocumentoRepository $documentoRepository): Response
     );
 }
 
-#[Route('/asignatura/{id}', name: 'app_documento_asignatura', methods: ['GET'])]
-public function documentosPorAsignatura(
-    Asignatura $asignatura,
-    DocumentoRepository $documentoRepository
-): Response {
-    $documentos = $documentoRepository->findByAsignatura($asignatura);
-    $data = [];
-    foreach ($documentos as $documento) {
-        $data[] = [
-            'id' => $documento->getId(),
-            'nombre' => $documento->getTitulo(),
-            'ruta' => $documento->getRuta(),
-            'asignatura' => $asignatura->getNombre(),
-        ];
-    }
+    // Método para obtener documentos por asignatura
+    #[Route('/asignatura/{codigo}', name: 'app_documento_asignatura', methods: ['GET'])]
+    public function documentosPorAsignatura(string $codigo, AsignaturaRepository $asignaturaRepository, DocumentoRepository $documentoRepository): Response
+    {
+         // Buscar la asignatura por el código
+        $asignatura = $asignaturaRepository->findOneBy(['codigo' => $codigo]);
 
-    return $this->json(
-        $data, 
-        Response::HTTP_OK,
-        ['Access-Control-Allow-Origin' => '*']
-    );
-}
+        if (!$asignatura) {
+            return $this->json(['error' => 'Asignatura no encontrada'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Buscar documentos relacionados con la asignatura
+        $documentos = $documentoRepository->findBy(['asignatura' => $asignatura]);
+        
+        $data = [];
+        foreach ($documentos as $documento) {
+            $data[] = [
+                'id' => $documento->getId(),
+                'nombre' => $documento->getTitulo(),
+                'descripcion' => $documento->getDescripcion(),
+            ];
+        }
+
+        return $this->json($data, Response::HTTP_OK,['Access-Control-Allow-Origin' => '*']);
+    }
     
     // ... otros métodos permanecen igual
 
@@ -92,6 +96,40 @@ public function documentosPorAsignatura(
             'documento' => $documento,
             'form' => $form,
         ]);
+    }
+
+    // Método para consultar datos de un documento
+    #[Route('/api/documentos/{id}/data', name: 'api_documento', methods: ['GET'])]
+    public function getFileData(int $id, DocumentoRepository $documentoRepository): Response
+    {
+        // Buscar el documento por ID
+        $documento = $documentoRepository->find($id);
+
+        if (!$documento) {
+            return new JsonResponse(['error' => 'Documento no encontrado'], 404);
+        }
+
+        $asignatura = $documento->getAsignatura();
+        $user = $documento->getUser();
+
+        $usuario = [
+                'id' => $user->getId(),
+                'nombre' => $user->getNombre(),
+                'apellido' => $user->getApellido(),
+                'email' => $user->getEmail(),
+        ];
+
+        $data = [
+            'id' => $documento->getId(),
+            'titulo' => $documento->getTitulo(),
+            'descripcion' => $documento->getDescripcion(),
+            'asignatura' => $asignatura->getNombre(),
+            'curso' => $asignatura->getCurso()->getNombre(),
+            'ciclo' => $asignatura->getCurso()->getCiclo()->getNombre(),
+            'usuario' => $usuario,
+        ];
+
+        return $this->json($data, Response::HTTP_OK);
     }
 
     #[Route('/{id}', name: 'app_documento_show', methods: ['GET'])]
@@ -145,24 +183,16 @@ public function documentosPorAsignatura(
     #[Route('/api/documentos/mejores', name: 'api_documentos', methods: ['GET'])]
     public function mejoresDocumentos(DocumentoRepository $documentoRepository): JsonResponse
     {
-        $documentos = $documentoRepository->findBy(
-            [],
-            ['id' => 'DESC'],
-            3);
-
-        // Si no hay documentos
-        if (!$documentos) {
-            return new JsonResponse(['message' => 'No se encontraron documentos'], 404);
-        }
+        $documentos = $documentoRepository->findBy([], ['id' => 'DESC'], 10);
 
         $data = [];
         foreach ($documentos as $documento) {
             $data[] = [
                 'id' => $documento->getId(),
                 'titulo' => $documento->getTitulo(),
-                'ruta' => $documento->getRutaArchivo(),
+                'descripcion' => $documento->getDescripcion(),
                 'asignatura' => $documento->getAsignatura()->getNombre(),
-                'puntuacion' => $documento->calcularMediaValoraciones(),
+                'puntuacion' => $documento->calcularMediaValoraciones(), // Media de las valoraciones
             ];
         }
 
@@ -203,7 +233,7 @@ public function documentosPorAsignatura(
         } catch (\Exception $e) {
             return new JsonResponse(['error' => 'Error al guardar el archivo: ' . $e->getMessage()], 500);
         }
-        $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Nombre original del archivo sin extensión
+        $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Nombre original del archivo sin extensión
         /*$fileName = uniqid() . '.' . $file->guessExtension(); // Nombre único para evitar colisiones
         $file->move($userDir, $fileName); */
 
@@ -214,7 +244,7 @@ public function documentosPorAsignatura(
         $documento = new Documento();
         $asignatura = $entityManager->getRepository(Asignatura::class)->find($asignaturaId);
         $documento->setAsignatura($asignatura); // Asignatura debe ser un objeto de la entidad Asignatura
-        $documento->setTitulo($originalFileName);
+        $documento->setTitulo($fileName);
         $documento->setDescripcion($descripcion);
         $documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $originalFileName);
         //$documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $fileName);
@@ -269,5 +299,53 @@ public function documentosPorAsignatura(
 
         // Retornar el archivo para su descarga
         return $this->file($filePath, $documento->getTitulo() . '.' . pathinfo($filePath, PATHINFO_EXTENSION));
+    }
+
+    #[Route('/api/documentos/{id}/puntuar', name: 'puntuar_documento', methods: ['POST'])]
+    public function puntuarDocumento(
+        int $id,
+        Request $request,
+        DocumentoRepository $documentoRepository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        // Buscar el documento por ID
+        $documento = $documentoRepository->find($id);
+
+        if (!$documento) {
+            return new JsonResponse(['error' => 'Documento no encontrado'], 404);
+        }
+
+        // Obtener el usuario autenticado
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'Usuario no autenticado'], 401);
+        }
+
+        // Obtener la puntuación del cuerpo de la solicitud
+        $data = json_decode($request->getContent(), true);
+        $puntuacion = $data['puntuacion'] ?? null;
+
+        if (!$puntuacion || $puntuacion < 1 || $puntuacion > 5) {
+            return new JsonResponse(['error' => 'La puntuación debe estar entre 1 y 5.'], 400);
+        }
+
+        // Verificar si el usuario ya ha puntuado este documento
+        foreach ($documento->getValoraciones() as $valoracion) {
+            if ($valoracion->getUser() === $user) {
+                return new JsonResponse(['error' => 'Ya has puntuado este documento.'], 400);
+            }
+        }
+
+        // Crear una nueva valoración
+        $valoracion = new Valoracion();
+        $valoracion->setPuntuacion($puntuacion);
+        $valoracion->setDocumento($documento);
+        $valoracion->setUser($user);
+        $valoracion->setFecha(new \DateTime());
+
+        $entityManager->persist($valoracion);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Puntuación registrada exitosamente.'], 201);
     }
 }

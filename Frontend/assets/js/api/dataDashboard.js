@@ -34,6 +34,9 @@ export function infoUser() {
                 const dropdownUserEmail = document.getElementById('dropdown-userEmail')
                 // const userAvatar = document.getElementById('user-avatar')
                 //const userPuntuacion = document.getElementById('userPuntuacion')
+
+                const userAvatar = document.getElementById('user-avatar')
+
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
@@ -44,14 +47,14 @@ export function infoUser() {
                     if (dropdownUserName) dropdownUserName.textContent = data.user.nombreCompleto
                     if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email
                     
-                    // if (userAvatar && data.user.avatarUrl) {
-                    //     userAvatar.innerHTML = `<img src="${data.user.avatar}" alt="Avatar" class="h-8 w-8 rounded-full" />`;
-                    // }
-                    
                     if (userNumDocumentos) userNumDocumentos.textContent = data.user.nDocumentos
                     /* if (userPuntuacion) {
                         userPuntuacion.textContent = data.user.puntuacion
                     } */
+
+                    if (userAvatar) {
+                        userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.user.avatar}" alt="Avatar">`
+                    }
                 }
             })
             .catch(err => {
