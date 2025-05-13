@@ -112,14 +112,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // MIS RECURSOS
     
-    fetch('http://127.0.0.1:8000/api/documentos')
+    /* fetch('http://127.0.0.1:8000/api/documentos')
         .then(response => response.json())
         .then(data => {
             renderDocumentos(data);
         })
         .catch(err => {
             console.error('Error al cargar los documentos:', err);
-        });
+        }); */
 });
 
 function cargarMisRecursos() {
