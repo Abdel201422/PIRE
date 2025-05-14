@@ -30,12 +30,19 @@ function rellenarPerfilUsuario() {
         if (profileName) profileName.textContent = data.user.nombreCompleto;
         if (profileEmail) profileEmail.textContent = data.user.email;
         // Imagen de perfil
-        // const avatarDivs = document.querySelectorAll('.w-32.h-32.rounded-full.overflow-hidden.border-2.border-gray-300.mb-4');
-        // if (avatarDivs.length > 0 && data.user.avatarUrl) {
-        //   avatarDivs.forEach(div => {
-        //     div.innerHTML = `<img src="${data.user.avatarUrl}" alt="Avatar" class="object-cover w-full h-full" />`;
-        //   });
-        // }
+        const avatarDivs = document.querySelectorAll('#profile-image-container, #profile-image-preview');
+        if (avatarDivs.length > 0) {
+          let avatarUrl = `${BACKEND_URL}/${data.user.avatar}` || '';
+          if (avatarUrl) {
+            avatarDivs.forEach(div => {
+              div.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="object-cover w-full h-full" />`;
+            });
+          } else {
+            avatarDivs.forEach(div => {
+              div.innerHTML = `<span class='text-gray-400 flex items-center justify-center w-full h-full'>Sin foto</span>`;
+            });
+          }
+        }
       }
     })
     .catch(err => {
@@ -49,6 +56,68 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function modificarPerfil() {
+  // --- Imagen de perfil ---
+  const imageInput = document.getElementById('profile-image-upload');
+  const saveImageBtn = document.getElementById('save-profile-image-btn');
+  const previewDiv = document.getElementById('profile-image-preview');
+  let selectedFile = null;
+
+  if (imageInput) {
+    imageInput.addEventListener('change', function(e) {
+      selectedFile = e.target.files[0];
+      const fileNameSpan = document.getElementById('selected-file-name');
+      if (fileNameSpan) fileNameSpan.textContent = selectedFile ? selectedFile.name : 'Ningún archivo seleccionado';
+      if (selectedFile && previewDiv) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewDiv.innerHTML = `<img src="${e.target.result}" alt="Avatar" class="object-cover w-full h-full" />`;
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    });
+  }
+
+  if (saveImageBtn) {
+    saveImageBtn.addEventListener('click', function() {
+      const token = localStorage.getItem('jwt');
+      if (!token) {
+        window.location.href = '/login.html';
+        return;
+      }
+      if (!selectedFile) {
+        alert('Selecciona una imagen para subir.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      fetch(`${BACKEND_URL}/api/user/profile/image`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Imagen de perfil actualizada correctamente');
+          rellenarPerfilUsuario();
+          // Limpiar selección
+          imageInput.value = '';
+          selectedFile = null;
+          const fileNameSpan = document.getElementById('selected-file-name');
+          if (fileNameSpan) fileNameSpan.textContent = 'Ningún archivo seleccionado';
+        } else {
+          alert('Error al actualizar imagen de perfil: ' + (data.error || ''));
+        }
+      })
+      .catch(err => {
+        alert('Error de red al subir la imagen');
+        console.error(err);
+      });
+    });
+  }
+
 
 document.getElementById('save-personal-info-btn')?.addEventListener('click', function() {
   const token = localStorage.getItem('jwt');

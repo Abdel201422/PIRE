@@ -16,6 +16,45 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserController extends AbstractController
 {
+    #[Route('/api/user/profile/image', name: 'api_user_profile_image_update', methods: ['POST'])]
+    public function updateProfileImage(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'No autenticado'], 401);
+        }
+        $file = $request->files->get('image');
+        if (!$file) {
+            return new JsonResponse(['error' => 'No se ha enviado ningún archivo'], 400);
+        }
+        // Crear carpeta del usuario
+        $userDir = $this->getParameter('kernel.project_dir') . '/public/uploads/' . $user->getId();
+        if (!is_dir($userDir)) {
+            mkdir($userDir, 0777, true);
+        }
+        // Nombre único para evitar colisiones
+        $fileExt = $file->guessExtension();
+        $fileName = 'avatar_' . uniqid() . '.' . $fileExt;
+        $filePath = $userDir . '/' . $fileName;
+        // Guardar archivo
+        try {
+            $file->move($userDir, $fileName);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => 'Error al guardar la imagen: ' . $e->getMessage()], 500);
+        }
+        // Eliminar imagen anterior si existía
+        $oldAvatar = $user->getAvatar();
+        if ($oldAvatar && file_exists($this->getParameter('kernel.project_dir') . '/public/' . $oldAvatar)) {
+            @unlink($this->getParameter('kernel.project_dir') . '/public/' . $oldAvatar);
+        }
+        // Guardar ruta relativa
+        $user->setAvatar('uploads/' . $user->getId() . '/' . $fileName);
+        $entityManager->flush();
+        return new JsonResponse([
+            'success' => true,
+            'avatar' => $user->getAvatar()
+        ]);
+    }
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
