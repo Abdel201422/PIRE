@@ -43,13 +43,13 @@ final class CicloController extends AbstractController
         ]);
     }
 
-    #[Route('/{cod_ciclo}', name: 'app_ciclo_show', methods: ['GET'])]
+    /* #[Route('/{cod_ciclo}', name: 'app_ciclo_show', methods: ['GET'])]
     public function show(Ciclo $ciclo): Response
     {
         return $this->render('ciclo/show.html.twig', [
             'ciclo' => $ciclo,
         ]);
-    }
+    } */
 
     #[Route('/{cod_ciclo}/edit', name: 'app_ciclo_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Ciclo $ciclo, EntityManagerInterface $entityManager): Response
