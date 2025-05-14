@@ -88,27 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
-
-    // Manejar la puntuación con estrellas
-    document.querySelectorAll('.rating').forEach(rating => {
-        rating.addEventListener('click', function (e) {
-            if (e.target.classList.contains('star')) {
-                const documentoId = this.closest('.documento').id.split('-')[1]; // Obtener el ID del documento
-                const puntuacion = e.target.getAttribute('data-value'); // Obtener el valor de la estrella seleccionada
-
-                // Marcar las estrellas seleccionadas
-                this.querySelectorAll('.star').forEach(star => {
-                    star.classList.remove('selected');
-                });
-                e.target.classList.add('selected');
-                e.target.nextElementSibling?.classList.add('selected');
-                e.target.previousElementSibling?.classList.add('selected');
-
-                // Enviar la puntuación al backend
-                puntuarDocumento(documentoId, puntuacion);
-            }
-        });
-    });
 });
 
 function cargarMisRecursos() {
@@ -185,7 +164,7 @@ function cargarAsignaturas(codCiclo, container) {
         });
 }
 
-function puntuarDocumento(documentoId, puntuacion) {
+/* function puntuarDocumento(documentoId, puntuacion) {
     const token = localStorage.getItem('jwt'); // Asegúrate de que el usuario esté autenticado
 
     fetch(`http://127.0.0.1:8000/api/documentos/${documentoId}/puntuar`, {
@@ -207,7 +186,7 @@ function puntuarDocumento(documentoId, puntuacion) {
     .catch(err => {
         console.error('Error al puntuar el documento:', err);
     });
-}
+} */
 
 function renderDocumentos(documentos) {
     const container = document.getElementById('grid-recursos');
@@ -235,7 +214,7 @@ function renderDocumentos(documentos) {
     });
 
     // Agregar funcionalidad para puntuar documentos
-    document.querySelectorAll('.rating').forEach(rating => {
+    /* document.querySelectorAll('.rating').forEach(rating => {
         rating.addEventListener('click', function (e) {
             if (e.target.classList.contains('star')) {
                 const documentoId = this.closest('.bg-white').id.split('-')[1]; // Obtener el ID del documento
@@ -253,5 +232,5 @@ function renderDocumentos(documentos) {
                 puntuarDocumento(documentoId, puntuacion);
             }
         });
-    });
+    }); */
 }
