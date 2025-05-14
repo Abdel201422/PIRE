@@ -146,13 +146,13 @@ public function index(DocumentoRepository $documentoRepository): Response
         return $this->json($data, Response::HTTP_OK);
     }
 
-    #[Route('/{id}', name: 'app_documento_show', methods: ['GET'])]
+    /* #[Route('/{id}', name: 'app_documento_show', methods: ['GET'])]
     public function show(Documento $documento): Response
     {
         return $this->render('documento/show.html.twig', [
             'documento' => $documento,
         ]);
-    }
+    } */
 
     #[Route('/{id}/edit', name: 'app_documento_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Documento $documento, EntityManagerInterface $entityManager, ParameterBagInterface $params, SluggerInterface $slugger): Response
