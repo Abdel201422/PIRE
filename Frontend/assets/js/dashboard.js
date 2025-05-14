@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
     // MIS RECURSOS
     
     fetch('http://127.0.0.1:8000/api/documentos')
@@ -142,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     .catch(error => console.error('Error al verificar el rol del usuario:', error));
     
+
 });
 
 function cargarMisRecursos() {
