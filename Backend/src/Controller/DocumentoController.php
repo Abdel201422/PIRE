@@ -56,14 +56,23 @@ public function index(DocumentoRepository $documentoRepository): Response
         // Buscar documentos relacionados con la asignatura
         $documentos = $documentoRepository->findBy(['asignatura' => $asignatura]);
         
-        $data = [];
+        $documentosData = [];
         foreach ($documentos as $documento) {
-            $data[] = [
+            $documentosData[] = [
                 'id' => $documento->getId(),
                 'nombre' => $documento->getTitulo(),
                 'descripcion' => $documento->getDescripcion(),
             ];
         }
+        $data = [
+            'asignatura' => [
+                'nombre' => $asignatura->getNombre(),
+                'curso' => $asignatura->getCurso()->getNombre(),
+                'ciclo' => $asignatura->getCurso()->getCiclo()->getNombre(),
+            ],
+            'totalDocumentos' => count($documentos),
+            'documentos' => $documentosData,
+        ];
 
         return $this->json($data, Response::HTTP_OK,['Access-Control-Allow-Origin' => '*']);
     }
@@ -117,6 +126,7 @@ public function index(DocumentoRepository $documentoRepository): Response
                 'nombre' => $user->getNombre(),
                 'apellido' => $user->getApellido(),
                 'email' => $user->getEmail(),
+                'avatar' => $user->getAvatar(),
         ];
 
         $data = [
@@ -126,6 +136,7 @@ public function index(DocumentoRepository $documentoRepository): Response
             'asignatura' => $asignatura->getNombre(),
             'curso' => $asignatura->getCurso()->getNombre(),
             'ciclo' => $asignatura->getCurso()->getCiclo()->getNombre(),
+            'puntuacion' => $documento->calcularMediaValoraciones(),
             'usuario' => $usuario,
         ];
 
@@ -346,6 +357,14 @@ public function index(DocumentoRepository $documentoRepository): Response
         $entityManager->persist($valoracion);
         $entityManager->flush();
 
-        return new JsonResponse(['message' => 'Puntuación registrada exitosamente.'], 201);
+        $entityManager->refresh($documento); // Refrescar el documento para obtener la nueva media de valoraciones
+
+        // Calcular la nueva media de puntuaciones
+        $nuevaPuntuacion = $documento->calcularMediaValoraciones();
+
+        return new JsonResponse([
+            'message' => 'Puntuación registrada exitosamente.',
+            'nuevaPuntuacion' => $nuevaPuntuacion, 
+        ], 201);
     }
 }
