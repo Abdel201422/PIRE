@@ -1,6 +1,7 @@
 // js/dashboard.js
 import { infoUser} from './api/dataDashboard.js';
 import { loadBestDocuments } from './api/dataDashboard.js';
+/* import { whoAdmin } from './api/dataDashboard.js'; */
 
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
@@ -88,63 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
-
-    // Manejar la puntuación con estrellas
-    document.querySelectorAll('.rating').forEach(rating => {
-        rating.addEventListener('click', function (e) {
-            if (e.target.classList.contains('star')) {
-                const documentoId = this.closest('.documento').id.split('-')[1]; // Obtener el ID del documento
-                const puntuacion = e.target.getAttribute('data-value'); // Obtener el valor de la estrella seleccionada
-
-                // Marcar las estrellas seleccionadas
-                this.querySelectorAll('.star').forEach(star => {
-                    star.classList.remove('selected');
-                });
-                e.target.classList.add('selected');
-                e.target.nextElementSibling?.classList.add('selected');
-                e.target.previousElementSibling?.classList.add('selected');
-
-                // Enviar la puntuación al backend
-                puntuarDocumento(documentoId, puntuacion);
-            }
-        });
-    });
-
-
-    // MIS RECURSOS
-    
-    fetch('http://127.0.0.1:8000/api/documentos')
-        .then(response => response.json())
-        .then(data => {
-            renderDocumentos(data);
-        })
-        .catch(err => {
-            console.error('Error al cargar los documentos:', err);
-        });
-
-    const enlaceAdministrar = document.getElementById('enlace-administrar');
-
-    // Verificar si el usuario es administrador
-    fetch('/api/users/me', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` },
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(text => { throw new Error(text) });
-        }
-        return response.json();
-    })
-    .then(user => {
-        // Check for 'roles' array (plural) instead of 'role'
-        if (user.roles && user.roles.includes('ROLE_ADMIN')) {
-            enlaceAdministrar.classList.remove('hidden');
-        }
-    })
-    .catch(error => console.error('Error al verificar el rol del usuario:', error));
-    
-
-});
+})
 
 function cargarMisRecursos() {
     const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
@@ -220,30 +165,6 @@ function cargarAsignaturas(codCiclo, container) {
         });
 }
 
-function puntuarDocumento(documentoId, puntuacion) {
-    const token = localStorage.getItem('jwt'); // Asegúrate de que el usuario esté autenticado
-
-    fetch(`http://127.0.0.1:8000/api/documentos/${documentoId}/puntuar`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ puntuacion })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert(`Error: ${data.error}`);
-        } else {
-            alert('Puntuación registrada exitosamente.');
-        }
-    })
-    .catch(err => {
-        console.error('Error al puntuar el documento:', err);
-    });
-}
-
 function renderDocumentos(documentos) {
     const container = document.getElementById('grid-recursos');
     container.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos documentos
@@ -268,139 +189,4 @@ function renderDocumentos(documentos) {
         `;
         container.appendChild(documentoDiv);
     });
-
-    // Agregar funcionalidad para puntuar documentos
-    document.querySelectorAll('.rating').forEach(rating => {
-        rating.addEventListener('click', function (e) {
-            if (e.target.classList.contains('star')) {
-                const documentoId = this.closest('.bg-white').id.split('-')[1]; // Obtener el ID del documento
-                const puntuacion = e.target.getAttribute('data-value'); // Obtener el valor de la estrella seleccionada
-
-                // Marcar las estrellas seleccionadas
-                this.querySelectorAll('.star').forEach(star => {
-                    star.classList.remove('selected');
-                });
-                e.target.classList.add('selected');
-                e.target.nextElementSibling?.classList.add('selected');
-                e.target.previousElementSibling?.classList.add('selected');
-
-                // Enviar la puntuación al backend
-                puntuarDocumento(documentoId, puntuacion);
-            }
-        });
-    });
-}
-
-function cargarAdministrar() {
-    const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando opciones de administración...</h2>';
-
-    // Opciones de administración
-    const adminOptions = `
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                <h3 class="text-lg font-semibold mb-2">Usuarios</h3>
-                <p class="text-sm text-gray-500 mb-4">Gestiona los usuarios del sistema.</p>
-                <button id="admin-usuarios" class="text-pire-green font-semibold">Gestionar Usuarios</button>
-            </div>
-            <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                <h3 class="text-lg font-semibold mb-2">Asignaturas</h3>
-                <p class="text-sm text-gray-500 mb-4">Gestiona las asignaturas disponibles.</p>
-                <button id="admin-asignaturas" class="text-pire-green font-semibold">Gestionar Asignaturas</button>
-            </div>
-            <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                <h3 class="text-lg font-semibold mb-2">Ciclos</h3>
-                <p class="text-sm text-gray-500 mb-4">Gestiona los ciclos formativos.</p>
-                <button id="admin-ciclos" class="text-pire-green font-semibold">Gestionar Ciclos</button>
-            </div>
-        </div>
-    `;
-
-    mainContent.innerHTML = adminOptions;
-
-    // Agregar eventos a los botones
-    document.getElementById('admin-usuarios').addEventListener('click', cargarUsuarios);
-    document.getElementById('admin-asignaturas').addEventListener('click', cargarAsignaturasPorNombre);
-    document.getElementById('admin-ciclos').addEventListener('click', cargarCiclosPorNombre);
-}
-
-function cargarUsuarios() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando usuarios...</h2>';
-
-    fetch('/api/users', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` },
-    })
-        .then(response => response.json())
-        .then(users => {
-            mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Usuarios</h2>';
-            users.forEach(user => {
-                const userDiv = document.createElement('div');
-                userDiv.classList.add('p-4', 'border', 'rounded-lg', 'shadow-md', 'mb-4');
-                userDiv.innerHTML = `
-                    <h3 class="text-lg font-bold">${user.nombre} (${user.email})</h3>
-                    <p class="text-sm text-gray-500">Rol: ${user.role}</p>
-                `;
-                mainContent.appendChild(userDiv);
-            });
-        })
-        .catch(error => {
-            console.error('Error al cargar usuarios:', error);
-            mainContent.innerHTML = '<p class="text-red-500">Error al cargar los usuarios.</p>';
-        });
-}
-
-function cargarAsignaturasPorNombre() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando asignaturas...</h2>';
-
-    fetch('/api/asignaturas', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` },
-    })
-        .then(response => response.json())
-        .then(asignaturas => {
-            mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Asignaturas</h2>';
-            asignaturas.forEach(asignatura => {
-                const asignaturaDiv = document.createElement('div');
-                asignaturaDiv.classList.add('p-4', 'border', 'rounded-lg', 'shadow-md', 'mb-4');
-                asignaturaDiv.innerHTML = `
-                    <h3 class="text-lg font-bold">${asignatura.nombre}</h3>
-                    <p class="text-sm text-gray-500">Código: ${asignatura.codigo}</p>
-                `;
-                mainContent.appendChild(asignaturaDiv);
-            });
-        })
-        .catch(error => {
-            console.error('Error al cargar asignaturas:', error);
-            mainContent.innerHTML = '<p class="text-red-500">Error al cargar las asignaturas.</p>';
-        });
-}
-
-function cargarCiclosPorNombre() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando ciclos...</h2>';
-
-    fetch('/api/ciclos', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` },
-    })
-        .then(response => response.json())
-        .then(ciclos => {
-            mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Ciclos</h2>';
-            ciclos.forEach(ciclo => {
-                const cicloDiv = document.createElement('div');
-                cicloDiv.classList.add('p-4', 'border', 'rounded-lg', 'shadow-md', 'mb-4');
-                cicloDiv.innerHTML = `
-                    <h3 class="text-lg font-bold">${ciclo.nombre}</h3>
-                    <p class="text-sm text-gray-500">Código: ${ciclo.cod_ciclo}</p>
-                `;
-                mainContent.appendChild(cicloDiv);
-            });
-        })
-        .catch(error => {
-            console.error('Error al cargar ciclos:', error);
-            mainContent.innerHTML = '<p class="text-red-500">Error al cargar los ciclos.</p>';
-        });
 }
