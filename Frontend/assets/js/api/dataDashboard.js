@@ -99,11 +99,12 @@ export function loadBestDocuments() {
 
                 if (gridRecursos) {
                     gridRecursos.innerHTML = '' // Limpiar contenido previo
-
+                    
                     data.forEach(doc => {
                         console.log(doc)
                         const div = document.createElement('div')
                         div.innerHTML = `
+                        <a href="/documento.html?id=${doc.id}">
                         <div class="bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                             <div class="mb-2 text-xs text-green-600">${doc.asignatura}</div>
                             <h3 class="font-medium mb-2">${doc.titulo}</h3>
@@ -112,7 +113,8 @@ export function loadBestDocuments() {
                                     <span>${doc.puntuacion}</span>
                                 </div>
                             </div>
-                        </div>`
+                        </div>
+                        </a>`
 
                         gridRecursos.appendChild(div)
                     })
