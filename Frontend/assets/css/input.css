@@ -4,6 +4,7 @@
     --color-gray-300: #E6E7E4;
     --color-gray-50: #FDFDFD;
     --color-gray-dark-800: #1C1C1C;
+    --color-orange-300:#FFA53C;
 }
 
 .custom-scrollbar {
@@ -24,16 +25,16 @@
 }
 
 .star {
-    font-size: 2rem;
+    font-size: 1.3rem;
     color: var(--color-gray-300); /* Color de las estrellas no seleccionadas */
     transition: color 0.2s;
 }
 
 .star:hover,
 .star:hover ~ .star {
-    color: var(--color-pire-green); /* Color de las estrellas al pasar el mouse */
+    color: var(--color-orange-300); /* Color de las estrellas al pasar el mouse */
 }
 
 .star.selected {
-    color: var(--color-pire-green); /* Color de las estrellas seleccionadas */
+    color: var(--color-orange-300); /* Color de las estrellas seleccionadas */
 }
