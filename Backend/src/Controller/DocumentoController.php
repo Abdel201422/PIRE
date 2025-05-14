@@ -62,6 +62,9 @@ public function index(DocumentoRepository $documentoRepository): Response
                 'id' => $documento->getId(),
                 'nombre' => $documento->getTitulo(),
                 'descripcion' => $documento->getDescripcion(),
+                'puntuacion' => $documento->calcularMediaValoraciones(),
+                'fecha_subida' => $documento->getFechaSubida()->format('d/m/Y'),
+                'tipo_archivo' => $documento->getTipoArchivo(),
             ];
         }
         $data = [
@@ -194,7 +197,7 @@ public function index(DocumentoRepository $documentoRepository): Response
     #[Route('/api/documentos/mejores', name: 'api_documentos', methods: ['GET'])]
     public function mejoresDocumentos(DocumentoRepository $documentoRepository): JsonResponse
     {
-        $documentos = $documentoRepository->findBy([], ['id' => 'DESC'], 10);
+        /* $documentos = $documentoRepository->findBy([], ['id' => 'DESC'], 3);
 
         $data = [];
         foreach ($documentos as $documento) {
@@ -205,9 +208,30 @@ public function index(DocumentoRepository $documentoRepository): Response
                 'asignatura' => $documento->getAsignatura()->getNombre(),
                 'puntuacion' => $documento->calcularMediaValoraciones(), // Media de las valoraciones
             ];
+        } */
+        $documentos = $documentoRepository->findAll();
+
+        // Calcular la media de valoraciones para cada documento
+        $documentosValoracionData = [];
+        foreach ($documentos as $documento) {
+            $documentosValoracionData[] = [
+                'id' => $documento->getId(),
+                'titulo' => $documento->getTitulo(),
+                'descripcion' => $documento->getDescripcion(),
+                'asignatura' => $documento->getAsignatura()->getNombre(),
+                'puntuacion' => $documento->calcularMediaValoraciones(),
+            ];
         }
 
-        return $this->json($data, Response::HTTP_OK);
+        // Ordenar los documentos por puntuación de mayor a menor
+        usort($documentosValoracionData, function ($a, $b) {
+            return $b['puntuacion'] <=> $a['puntuacion'];
+        });
+
+        // Se tienen los 3 mejores documentos
+        $mejoresDocumentos = array_slice($documentosValoracionData, 0, 3);
+
+        return $this->json($mejoresDocumentos, Response::HTTP_OK);
     }
 
     #[Route('/api/documentos/upload', name: 'upload_document', methods: ['POST'])]
@@ -245,8 +269,6 @@ public function index(DocumentoRepository $documentoRepository): Response
             return new JsonResponse(['error' => 'Error al guardar el archivo: ' . $e->getMessage()], 500);
         }
         $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Nombre original del archivo sin extensión
-        /*$fileName = uniqid() . '.' . $file->guessExtension(); // Nombre único para evitar colisiones
-        $file->move($userDir, $fileName); */
 
         // Obtener el tipo MIME del archivo
         $tipoArchivo = $file->getClientMimeType();
@@ -258,7 +280,6 @@ public function index(DocumentoRepository $documentoRepository): Response
         $documento->setTitulo($fileName);
         $documento->setDescripcion($descripcion);
         $documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $originalFileName);
-        //$documento->setRutaArchivo('uploads/' . $user->getId() . '/' . $fileName);
         $documento->setUser($user);
         $documento->setFechaSubida(new \DateTime());
         $documento->setTipoArchivo($tipoArchivo);
@@ -267,28 +288,6 @@ public function index(DocumentoRepository $documentoRepository): Response
         $entityManager->flush();
 
         return new JsonResponse(['message' => 'Documento subido exitosamente'], 201);
-        /* $user = $this->getUser();
-
-        if (!$user instanceof \App\Entity\User) {
-            return new JsonResponse(['error' => 'Usuario nddo autenticado'], 401);
-        }
- */
-        /* $file = $request->files->get('file');
-
-        if (!$file) {
-            return new JsonResponse(['error' => 'No se ha enviado ningún archivo'], 400);
-        }
-
-        $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads';
-        $fileName = uniqid() . '.' . $file->guessExtension();
-
-        try {
-            $file->move($uploadDir, $fileName);
-        } catch (\Exception $e) {
-            return new JsonResponse(['error' => 'Error al subir el archivo: ' . $e->getMessage()], 500);
-        }
-
-        return new JsonResponse(['message' => 'Archivo subido exitosamente', 'fileName' => $fileName], 201); */
     }
 
     #[Route('/api/documentos/download/{id}', name: 'download_document', methods: ['GET'])]
