@@ -20,7 +20,7 @@ security:
 
     # b) Login JSON para emitir el JWT
     login:
-      pattern: ^/api/login$
+      pattern: ^/api/login
       stateless: true
       provider: app_user_provider
       json_login:
@@ -61,6 +61,7 @@ security:
     - { path: ^/api/login$,    roles: PUBLIC_ACCESS }
     - { path: ^/api/register,  roles: PUBLIC_ACCESS }
     - { path: ^/api,           roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/users/me,  roles: IS_AUTHENTICATED_FULLY }
 
 # 5) Overrides para tests (acelerar hashing)
 when@test:

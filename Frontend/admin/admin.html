@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar</title>
+    <link rel="stylesheet" href="/assets/css/input.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-pire-background">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
+
+        <!-- Contenido principal -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
+
+            <!-- Contenido de Administración -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <h1 class="text-2xl font-bold mb-4">Panel de Administración</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <h3 class="text-lg font-semibold mb-2">Usuarios</h3>
+                        <p class="text-sm text-gray-500 mb-4">Gestiona los usuarios del sistema.</p>
+                        <a href="/admin/usuarios.html" class="text-pire-green font-semibold">Gestionar Usuarios</a>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <h3 class="text-lg font-semibold mb-2">Asignaturas</h3>
+                        <p class="text-sm text-gray-500 mb-4">Gestiona las asignaturas disponibles.</p>
+                        <a href="/admin/asignaturas.html" class="text-pire-green font-semibold">Gestionar Asignaturas</a>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <h3 class="text-lg font-semibold mb-2">Ciclos</h3>
+                        <p class="text-sm text-gray-500 mb-4">Gestiona los ciclos formativos.</p>
+                        <a href="/admin/ciclos.html" class="text-pire-green font-semibold">Gestionar Ciclos</a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

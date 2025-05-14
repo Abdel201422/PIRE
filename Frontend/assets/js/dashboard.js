@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
-});
 
 function cargarMisRecursos() {
     const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
@@ -164,30 +163,6 @@ function cargarAsignaturas(codCiclo, container) {
         });
 }
 
-/* function puntuarDocumento(documentoId, puntuacion) {
-    const token = localStorage.getItem('jwt'); // Asegúrate de que el usuario esté autenticado
-
-    fetch(`http://127.0.0.1:8000/api/documentos/${documentoId}/puntuar`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ puntuacion })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert(`Error: ${data.error}`);
-        } else {
-            alert('Puntuación registrada exitosamente.');
-        }
-    })
-    .catch(err => {
-        console.error('Error al puntuar el documento:', err);
-    });
-} */
-
 function renderDocumentos(documentos) {
     const container = document.getElementById('grid-recursos');
     container.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos documentos
@@ -212,25 +187,5 @@ function renderDocumentos(documentos) {
         `;
         container.appendChild(documentoDiv);
     });
-
-    // Agregar funcionalidad para puntuar documentos
-    /* document.querySelectorAll('.rating').forEach(rating => {
-        rating.addEventListener('click', function (e) {
-            if (e.target.classList.contains('star')) {
-                const documentoId = this.closest('.bg-white').id.split('-')[1]; // Obtener el ID del documento
-                const puntuacion = e.target.getAttribute('data-value'); // Obtener el valor de la estrella seleccionada
-
-                // Marcar las estrellas seleccionadas
-                this.querySelectorAll('.star').forEach(star => {
-                    star.classList.remove('selected');
-                });
-                e.target.classList.add('selected');
-                e.target.nextElementSibling?.classList.add('selected');
-                e.target.previousElementSibling?.classList.add('selected');
-
-                // Enviar la puntuación al backend
-                puntuarDocumento(documentoId, puntuacion);
-            }
-        });
-    }); */
 }
+})
