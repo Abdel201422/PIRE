@@ -39,6 +39,20 @@ class DashboardController extends AbstractController
             ];
         }, $documentos); */
 
+        // Calcular la puntuación del usuario
+        $valoraciones = $user->getValoraciones();
+        $puntuacionPromedio = 0;
+
+        if (!$valoraciones->isEmpty()) {
+            $total = 0;
+            foreach ($valoraciones as $valoracion) {
+                $total += $valoracion->getPuntuacion();
+            }
+
+            $puntuacionPromedio = $total / count($valoraciones);
+            $puntuacionPromedio = round($puntuacionPromedio, 1);
+        }
+
         return new JsonResponse([
             'user' => [
                 'id' => $user->getId(),
@@ -47,6 +61,7 @@ class DashboardController extends AbstractController
                 'email' => $user->getEmail(),
                 'avatar' => $user->getAvatar(),
                 'roles' => $user->getRoles(),
+                'puntuacion' => $puntuacionPromedio,
                 'nDocumentos' => $userNumDocumentos
             ]
         ]);
