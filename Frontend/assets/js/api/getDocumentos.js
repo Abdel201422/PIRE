@@ -7,12 +7,12 @@ if (!token) {
 }
 
 // Obtener el parámetro "codigo" de la URL
-const urlParams = new URLSearchParams(window.location.search)
-const codigoAsignatura = urlParams.get('codigo')
+const urlParams = new URLSearchParams(window.location.search);
+const codigoAsignatura = urlParams.get('codigo');
 
 if (!codigoAsignatura) {
-    alert('No se ha especificado una asignatura válida.')
-    window.location.href = '/education.html' // Redirigir si no hay código
+    alert('No se ha especificado una asignatura válida.');
+    window.location.href = '/education.html'; // Redirigir si no hay código
 }
 
 document.addEventListener('DOMContentLoaded', () => {
