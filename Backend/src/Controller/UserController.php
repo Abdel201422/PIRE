@@ -3,80 +3,114 @@
 namespace App\Controller;
 
 use App\Entity\User;
-
-use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[Route('/user')]
 final class UserController extends AbstractController
 {
-    #[Route(name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    // Listar todos los usuarios
+    #[Route('/api/users', name: 'api_users_index', methods: ['GET'])]
+    public function index(UserRepository $userRepository): JsonResponse
     {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
+        $users = $userRepository->findAll();
+        $data = [];
+
+        foreach ($users as $user) {
+            $data[] = [
+                'id' => $user->getId(),
+                'email' => $user->getEmail(),
+                'roles' => $user->getRoles(),
+            ];
+        }
+
+        return $this->json($data, Response::HTTP_OK);
     }
 
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    // Crear un nuevo usuario
+    #[Route('/api/users', name: 'api_users_create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['email'], $data['password'], $data['roles'])) {
+            return $this->json(['error' => 'Datos incompletos'], Response::HTTP_BAD_REQUEST);
+        }
+
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $user->setEmail($data['email']);
+        $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
+        $user->setRoles($data['roles']);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->json(['message' => 'Usuario creado exitosamente'], Response::HTTP_CREATED);
+    }
+
+    // Mostrar un usuario por ID
+    #[Route('/api/users/{id}', name: 'api_users_show', methods: ['GET'])]
+    public function show(User $user): JsonResponse
+    {
+        return $this->json([
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
+        ], Response::HTTP_OK);
+    }
+
+    // Actualizar un usuario
+    #[Route('/api/users/{id}/edit', name: 'api_users_update', methods: ['PUT'])]
+    public function update(Request $request, User $user, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (isset($data['email'])) {
+            $user->setEmail($data['email']);
         }
 
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
-    {
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        if (isset($data['password'])) {
+            $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
         }
 
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
+        if (isset($data['roles'])) {
+            $user->setRoles($data['roles']);
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Usuario actualizado exitosamente'], Response::HTTP_OK);
     }
+
+    // Eliminar un usuario
+    #[Route('/api/users/{id}/delete', name: 'api_users_delete', methods: ['DELETE'])]
+    public function delete(User $user, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Usuario eliminado exitosamente'], Response::HTTP_OK);
+    }
+
+    // Obtener el usuario actual
+    #[Route('/api/users/me', name: 'api_user_me', methods: ['GET'])]
+public function getCurrentUser(): JsonResponse
+{
+    $user = $this->getUser();
+    if (!$user instanceof User) {
+        return $this->json(['error' => 'Usuario no autenticado'], Response::HTTP_UNAUTHORIZED);
+    }
+
+    // Añade estas 2 líneas
+    $roles = $user->getRoles();
+    return $this->json([
+        'id' => $user->getId(),
+        'email' => $user->getEmail(),
+        'roles' => !empty($roles) ? $roles : ['ROLE_USER'], // <-- Modificado
+    ], Response::HTTP_OK);
+}
 }
