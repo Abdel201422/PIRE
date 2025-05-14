@@ -1,6 +1,7 @@
 // js/dashboard.js
 import { infoUser} from './api/dataDashboard.js';
 import { loadBestDocuments } from './api/dataDashboard.js';
+/* import { whoAdmin } from './api/dataDashboard.js'; */
 
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
@@ -88,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
+})
 
 function cargarMisRecursos() {
     const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
@@ -188,4 +190,3 @@ function renderDocumentos(documentos) {
         container.appendChild(documentoDiv);
     });
 }
-})
