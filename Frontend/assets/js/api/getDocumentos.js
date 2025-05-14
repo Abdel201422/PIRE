@@ -26,12 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             documentosContainer.innerHTML = '' // Limpiar contenedor
             
-            if (data.length === 0) {
+            if (data.documentos.length == 0) {
                 documentosContainer.innerHTML = '<p>No hay documentos disponibles para esta asignatura.</p>'
                 return
             }
+            
+            console.log(data.asignatura)
 
-            data.forEach(documento => {
+            console.log("<a href=")
+
+            data.documentos.forEach(documento => {
                 const docDiv = document.createElement('div')
                 docDiv.classList.add('documento-card', 'p-4', 'border', 'rounded-lg', 'shadow-md')
                 docDiv.innerHTML = `
