@@ -42,7 +42,13 @@ function rellenarPerfilUsuario() {
       console.error('Error al cargar el perfil:', err);
     });
 }
-document.addEventListener('DOMContentLoaded', rellenarPerfilUsuario);
+document.addEventListener('DOMContentLoaded', function() {
+  rellenarPerfilUsuario();
+  modificarPerfil();
+  modificarPassword();
+});
+
+function modificarPerfil() {
 
 document.getElementById('save-personal-info-btn')?.addEventListener('click', function() {
   const token = localStorage.getItem('jwt');
@@ -55,7 +61,7 @@ document.getElementById('save-personal-info-btn')?.addEventListener('click', fun
   const email = document.getElementById('email')?.value;
 
   fetch(`${BACKEND_URL}/api/user/profile`, {
-    method: 'PUT',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -76,3 +82,55 @@ document.getElementById('save-personal-info-btn')?.addEventListener('click', fun
       console.error(err);
     });
 });
+}
+function modificarPassword() {
+document.getElementById('save-password-btn')?.addEventListener('click', function() {
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    window.location.href = '/login.html';
+    return;
+  }
+  const currentPassword = document.getElementById('current-password')?.value;
+  const newPassword = document.getElementById('new-password')?.value;
+  const confirmPassword = document.getElementById('confirm-password')?.value;
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    alert('Por favor, completa todos los campos de contraseña.');
+    return;
+  }
+  if (newPassword !== confirmPassword) {
+    alert('La nueva contraseña y la confirmación no coinciden.');
+    return;
+  }
+  if (newPassword.length < 6) {
+    alert('La nueva contraseña debe tener al menos 6 caracteres.');
+    return;
+  }
+
+  fetch(`${BACKEND_URL}/api/user/change-password`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ currentPassword, newPassword })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Contraseña cambiada correctamente');
+        document.getElementById('current-password').value = '';
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+      } else {
+        alert('Error al cambiar la contraseña: ' + (data.error || ''));
+      }
+    })
+    .catch(err => {
+      alert('Error de red al cambiar la contraseña');
+      console.error(err);
+    });
+});
+}
+
+

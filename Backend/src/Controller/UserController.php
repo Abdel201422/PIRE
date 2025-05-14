@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;       
+use Symfony\Component\HttpFoundation\JsonResponse;   
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;    
 
 final class UserController extends AbstractController
 {
@@ -98,4 +99,34 @@ final class UserController extends AbstractController
             'email' => $user->getEmail(),
         ]]);
     }
+
+    #[Route('/api/user/change-password', name: 'api_user_change_password', methods: ['POST'])]
+public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): JsonResponse
+{
+    $user = $this->getUser();
+    if (!$user) {
+        return new JsonResponse(['error' => 'No autenticado'], 401);
+    }
+    $data = json_decode($request->getContent(), true);
+    $currentPassword = $data['currentPassword'] ?? null;
+    $newPassword = $data['newPassword'] ?? null;
+
+    if (!$currentPassword || !$newPassword) {
+        return new JsonResponse(['error' => 'Datos incompletos'], 400);
+    }
+
+    if (!$passwordHasher->isPasswordValid($user, $currentPassword)) {
+        return new JsonResponse(['error' => 'La contraseña actual es incorrecta'], 400);
+    }
+
+    if (strlen($newPassword) < 6) {
+        return new JsonResponse(['error' => 'La nueva contraseña debe tener al menos 6 caracteres'], 400);
+    }
+
+    $user->setPassword($passwordHasher->hashPassword($user, $newPassword));
+    $entityManager->flush();
+
+    return new JsonResponse(['success' => true]);
+}
+
 }
