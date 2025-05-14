@@ -39,26 +39,17 @@
                 <div class="bg-white rounded-3xl border-2 border-gray-300 p-6 mb-6">
                     <!-- Título y valoración -->
                     <div class="flex justify-between items-center mb-6">
-                        <h1 id="idTituloDocumento" class="text-2xl font-semibold">Nombre del título</h1>
+                        <h1 id="idTituloDocumento" class="text-2xl font-semibold"></h1>
+                        
                         <div class="flex items-center gap-4">
-                            <div class="flex items-center">
-                                <span
-                                    class="bg-[#FFEACB] text-yellow-600 px-3 py-1 rounded-full flex items-center gap-2">
-                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M9.50516 0.25C9.79025 0.250313 10.0508 0.412325 10.177 0.667969L12.6018 5.58105L18.0247 6.36914C18.3069 6.41044 18.542 6.60862 18.6302 6.87988C18.7072 7.11731 18.6597 7.37518 18.51 7.56934L18.4397 7.64844L14.5159 11.4727L15.4427 16.873C15.4909 17.1543 15.3746 17.4386 15.1438 17.6064C14.9131 17.774 14.6073 17.7965 14.3548 17.6641L9.50418 15.1133L4.65458 17.6641C4.40207 17.7966 4.0963 17.774 3.86551 17.6064C3.63455 17.4386 3.51843 17.1544 3.56668 16.873L4.49247 11.4727L0.569615 7.64844C0.365202 7.44918 0.291971 7.15138 0.380161 6.87988C0.468444 6.6085 0.703203 6.41018 0.98563 6.36914L6.40653 5.58105L8.83231 0.667969L8.88602 0.576172C9.02453 0.374098 9.25568 0.25 9.50516 0.25Z"
-                                            fill="#FFA53C" />
-                                    </svg>
-                                    <span class="font-medium">4.2</span>
-                                </span>
+                            <div id="rating-value-top" class="flex items-center">
                             </div>
                             <button id="downloadDocument"
-                                class="bg-pire-green text-white rounded-full px-6 py-2 text-sm font-medium">
+                                class="bg-pire-green text-[var(--color-green-700)] rounded-full px-6 py-3 text-sm font-medium hover:bg-green-700 hover:text-white transition-all">
                                 Descargar documento
                             </button>
                             <button
-                                class="bg-gray-900 text-white rounded-full px-6 py-2 text-sm font-medium hover:bg-gray-800 transition">
+                                class="bg-gray-900 text-white rounded-full px-6 py-3 text-sm font-medium hover:bg-gray-700 transition-all">
                                 Reportar documento
                             </button>
                         </div>
@@ -66,7 +57,7 @@
 
                     <!-- Información del curso -->
                     <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white border border-gray-200 rounded-3xl p-5">
+                        <div class="bg-white border border-gray-300 border-2 rounded-3xl p-5">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <p class="text-gray-600 text-sm mb-1">Ciclo</p>
@@ -83,7 +74,7 @@
                             </div>
                         </div>
 
-                        <div class="bg-white border border-gray-200 rounded-3xl p-5">
+                        <div class="bg-white border border-gray-300 border-2 rounded-3xl p-5">
                             <p class="text-gray-600 text-sm mb-3">Subido por</p>
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 mr-4 h-10 w-10 rounded-full overflow-hidden" id ="avatarUsuario"></div>
@@ -97,7 +88,7 @@
                 </div>
 
                 <!-- Contenedor para la previsualización del documento -->
-                <div class="bg-white rounded-3xl shadow overflow-hidden mb-6">
+                <div class="bg-white rounded-3xl border-2 border-gray-300 overflow-hidden mb-6">
                     <div id="document-preview" class="w-full h-[70vh]">
                         <!-- Aquí se cargará dinámicamente el contenido del documento -->
                     </div>
@@ -122,17 +113,17 @@
                             </div>
                             <p class="text-sm text-gray-500 mb-3">Valoración actual: <span id="rating-value"></span></p>
                             <button id="submit-rating"
-                                class="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2 font-medium">Votar</button>
+                                class="bg-pire-green text-[var(--color-green-700)] hover:bg-green-600 hover:text-white transition-all rounded-full px-6 py-3 text-sm font-medium">Votar</button>
                         </div>
 
                         <!-- Comentar -->
-                        <div class="md:col-span-3 bg-white rounded-3xl border border-gray-100 p-6">
-                            <h4 class="text-lg font-medium mb-2">Comentar</h4>
+                        <div class="md:col-span-3 bg-white rounded-3xl border border-gray-300 border-2 p-6">
+                            <h4 class="text-lg font-medium mb-4">Comentar</h4>
                             <textarea class="w-full p-4 border border-gray-200 rounded-lg mb-4"
                                 placeholder="¿Quieres comentar algo o hacer una pregunta?"></textarea>
                             <div class="flex justify-end">
                                 <button
-                                    class="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2 font-medium">Publicar</button>
+                                    class="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 text-sm font-medium">Publicar</button>
                             </div>
                         </div>
                     </div>
@@ -141,7 +132,7 @@
                     <h4 class="text-xl font-medium my-6">Otros comentarios</h4>
                     <div class="grid md:grid-cols-2 gap-6">
                         <!-- Comentario 1 -->
-                        <div class="bg-white border border-gray-100 p-5 rounded-3xl">
+                        <div class="bg-white border border-gray-300 border-2 p-5 rounded-3xl">
                             <div class="flex items-start mb-3">
                                 <div class="flex-shrink-0 mr-3">
                                     <img class="h-10 w-10 rounded-full object-cover"
@@ -157,7 +148,7 @@
                         </div>
 
                         <!-- Comentario 2 -->
-                        <div class="bg-white border border-gray-100 p-5 rounded-3xl">
+                        <div class="bg-white border border-gray-300 border-2 p-5 rounded-3xl">
                             <div class="flex items-start mb-3">
                                 <div class="flex-shrink-0 mr-3">
                                     <img class="h-10 w-10 rounded-full object-cover"

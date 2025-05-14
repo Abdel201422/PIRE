@@ -105,6 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (userAvatar) {
                     userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.usuario.avatar}" alt="Avatar">`
                 }
+
+                const ratingValueTop = document.getElementById('rating-value-top')
+                ratingValueTop.innerHTML = `<span
+                                    class="bg-[var(--color-orange-100)] px-4 py-2 rounded-full flex items-center gap-2">
+                                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M9.50516 0.25C9.79025 0.250313 10.0508 0.412325 10.177 0.667969L12.6018 5.58105L18.0247 6.36914C18.3069 6.41044 18.542 6.60862 18.6302 6.87988C18.7072 7.11731 18.6597 7.37518 18.51 7.56934L18.4397 7.64844L14.5159 11.4727L15.4427 16.873C15.4909 17.1543 15.3746 17.4386 15.1438 17.6064C14.9131 17.774 14.6073 17.7965 14.3548 17.6641L9.50418 15.1133L4.65458 17.6641C4.40207 17.7966 4.0963 17.774 3.86551 17.6064C3.63455 17.4386 3.51843 17.1544 3.56668 16.873L4.49247 11.4727L0.569615 7.64844C0.365202 7.44918 0.291971 7.15138 0.380161 6.87988C0.468444 6.6085 0.703203 6.41018 0.98563 6.36914L6.40653 5.58105L8.83231 0.667969L8.88602 0.576172C9.02453 0.374098 9.25568 0.25 9.50516 0.25Z"
+                                            fill="#FFA53C" />
+                                    </svg>
+                                    <span class="font-medium">${data.puntuacion}</span>
+                                </span>`
             })
             .catch(error => {
                 console.error('Error al cargar la información del documento:', error)
