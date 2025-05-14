@@ -31,11 +31,11 @@ export function infoUser() {
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
                 const userPuntuacion = document.getElementById('userPuntuacion')
                 const userAvatar = document.getElementById('user-avatar')
+                const userAdmin = document.getElementById('enlace-administrar')
 
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
-                    console.log(data)
                     if (userName) {
                         userName.textContent = data.user.nombre
                     }
@@ -50,10 +50,18 @@ export function infoUser() {
 
                     if (userPuntuacion) {
                         userPuntuacion.textContent = data.user.puntuacion
-                    } 
+                    }
 
                     if (userAvatar) {
                         userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.user.avatar}" alt="Avatar">`
+                    }
+
+                    if (userAdmin) {
+                        if (data.user.roles && data.user.roles.includes('ROLE_ADMIN')) {
+                            userAdmin.classList.remove('hidden')
+                        } else {
+                            userAdmin.classList.add('hidden')
+                        }
                     }
                 }
             })
@@ -98,7 +106,7 @@ export function loadBestDocuments() {
 
                 if (gridRecursos) {
                     gridRecursos.innerHTML = '' // Limpiar contenido previo
-                    
+
                     data.forEach(doc => {
                         console.log(doc)
                         const div = document.createElement('div')
@@ -137,3 +145,35 @@ export function loadBestDocuments() {
                 `<p style="color: red">Error al cargar los mejores documentos.</p>`
         })
 }
+
+// Verificar si el usuario es administrador
+/* export function whoAdmin() {
+    // Verificar si el usuario está autenticado
+    const token = localStorage.getItem('jwt');
+    const enlaceAdministrar = document.getElementById('enlace-administrar')
+
+    if (!token) {
+        console.log('No hay token, el usuario no está autenticado');
+        return;
+    }
+
+    fetch(`${BACKEND_URL}/api/users/me`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` },
+    })
+        .then(async response => {
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+            return response.json();
+        })
+        .then(user => {
+            // Check for 'roles' array (plural) instead of 'role'
+            if (user.roles && user.roles.includes('ROLE_ADMIN')) {
+                enlaceAdministrar.classList.remove('hidden');
+            }
+        })
+        .catch(error => console.error('Error al verificar el rol del usuario:', error));
+
+} */
