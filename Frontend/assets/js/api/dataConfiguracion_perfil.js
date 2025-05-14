@@ -43,3 +43,36 @@ function rellenarPerfilUsuario() {
     });
 }
 document.addEventListener('DOMContentLoaded', rellenarPerfilUsuario);
+
+document.getElementById('save-personal-info-btn')?.addEventListener('click', function() {
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    window.location.href = '/login.html';
+    return;
+  }
+  const nombre = document.getElementById('first-name')?.value;
+  const apellido = document.getElementById('last-name')?.value;
+  const email = document.getElementById('email')?.value;
+
+  fetch(`${BACKEND_URL}/api/user/profile`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ nombre, apellido, email })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Perfil actualizado correctamente');
+        rellenarPerfilUsuario(); // refresca los datos
+      } else {
+        alert('Error al actualizar perfil: ' + (data.error || '')); 
+      }
+    })
+    .catch(err => {
+      alert('Error de red al actualizar el perfil');
+      console.error(err);
+    });
+});

@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;       
 
-#[Route('/user')]
 final class UserController extends AbstractController
 {
     #[Route(name: 'app_user_index', methods: ['GET'])]
@@ -78,5 +78,24 @@ final class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/api/user/profile', name: 'api_user_profile_update', methods: ['PUT', 'POST'])]
+    public function updateProfile(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'No autenticado'], 401);
+        }
+        $data = json_decode($request->getContent(), true);
+        if (isset($data['nombre'])) $user->setNombre($data['nombre']);
+        if (isset($data['apellido'])) $user->setApellido($data['apellido']);
+        if (isset($data['email'])) $user->setEmail($data['email']);
+        $entityManager->flush();
+        return new JsonResponse(['success' => true, 'user' => [
+            'nombre' => $user->getNombre(),
+            'apellido' => $user->getApellido(),
+            'email' => $user->getEmail(),
+        ]]);
     }
 }
