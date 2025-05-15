@@ -35,7 +35,7 @@ tailwind.config = {
     <!-- Dashboard Content -->
     <main class="flex-1 overflow-y-auto p-6 md:p-8">
       <!-- Tarjeta del documento -->
-      <div class="bg-white rounded-3xl shadow p-6 mb-6">
+      <div class="bg-white rounded-3xl border-2 border-gray-300 shadow p-6 mb-6">
         <!-- Título y valoración -->
         <div class="flex justify-between items-center mb-6">
           <h1 class="text-2xl font-semibold">Nombre del título</h1>
@@ -56,7 +56,7 @@ tailwind.config = {
         
         <!-- Información del curso -->
         <div class="grid md:grid-cols-2 gap-6">
-          <div class="bg-white border border-gray-200 rounded-3xl p-5">
+          <div class="bg-white border-2 border-gray-300 rounded-3xl p-5">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <p class="text-gray-600 text-sm mb-1">Ciclo</p>
@@ -73,7 +73,7 @@ tailwind.config = {
             </div>
           </div>
           
-          <div class="bg-white border border-gray-200 rounded-3xl p-5">
+          <div class="bg-white border-2 border-gray-300 rounded-3xl p-5">
             <p class="text-gray-600 text-sm mb-3">Subido por</p>
             <div class="flex items-center">
               <div class="flex-shrink-0 mr-4">
@@ -89,7 +89,7 @@ tailwind.config = {
       </div>
       
       <!-- Contenedor para la previsualización del documento -->
-      <div class="bg-white rounded-3xl shadow overflow-hidden">
+      <div class="bg-white rounded-3xl border-2 border-gray-300 overflow-hidden">
         <!-- Barra azul decorativa -->
         
         <!-- Espacio para el documento cargado dinámicamente -->
@@ -100,11 +100,11 @@ tailwind.config = {
       </div>
       
       <!-- Sección de valoración y comentarios -->
-      <div class="bg-white rounded-3xl shadow-md border border-gray-100 my-6 p-6">
+      <div class="bg-white rounded-3xl border-2 border-gray-300 my-6 p-6">
         <!-- Valoración y Comentar -->
         <div class="grid md:grid-cols-4 gap-8 mb-8">
           <!-- Valoración -->
-          <div class="md:col-span-1 bg-white rounded-3xl border border-gray-100 p-6">
+          <div class="md:col-span-1 bg-white rounded-3xl border-2 border-gray-300 p-6">
             <h4 class="text-lg font-medium mb-2">Valoración</h4>
             <p class="text-sm text-gray-500 mb-3">Puntúa este documento</p>
             <div id="star-rating" class="flex items-center mb-4">
@@ -144,9 +144,9 @@ tailwind.config = {
           </div>
           
           <!-- Comentar -->
-          <div class="md:col-span-3 bg-white rounded-3xl border border-gray-100 p-6">
+          <div class="md:col-span-3 bg-white rounded-3xl border-2 border-gray-300 p-6">
             <h4 class="text-lg font-medium mb-2">Comentar</h4>
-            <textarea class="w-full p-4 border border-gray-200 rounded-lg mb-4" placeholder="¿Quieres comentar algo o hacer una pregunta?"></textarea>
+            <textarea class="w-full p-4 border-2 border-gray-200 rounded-3xl mb-4" placeholder="¿Quieres comentar algo o hacer una pregunta?"></textarea>
             <div class="flex justify-end">
               <button class="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2 font-medium">Publicar</button>
             </div>
@@ -157,7 +157,7 @@ tailwind.config = {
         <h4 class="text-xl font-medium my-6">Otros comentarios</h4>
         <div class="grid md:grid-cols-2 gap-6">
           <!-- Comentario 1 -->
-          <div class="bg-white border border-gray-100 p-5 rounded-3xl">
+          <div class="bg-white border-2 border-gray-300 p-5 rounded-3xl">
             <div class="flex items-start mb-3">
               <div class="flex-shrink-0 mr-3">
                 <img class="h-10 w-10 rounded-full object-cover" src="https://via.placeholder.com/40" alt="Avatar">
@@ -172,7 +172,7 @@ tailwind.config = {
           </div>
           
           <!-- Comentario 2 -->
-          <div class="bg-white border border-gray-100 p-5 rounded-3xl">
+          <div class="bg-white border-2 border-gray-300 p-5 rounded-3xl">
             <div class="flex items-start mb-3">
               <div class="flex-shrink-0 mr-3">
                 <img class="h-10 w-10 rounded-full object-cover" src="https://via.placeholder.com/40" alt="Avatar">
@@ -254,11 +254,11 @@ tailwind.config = {
 <script type="module">
     import { BACKEND_URL } from './assets/js/config.js';
     
-    // Datos de ejemplo para usar sin backend
+    
     const documentoEjemplo = {
       titulo: "Manual de JavaScript para principiantes",
       asignatura: "Programación Web",
-      ruta: "DAW_2024-25_Examen_EvFinalOrd.pdf" // Puedes cambiar a "ejemplo.jpg" para probar con imagen
+      ruta: "DAW_2024-25_Examen_EvFinalOrd.pdf"
       
     };
 
@@ -277,7 +277,7 @@ tailwind.config = {
       
       // Retornar el HTML del documento
       return `
-        <div class="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-4 w-full h-full mx-auto">
+        <div class="flex flex-col items-center justify-center bg-white rounded-3xl  p-4 w-full h-full mx-auto">
           ${preview}
           <div class="text-xl font-semibold mb-1 text-center">${doc.titulo}</div>
           <div class="text-gray-500 mb-2 text-center">${doc.asignatura}</div>

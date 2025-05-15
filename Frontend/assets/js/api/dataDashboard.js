@@ -29,6 +29,11 @@ export function infoUser() {
                 const userName = document.getElementById('userName')
                 const userNameComplete = document.getElementById('userNameComplete')
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
+                // Nuevos elementos para el header
+                const dropdownUserName = document.getElementById('dropdown-userName')
+                const dropdownUserEmail = document.getElementById('dropdown-userEmail')
+                
+
                 const userPuntuacion = document.getElementById('userPuntuacion')
                 const userAvatar = document.getElementById('user-avatar')
                 const userAdmin = document.getElementById('enlace-administrar')
@@ -36,6 +41,15 @@ export function infoUser() {
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
+                    
+                    if (userName) userName.textContent = data.user.nombre
+                    if (userNameComplete) userNameComplete.textContent = data.user.nombreCompleto
+                    
+                    if (dropdownUserName) dropdownUserName.textContent = data.user.nombreCompleto
+                    if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email
+                    
+                    
+                    
                     if (userName) {
                         userName.textContent = data.user.nombre
                     }

@@ -34,6 +34,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         dropdown.classList.toggle('hidden');
                     });
                     
+                    // Manejar el botón de editar perfil
+                    const editarPerfilLink = document.getElementById('editar-perfil-link');
+                    if (editarPerfilLink) {
+                        editarPerfilLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            window.location.href = 'configuracion_perfil.html';
+                        });
+                    }
+                    
                     // Manejar el botón de cierre de sesión
                     const logoutButton = document.getElementById('logout-button');
                     if (logoutButton) {
