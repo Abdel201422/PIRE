@@ -1,0 +1,18 @@
+
+TEMPLATE DEL CONTENEDOR DE CARDS PARA 5 COLUMNAS
+
+<div class="row row-cols-md-5">
+
+</div>
+
+----------------------------------------------------------------
+
+TEMPLATE DE UN DIV CARD PARA 1 PELÍCULA
+
+<div class="card text-center bg-light mb-2 mr-2">
+    <div class="card-body">
+        <img src="ruta" class="card-img-top">
+        <h5 class="card-title">título</h5>
+        <p class="card-text">año</p>
+    </div>
+</div>

@@ -31,17 +31,17 @@
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
 
         <!-- Contenido principal -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col w-full">
             <!-- Header -->
             <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
             <!-- Dashboard Content -->
-            <main class="flex-1 overflow-y-auto p-0 bg-pire-background-dashboard">
+            <main class="flex-1 overflow-y-auto p-0 flex-col max-w-6xl mx-auto w-full">
                 <div
                     class="bg-[var(--color-gray-50)] rounded-3xl flex flex-col gap-4 p-6 border-2 border-gray-300 mx-4 mb-4 mt-4 max-w-full">
-                    
-                        <h2 class="text-xl font-semibold">Asignatura</h2>
-                        <div id="documentosContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <span id="ruta">ruta</span>
+                        <h2 id="nameAsignatura" class="text-xl font-semibold"></h2>
+                        <div id="documentosContainer" class="flex flex-col gap-6">
             <!-- Aquí se cargarán los documentos dinámicamente -->
         </div>
                 </div>

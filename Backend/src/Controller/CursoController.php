@@ -42,13 +42,13 @@ final class CursoController extends AbstractController
         ]);
     }
 
-    #[Route('/{cod_curso}', name: 'app_curso_show', methods: ['GET'])]
+    /* #[Route('/{cod_curso}', name: 'app_curso_show', methods: ['GET'])]
     public function show(Curso $curso): Response
     {
         return $this->render('curso/show.html.twig', [
             'curso' => $curso,
         ]);
-    }
+    } */
 
     #[Route('/{cod_curso}/edit', name: 'app_curso_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Curso $curso, EntityManagerInterface $entityManager): Response
