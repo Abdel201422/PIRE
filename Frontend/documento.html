@@ -7,6 +7,9 @@
     <title>Visualizar Documento</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/input.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <script type="module" src="./assets/js/dashboard.js"></script>
     <script>
         tailwind.config = {
@@ -16,14 +19,17 @@
                         'pire-green': '#85E28C',
                         'pire-background': '#FAF8F4',
                         'pire-background-dashboard': '#FDFBF9',
-                    }
+                    },
+                    fontFamily: {
+                        lexend: ['Lexend', 'sans'],
+                    },
                 }
             }
         }
     </script>
 </head>
 
-<body class="bg-pire-background">
+<body class="bg-pire-background font-lexend">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
@@ -39,18 +45,16 @@
                 <div class="bg-white rounded-3xl border-2 border-gray-300 p-6 mb-6">
                     <!-- Título y valoración -->
                     <div class="flex justify-between items-center mb-6">
-                        <h1 id="idTituloDocumento" class="text-2xl font-semibold"></h1>
-                        
+                        <div>
+                            <h1 id="idTituloDocumento" class="text-2xl font-semibold"></h1>
+                            <span id="descripcionDocumento" class="text-sm"></span>
+                        </div>
                         <div class="flex items-center gap-4">
                             <div id="rating-value-top" class="flex items-center">
                             </div>
                             <button id="downloadDocument"
                                 class="bg-pire-green text-[var(--color-green-700)] rounded-full px-6 py-3 text-sm font-medium hover:bg-green-700 hover:text-white transition-all">
                                 Descargar documento
-                            </button>
-                            <button
-                                class="bg-gray-900 text-white rounded-full px-6 py-3 text-sm font-medium hover:bg-gray-700 transition-all">
-                                Reportar documento
                             </button>
                         </div>
                     </div>
@@ -97,7 +101,7 @@
                 <!-- Sección de valoración y comentarios -->
                 <div class="bg-white rounded-3xl border-2 border-gray-300 p-6">
                     <!-- Valoración y Comentar -->
-                    <div class="grid md:grid-cols-4 gap-8 mb-8">
+                    <div class="grid md:grid-cols-4 gap-6 mb-8">
                         <!-- Valoración -->
                         <div class="md:col-span-1 bg-white rounded-3xl border-2 border-gray-300 p-6">
                             <h4 class="text-lg font-medium mb-2">Valoración</h4>
@@ -130,45 +134,14 @@
 
                     <!-- Otros comentarios -->
                     <h4 class="text-xl font-medium my-6">Otros comentarios</h4>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <!-- Comentario 1 -->
-                        <div class="bg-white border border-gray-300 border-2 p-5 rounded-3xl">
-                            <div class="flex items-start mb-3">
-                                <div class="flex-shrink-0 mr-3">
-                                    <img class="h-10 w-10 rounded-full object-cover"
-                                        src="https://via.placeholder.com/40" alt="Avatar">
-                                </div>
-                                <div>
-                                    <p class="text-green-600 font-medium">Xuan Chew</p>
-                                    <p class="text-sm text-gray-500">Manual_Usuario_Sistema_Web</p>
-                                    <p class="text-xs text-gray-400 mb-2">hace 28 días</p>
-                                </div>
-                            </div>
-                            <p>Manual muy completo. ¡Gracias!</p>
-                        </div>
-
-                        <!-- Comentario 2 -->
-                        <div class="bg-white border border-gray-300 border-2 p-5 rounded-3xl">
-                            <div class="flex items-start mb-3">
-                                <div class="flex-shrink-0 mr-3">
-                                    <img class="h-10 w-10 rounded-full object-cover"
-                                        src="https://via.placeholder.com/40" alt="Avatar">
-                                </div>
-                                <div>
-                                    <p class="text-green-600 font-medium">Xuan Chew</p>
-                                    <p class="text-sm text-gray-500">Manual_Usuario_Sistema_Web</p>
-                                    <p class="text-xs text-gray-400 mb-2">hace 28 días</p>
-                                </div>
-                            </div>
-                            <p>Manual muy completo. ¡Gracias!</p>
-                        </div>
-                    </div>
+                    <div id="comentarios-container" class="grid md:grid-cols-2 gap-6"></div>
                 </div>
             </main>
         </div>
     </div>
 
     <script type="module" src="./assets/js/api/verDocumento.js"></script>
+    <script type="module" src="./assets/js/api/getComentarios.js"></script>
 </body>
 
 </html>

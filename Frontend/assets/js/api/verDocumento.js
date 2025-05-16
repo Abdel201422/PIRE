@@ -83,12 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Datos del documento
                 const idTituloDocumento = document.getElementById('idTituloDocumento')
+                const descripcionDocumento = document.getElementById('descripcionDocumento')
                 const nameAsignatura = document.getElementById('nameAsignatura')
                 const nameCurso = document.getElementById('nameCurso')
                 const nameCiclo = document.getElementById('nameCiclo')
                 const ratingValue = document.getElementById('rating-value')
 
                 idTituloDocumento.textContent = data.titulo
+                descripcionDocumento.textContent = data.descripcion
                 nameAsignatura.textContent = data.asignatura
 
                 const cursoParte = data.curso.match(/\dº Curso/)
@@ -129,7 +131,7 @@ function puntuarDocumento(documentoId, puntuacion) {
     
     const token = localStorage.getItem('jwt') // Asegúrate de que el usuario esté autenticado
 
-    fetch(`http://127.0.0.1:8000/api/documentos/${documentoId}/puntuar`, {
+    fetch(`${BACKEND_URL}/api/documentos/${documentoId}/puntuar`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -174,7 +176,6 @@ stars.forEach(star => {
             } else {
                 s.classList.remove('selected')
             }
-            
         })
     })
 })
