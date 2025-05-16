@@ -29,11 +29,13 @@ export function infoUser() {
                 const userName = document.getElementById('userName')
                 const userNameComplete = document.getElementById('userNameComplete')
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
+                const userComentarios = document.getElementById('userComentarios')
+                const ultimoDocumento = document.getElementById('ultimoDocumento')
+                const ultimaPuntuacion = document.getElementById('ultimaPuntuacion')
+
                 // Nuevos elementos para el header
                 const dropdownUserName = document.getElementById('dropdown-userName')
                 const dropdownUserEmail = document.getElementById('dropdown-userEmail')
-                
-
                 const userPuntuacion = document.getElementById('userPuntuacion')
                 const userAvatar = document.getElementById('user-avatar')
                 const userAdmin = document.getElementById('enlace-administrar')
@@ -41,14 +43,6 @@ export function infoUser() {
                 if (data.error) {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
-                    
-                    if (userName) userName.textContent = data.user.nombre
-                    if (userNameComplete) userNameComplete.textContent = data.user.nombreCompleto
-                    
-                    if (dropdownUserName) dropdownUserName.textContent = data.user.nombreCompleto
-                    if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email
-                    
-                    
                     
                     if (userName) {
                         userName.textContent = data.user.nombre
@@ -64,6 +58,18 @@ export function infoUser() {
 
                     if (userPuntuacion) {
                         userPuntuacion.textContent = data.user.puntuacion
+                    }
+
+                    if (userComentarios) {
+                        userComentarios.textContent = data.user.nComentarios
+                    }
+
+                    if (ultimoDocumento) {
+                        ultimoDocumento.textContent = data.user.ultimoDocumento.titulo
+                    }
+
+                    if (ultimaPuntuacion) {
+                        ultimaPuntuacion.textContent = data.user.ultimaValoracion
                     }
 
                     if (userAvatar) {
