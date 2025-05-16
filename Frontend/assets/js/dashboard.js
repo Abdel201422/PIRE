@@ -87,25 +87,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                // Asignar el evento de clic al enlace "Mis Recursos"
+                /* // Asignar el evento de clic al enlace "Mis Recursos"
                 const enlaceMisRecursos = document.getElementById('enlace-recursos');
                 if (enlaceMisRecursos) {
                     enlaceMisRecursos.addEventListener('click', function (e) {
                         e.preventDefault(); // Evita el comportamiento predeterminado del enlace
                         cargarMisRecursos(); // Llama a la función para cargar los ciclos
                     });
-                }
+                } */
             })
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
 })
 
-function cargarMisRecursos() {
+/* function cargarMisRecursos() {
     const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
 
     // Obtener los ciclos desde el backend
-    fetch('http://127.0.0.1:8000/api/ciclos/completos')
+    fetch('http://127.0.0.1:8000/api/ciclos/completos') 
         .then(response => response.json())
         .then(data => {
             mainContent.innerHTML = ''; // Limpia el contenido
@@ -198,4 +198,4 @@ function renderDocumentos(documentos) {
         `;
         container.appendChild(documentoDiv);
     });
-}
+} */
