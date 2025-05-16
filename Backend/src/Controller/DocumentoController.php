@@ -197,18 +197,6 @@ public function index(DocumentoRepository $documentoRepository): Response
     #[Route('/api/documentos/mejores', name: 'api_documentos', methods: ['GET'])]
     public function mejoresDocumentos(DocumentoRepository $documentoRepository): JsonResponse
     {
-        /* $documentos = $documentoRepository->findBy([], ['id' => 'DESC'], 3);
-
-        $data = [];
-        foreach ($documentos as $documento) {
-            $data[] = [
-                'id' => $documento->getId(),
-                'titulo' => $documento->getTitulo(),
-                'descripcion' => $documento->getDescripcion(),
-                'asignatura' => $documento->getAsignatura()->getNombre(),
-                'puntuacion' => $documento->calcularMediaValoraciones(), // Media de las valoraciones
-            ];
-        } */
         $documentos = $documentoRepository->findAll();
 
         // Calcular la media de valoraciones para cada documento
@@ -228,8 +216,8 @@ public function index(DocumentoRepository $documentoRepository): Response
             return $b['puntuacion'] <=> $a['puntuacion'];
         });
 
-        // Se tienen los 3 mejores documentos
-        $mejoresDocumentos = array_slice($documentosValoracionData, 0, 3);
+        // Se tienen los 6 mejores documentos
+        $mejoresDocumentos = array_slice($documentosValoracionData, 0, 6);
 
         return $this->json($mejoresDocumentos, Response::HTTP_OK);
     }
