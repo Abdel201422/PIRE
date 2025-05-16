@@ -44,6 +44,9 @@ export function infoUser() {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
                     
+                    if (dropdownUserName) dropdownUserName.textContent = data.user.nombreCompleto
+                    if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email
+
                     if (userName) {
                         userName.textContent = data.user.nombre
                     }
@@ -132,7 +135,7 @@ export function loadBestDocuments() {
                         const div = document.createElement('div')
                         div.innerHTML = `
                         <a href="/documento.html?id=${doc.id}" class="h-full">
-                        <div class="flex flex-col h-full justify-between bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="flex flex-col h-full justify-between bg-[var(--color-gray-50)] rounded-3xl p-5 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                             <div>
                                 <div class="mb-2 text-xs text-green-600">${doc.asignatura}</div>
                                 <h3 class="font-medium text-xl mb-2">${doc.titulo}</h3>
