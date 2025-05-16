@@ -1,5 +1,4 @@
 <?php
-<?php
 
 namespace App\Controller;
 
@@ -35,6 +34,41 @@ class ComentarioController extends AbstractController
 
         return $this->json($data, Response::HTTP_OK);
     }
+
+    // Obtener un comentario por ID
+    #[Route('/api/comentario/documento/{id}', name: 'api_comentario_por_documento', methods: ['GET'])]
+    public function listarPorDocumento(int $id, ComentarioRepository $comentarioRepository, DocumentoRepository $documentoRepository): JsonResponse
+    {
+        // Verificar si el documento existe
+        $documento = $documentoRepository->find($id);
+        if (!$documento) {
+            return $this->json(['error' => 'Documento no encontrado'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Obtener los comentarios asociados al documento
+        $comentarios = $comentarioRepository->findBy(['documento' => $documento],['fecha' => 'DESC']);
+
+        // Formatear los datos para la respuesta
+        $data = [];
+        foreach ($comentarios as $comentario) {
+            $data[] = [
+                'id' => $comentario->getId(),
+                'comentario' => $comentario->getComentario(),
+                'fecha' => $comentario->getFecha()?->format('Y-m-d H:i:s'),
+                'documento' => [
+                    'id' => $comentario->getDocumento()?->getId(),
+                    'titulo' => $comentario->getDocumento()?->getTitulo(),
+                ],
+                'user' => [
+                    'id' => $comentario->getUser()?->getId(),
+                    'nombre' => $comentario->getUser()?->getNombre(),
+                    'avatar' => $comentario->getUser()?->getAvatar(),
+                ],
+            ];
+        }
+
+        return $this->json($data, Response::HTTP_OK);
+}
 
     // Crear un nuevo comentario
     #[Route('/api/comentario/crear', name: 'api_comentario_crear', methods: ['POST'])]
