@@ -64,6 +64,8 @@ final class UserController extends AbstractController
             $data[] = [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
+                'nombre' => $user->getNombre(),
+                'apellido' => $user->getApellido(),
                 'roles' => $user->getRoles(),
             ];
         }
@@ -72,7 +74,7 @@ final class UserController extends AbstractController
     }
 
     // Crear un nuevo usuario
-    #[Route('/api/users', name: 'api_users_create', methods: ['POST'])]
+    #[Route('/api/user/create', name: 'api_users_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
