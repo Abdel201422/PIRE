@@ -8,16 +8,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\User;
 use App\Repository\DocumentoRepository;
+use App\Repository\ComentarioRepository;
+use App\Repository\ValoracionRepository;
 
 class DashboardController extends AbstractController
 {
     private $documentoRepository;
 
-    public function __construct(DocumentoRepository $documentoRepository)
+    public function __construct(DocumentoRepository $documentoRepository, ComentarioRepository $comentarioRepository, ValoracionRepository $valoracionRepository)
     {
+        $this->comentarioRepository = $comentarioRepository;
         $this->documentoRepository = $documentoRepository;
+        $this->valoracionRepository = $valoracionRepository;
     }
-
+    
     #[Route('/api/dashboard', name: 'api_dashboard', methods: ['GET'])]
     public function index(): JsonResponse
     {
@@ -28,18 +32,7 @@ class DashboardController extends AbstractController
         }
 
         $userNumDocumentos = $this->documentoRepository->count(['user' => $user]);
-        /* $documentos = $this->documentoRepository->findAll();
-
-        // Mapear los documentos para devolverlos en el JSON
-        $documentosData = array_map(function ($documento) {
-            return [
-                'id' => $documento->getId(),
-                'titulo' => $documento->getTitulo(),
-                'fechaSubida' => $documento->getFechaSubida()->format('Y-m-d H:i:s'),
-            ];
-        }, $documentos); */
-
-        // Calcular la puntuación del usuario
+        $userNumComentarios = $this->comentarioRepository->count(['user' => $user]);
         $valoraciones = $user->getValoraciones();
         $puntuacionPromedio = 0;
 
@@ -53,6 +46,19 @@ class DashboardController extends AbstractController
             $puntuacionPromedio = round($puntuacionPromedio, 1);
         }
 
+        // Obtener el último documento subido por el usuario
+        $ultimoDocumento = $this->documentoRepository->findOneBy(['user' => $user], ['fecha_subida' => 'DESC']);
+
+        if ($ultimoDocumento) {
+            $ultimoDoc = [
+                'titulo' => $ultimoDocumento->getTitulo(),
+                'fechaSubida' => $ultimoDocumento->getFechaSubida()->format('Y-m-d H:i:s'),
+                ];
+        }
+
+        // Obtener la última valoración
+        $ultimaValoracion = $this->valoracionRepository->findUltimaPuntuacionRecibida($user);
+
         return new JsonResponse([
             'user' => [
                 'id' => $user->getId(),
@@ -62,8 +68,11 @@ class DashboardController extends AbstractController
                 'email' => $user->getEmail(),
                 'roles' => $user->getRoles(),
                 'nDocumentos' => $userNumDocumentos,
+                'nComentarios' => $userNumComentarios,
                 'avatar' => $user->getAvatar(),
                 'puntuacion' => $puntuacionPromedio,
+                'ultimoDocumento' => $ultimoDoc,
+                'ultimaValoracion' => $ultimaValoracion->getPuntuacion(),
             ]
         ]);
     }
