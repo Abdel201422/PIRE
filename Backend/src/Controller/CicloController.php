@@ -80,20 +80,59 @@ final class CicloController extends AbstractController
         return $this->redirectToRoute('app_ciclo_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/api/ciclos', name: 'api_ciclos', methods: ['GET'])]
-    public function getCiclos(CicloRepository $cicloRepository): JsonResponse
+    #[Route('/api/ciclos', name: 'api_ciclos', methods: ['GET', 'POST'])]
+    public function getCiclos(Request $request, CicloRepository $cicloRepository, EntityManagerInterface $entityManager): JsonResponse
     {
-        $ciclos = $cicloRepository->findAll();
-        $data = [];
+        // Si es una petición GET, devolver todos los ciclos
+        if ($request->isMethod('GET')) {
+            $ciclos = $cicloRepository->findAll();
+            $data = [];
 
-        foreach ($ciclos as $ciclo) {
-            $data[] = [
-                'cod_ciclo' => $ciclo->getCodCiclo(),
-                'nombre' => $ciclo->getNombre(),
-            ];
+            foreach ($ciclos as $ciclo) {
+                $data[] = [
+                    'cod_ciclo' => $ciclo->getCodCiclo(),
+                    'nombre' => $ciclo->getNombre(),
+                ];
+            }
+
+            return $this->json($data, Response::HTTP_OK);
+        }
+        
+        // Si es una petición POST, crear un nuevo ciclo
+        if ($request->isMethod('POST')) {
+            $data = json_decode($request->getContent(), true);
+
+            // Validación básica
+            if (empty($data['cod_ciclo']) || empty($data['nombre'])) {
+                return $this->json(['error' => 'Faltan datos obligatorios (cod_ciclo, nombre)'], Response::HTTP_BAD_REQUEST);
+            }
+
+            // Comprobar si ya existe
+            if ($cicloRepository->findOneBy(['cod_ciclo' => $data['cod_ciclo']])) {
+                return $this->json(['error' => 'Ya existe un ciclo con ese código'], Response::HTTP_CONFLICT);
+            }
+
+            // Crear y guardar el nuevo ciclo
+            $ciclo = (new Ciclo())
+                ->setCodCiclo($data['cod_ciclo'])
+                ->setNombre($data['nombre'])
+                ->setDescripcion($data['descripcion'] ?? null);
+
+            $entityManager->persist($ciclo);
+            $entityManager->flush();
+
+            return $this->json([
+                'message' => 'Ciclo creado correctamente',
+                'ciclo' => [
+                    'cod_ciclo' => $ciclo->getCodCiclo(),
+                    'nombre' => $ciclo->getNombre(),
+                    'descripcion' => $ciclo->getDescripcion()
+                ]
+            ], Response::HTTP_CREATED);
         }
 
-        return $this->json($data, Response::HTTP_OK);
+        
+        return new JsonResponse(['error' => 'Método no permitido'], Response::HTTP_METHOD_NOT_ALLOWED);
     }
 
     #[Route('/api/ciclos/{codCiclo}/cursos', name: 'api_cursos_por_ciclos', methods: ['GET'])]
@@ -153,4 +192,50 @@ final class CicloController extends AbstractController
 
         return $this->json($data, Response::HTTP_OK);
     }
+
+    #[Route('/api/ciclos/{codCiclo}', name: 'api_ciclo_update_delete', methods: ['PUT', 'DELETE'])]
+public function updateDeleteCiclo(
+    string $codCiclo,
+    Request $request,
+    CicloRepository $cicloRepository,
+    EntityManagerInterface $entityManager
+): JsonResponse {
+    $ciclo = $cicloRepository->findOneBy(['cod_ciclo' => $codCiclo]);
+
+    if (!$ciclo) {
+        return $this->json(['error' => 'Ciclo no encontrado'], Response::HTTP_NOT_FOUND);
+    }
+
+    if ($request->isMethod('DELETE')) {
+        $entityManager->remove($ciclo);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Ciclo eliminado correctamente'], Response::HTTP_OK);
+    }
+
+    if ($request->isMethod('PUT')) {
+        $data = json_decode($request->getContent(), true);
+
+        if (empty($data['nombre'])) {
+            return $this->json(['error' => 'Falta el nombre del ciclo'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $ciclo->setNombre($data['nombre']);
+        $ciclo->setDescripcion($data['descripcion'] ?? null);
+
+        $entityManager->flush();
+
+        return $this->json([
+            'message' => 'Ciclo actualizado correctamente',
+            'ciclo' => [
+                'cod_ciclo' => $ciclo->getCodCiclo(),
+                'nombre' => $ciclo->getNombre(),
+                'descripcion' => $ciclo->getDescripcion()
+            ]
+        ], Response::HTTP_OK);
+    }
+
+    return $this->json(['error' => 'Método no permitido'], Response::HTTP_METHOD_NOT_ALLOWED);
+}
+
 }

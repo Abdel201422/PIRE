@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Ciclos</title>
+    <link rel="stylesheet" href="/assets/css/input.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-pire-background">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
+
+        <!-- Contenido principal -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
+
+            <!-- Contenido de Administración de Ciclos -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold">Administración de Ciclos</h1>
+                    <button id="btn-nuevo-ciclo" class="bg-pire-green hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 4.16667V15.8333M4.16667 10H15.8333" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Nuevo Ciclo
+                    </button>
+                </div>
+
+                <!-- Tabla de Ciclos -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cursos</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-ciclos" class="bg-white divide-y divide-gray-200">
+                            <!-- Los ciclos se cargarán aquí dinámicamente -->
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                    Cargando ciclos...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal para Nuevo/Editar Ciclo -->
+                <div id="modal-ciclo" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                    <div class="bg-white rounded-xl p-6 w-full max-w-md">
+                        <h2 id="modal-titulo" class="text-xl font-bold mb-4">Nuevo Ciclo</h2>
+                        <form id="form-ciclo">
+                            <div class="mb-4">
+                                <label for="codigo" class="block text-sm font-medium text-gray-700 mb-1">Código</label>
+                                <input type="text" id="codigo" name="codigo" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pire-green" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                                <input type="text" id="nombre" name="nombre" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pire-green" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                                <textarea id="descripcion" name="descripcion" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pire-green"></textarea>
+                            </div>
+                            <div class="flex justify-end gap-2 mt-6">
+                                <button type="button" id="btn-cancelar" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Cancelar</button>
+                                <button type="submit" class="px-4 py-2 bg-pire-green text-white rounded-md hover:bg-green-600">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal de Confirmación para Eliminar -->
+                <div id="modal-confirmar" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                    <div class="bg-white rounded-xl p-6 w-full max-w-md">
+                        <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+                        <p class="mb-6">¿Estás seguro de que deseas eliminar este ciclo? Esta acción no se puede deshacer.</p>
+                        <div class="flex justify-end gap-2">
+                            <button id="btn-cancelar-eliminar" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Cancelar</button>
+                            <button id="btn-confirmar-eliminar" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+<script type="module" src="../assets/js/dashboard.js"></script>
+    <script type="module">
+        import { BACKEND_URL } from '/assets/js/config.js';
+
+        // Verificar autenticación
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+            window.location.href = '/login.html';
+        }
+
+        // Variables globales
+        let ciclos = [];
+        let cicloActual = null;
+
+        // Cargar componentes dinámicamente
+        document.addEventListener('DOMContentLoaded', () => {
+           
+           
+
+            // Cargar datos de ciclos
+            cargarCiclos();
+
+            // Configurar eventos de los modales
+            configurarEventosModales();
+        });
+
+        // Función para cargar los ciclos desde la API
+        function cargarCiclos() {
+            fetch(`${BACKEND_URL}/api/ciclos/completos`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                ciclos = data;
+                renderizarTablaCiclos(ciclos);
+            })
+            .catch(error => {
+                console.error('Error al cargar ciclos:', error);
+                document.getElementById('tabla-ciclos').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                            Error al cargar los ciclos. Por favor, intenta de nuevo.
+                        </td>
+                    </tr>
+                `;
+                
+                if (error.message.includes('401')) {
+                    localStorage.removeItem('jwt');
+                    window.location.href = '/login.html';
+                }
+            });
+        }
+
+        // Función para renderizar la tabla de ciclos
+        function renderizarTablaCiclos(ciclos) {
+            const tablaCiclos = document.getElementById('tabla-ciclos');
+            
+            if (ciclos.length === 0) {
+                tablaCiclos.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            No hay ciclos disponibles.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            ciclos.forEach(ciclo => {
+                html += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${ciclo.cod_ciclo}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${ciclo.nombre}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">${ciclo.descripcion || '-'}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${ciclo.cursos ? ciclo.cursos.length : 0} cursos</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button class="text-blue-600 hover:text-blue-900 mr-3" data-accion="editar" data-id="${ciclo.cod_ciclo}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="text-red-600 hover:text-red-900" data-accion="eliminar" data-id="${ciclo.cod_ciclo}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tablaCiclos.innerHTML = html;
+            
+            // Configurar eventos para los botones de acción
+            document.querySelectorAll('[data-accion="editar"]').forEach(btn => {
+                btn.addEventListener('click', () => editarCiclo(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('[data-accion="eliminar"]').forEach(btn => {
+                btn.addEventListener('click', () => confirmarEliminarCiclo(btn.dataset.id));
+            });
+        }
+
+        // Función para configurar eventos de los modales
+        function configurarEventosModales() {
+            // Modal de nuevo ciclo
+            const btnNuevoCiclo = document.getElementById('btn-nuevo-ciclo');
+            const modalCiclo = document.getElementById('modal-ciclo');
+            const btnCancelar = document.getElementById('btn-cancelar');
+            const formCiclo = document.getElementById('form-ciclo');
+            
+            btnNuevoCiclo.addEventListener('click', () => {
+                document.getElementById('modal-titulo').textContent = 'Nuevo Ciclo';
+                formCiclo.reset();
+                cicloActual = null;
+                modalCiclo.classList.remove('hidden');
+            });
+            
+            btnCancelar.addEventListener('click', () => {
+                modalCiclo.classList.add('hidden');
+            });
+            
+            formCiclo.addEventListener('submit', (e) => {
+                e.preventDefault();
+                guardarCiclo();
+            });
+            
+            // Modal de confirmación para eliminar
+            const modalConfirmar = document.getElementById('modal-confirmar');
+            const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar');
+            const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar');
+            
+            btnCancelarEliminar.addEventListener('click', () => {
+                modalConfirmar.classList.add('hidden');
+            });
+            
+            btnConfirmarEliminar.addEventListener('click', () => {
+                eliminarCiclo();
+            });
+        }
+
+        // Función para editar un ciclo
+        function editarCiclo(codCiclo) {
+            const ciclo = ciclos.find(c => c.cod_ciclo === codCiclo);
+            if (!ciclo) return;
+            
+            cicloActual = ciclo;
+            
+            document.getElementById('modal-titulo').textContent = 'Editar Ciclo';
+            document.getElementById('codigo').value = ciclo.cod_ciclo;
+            document.getElementById('codigo').disabled = true; // No permitir cambiar el código
+            document.getElementById('nombre').value = ciclo.nombre;
+            document.getElementById('descripcion').value = ciclo.descripcion || '';
+            
+            document.getElementById('modal-ciclo').classList.remove('hidden');
+        }
+
+        // Función para confirmar la eliminación de un ciclo
+        function confirmarEliminarCiclo(codCiclo) {
+            cicloActual = ciclos.find(c => c.cod_ciclo === codCiclo);
+            if (!cicloActual) return;
+            
+            document.getElementById('modal-confirmar').classList.remove('hidden');
+        }
+
+        // Función para guardar un ciclo (nuevo o editado)
+        function guardarCiclo() {
+            const codigo = document.getElementById('codigo').value;
+            const nombre = document.getElementById('nombre').value;
+            const descripcion = document.getElementById('descripcion').value;
+            
+            const cicloData = {
+                cod_ciclo: codigo,
+                nombre: nombre,
+                descripcion: descripcion
+            };
+            
+            const url = cicloActual 
+                ? `${BACKEND_URL}/api/ciclos/${cicloActual.cod_ciclo}` // Editar
+                : `${BACKEND_URL}/api/ciclos`; // Nuevo
+            
+            const method = cicloActual ? 'PUT' : 'POST';
+            
+            fetch(url, {
+                method: method,
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(cicloData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('modal-ciclo').classList.add('hidden');
+                cargarCiclos(); // Recargar la lista de ciclos
+            })
+            .catch(error => {
+                console.error('Error al guardar ciclo:', error);
+                alert('Error al guardar el ciclo. Por favor, intenta de nuevo.');
+                
+                if (error.message.includes('401')) {
+                    localStorage.removeItem('jwt');
+                    window.location.href = '/login.html';
+                }
+            });
+        }
+
+        // Función para eliminar un ciclo
+        function eliminarCiclo() {
+            if (!cicloActual) return;
+            
+            fetch(`${BACKEND_URL}/api/ciclos/${cicloActual.cod_ciclo}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('modal-confirmar').classList.add('hidden');
+                cargarCiclos(); // Recargar la lista de ciclos
+            })
+            .catch(error => {
+                console.error('Error al eliminar ciclo:', error);
+                alert('Error al eliminar el ciclo. Por favor, intenta de nuevo.');
+                
+                if (error.message.includes('401')) {
+                    localStorage.removeItem('jwt');
+                    window.location.href = '/login.html';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
