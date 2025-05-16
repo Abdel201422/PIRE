@@ -7,6 +7,9 @@
     <title>Asignatura</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/input.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <script type="module" src="./assets/js/dashboard.js"></script>
     <script type="module" src="./assets/js/api/getDocumentos.js"></script>
     <script>
@@ -17,7 +20,10 @@
                         'pire-green': '#85E28C',
                         'pire-background': '#FAF8F4',
                         'pire-background-dashboard': '#FDFBF9',
-                    }
+                    },
+                    fontFamily: {
+                        lexend: ['Lexend', 'sans'],
+                    },
                 }
             }
         }
@@ -25,7 +31,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-pire-background">
+<body class="bg-pire-background-dashboard font-lexend">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
