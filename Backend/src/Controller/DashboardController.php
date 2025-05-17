@@ -48,11 +48,23 @@ class DashboardController extends AbstractController
 
         // Obtener el último documento subido por el usuario
         $ultimoDocumento = $this->documentoRepository->findOneBy(['user' => $user], ['fecha_subida' => 'DESC']);
+        $fecha = $ultimoDocumento->getFechaSubida();
+        $fechaAhora = new \DateTime();
+
+        $diff = $fechaAhora->diff($fecha);
+        $dias = $diff->days;
+
+        $textoTiempo = '';
+        
+        if ($dias === 0) { $textoTiempo = 'hoy';
+        } elseif ($dias === 1) { $textoTiempo = 'hace 1 día';
+        } else { $textoTiempo = 'hace ' . $dias . ' días';
+        }
 
         if ($ultimoDocumento) {
             $ultimoDoc = [
                 'titulo' => $ultimoDocumento->getTitulo(),
-                'fechaSubida' => $ultimoDocumento->getFechaSubida()->format('Y-m-d H:i:s'),
+                'fechaSubida' => $textoTiempo,
                 ];
         }
 

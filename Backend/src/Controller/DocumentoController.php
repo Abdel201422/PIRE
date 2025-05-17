@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Documento;
 use App\Entity\Asignatura;
+use App\Entity\Valoracion;
 use App\Form\DocumentoType;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\DocumentoRepository;
 use App\Repository\AsignaturaRepository;
+use App\Repository\CicloRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use App\Entity\Valoracion;
 
 final class DocumentoController extends AbstractController
 {
@@ -92,7 +93,7 @@ public function index(DocumentoRepository $documentoRepository): Response
 
         if ($form->isSubmitted() && $form->isValid()) {
             $archivoRaw = $request->files;
-           
+
             $targetPath = $params->get('app_path_files');
             $service = new FileUploader($targetPath, $slugger);
             //lo que se va a guardar en la base de datos
@@ -353,5 +354,30 @@ public function index(DocumentoRepository $documentoRepository): Response
             'message' => 'Puntuación registrada exitosamente.',
             'nuevaPuntuacion' => $nuevaPuntuacion, 
         ], 201);
+    }
+
+    #[Route('api/documentos/search', name: 'api_documentos_search', methods: ['GET'])]
+    public function search(Request $request, DocumentoRepository $documentoRepository, CicloRepository $cicloRepository, AsignaturaRepository $asignaturaRepository): JsonResponse
+    {
+        $query = $request->query->get('query', '');
+
+        // Buscar documentos por su título
+        $documentos = $documentoRepository->searchByTitulo($query);
+        $documentosData = [];
+
+        foreach ($documentos as $documento) {
+            $documentosData [] = [
+                'id'=> $documento->getId(),
+                'nombre' => $documento->getTitulo(),
+                'descripcion' => $documento->getDescripcion(),
+                'puntuacion' => $documento->calcularMediaValoraciones(),
+                'fecha_subida' => $documento->getFechaSubida()->format('d/m/Y'),
+                'tipo_archivo' => $documento->getTipoArchivo(),
+            ];
+        }
+        
+        return $this->json([
+            'documentos' => $documentosData
+        ], Response::HTTP_OK);
     }
 }

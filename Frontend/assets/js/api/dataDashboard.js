@@ -31,6 +31,7 @@ export function infoUser() {
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
                 const userComentarios = document.getElementById('userComentarios')
                 const ultimoDocumento = document.getElementById('ultimoDocumento')
+                const ultimoDocumentoFecha = document.getElementById('ultimoDocumentoFecha')
                 const ultimaPuntuacion = document.getElementById('ultimaPuntuacion')
 
                 // Nuevos elementos para el header
@@ -71,6 +72,10 @@ export function infoUser() {
                         ultimoDocumento.textContent = data.user.ultimoDocumento.titulo
                     }
 
+                    if (ultimoDocumentoFecha) {
+                        ultimoDocumentoFecha.textContent = data.user.ultimoDocumento.fechaSubida
+                    }
+
                     if (ultimaPuntuacion) {
                         ultimaPuntuacion.textContent = data.user.ultimaValoracion
                     }
@@ -85,6 +90,10 @@ export function infoUser() {
                         } else {
                             userAdmin.classList.add('hidden')
                         }
+                    }
+
+                    window.USER_INFO = {
+                        id: data.user.id
                     }
                 }
             })

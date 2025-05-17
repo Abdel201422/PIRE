@@ -40,16 +40,15 @@
       <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
       <!-- Dashboard Content -->
-      <main class="flex-1 overflow-y-auto p-6 md:p-8">
+      <main class="flex-1 overflow-y-auto p-0 flex-col max-w-6xl mx-auto w-full">
         <!-- Sección principal del perfil -->
-        <div class="max-w-7xl mx-auto">
-
+        <div class="flex flex-col p-4 gap-4">
           <!-- Cabecera de perfil con foto y nombre -->
-          <div class="bg-white rounded-3xl border-2 border-gray-300 p-6 mb-6 shadow-sm">
+          <div class="bg-white rounded-3xl border-2 border-gray-300 p-6">
             <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
               <!-- Foto de perfil -->
 
-              <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-300 mb-4"
+              <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-gray-300"
                 id="profile-image-container">
                 <!-- Imagen de perfil actual -->
               </div>
@@ -73,7 +72,7 @@
           </div>
 
           <!-- Información Personal -->
-          <div class="bg-white rounded-3xl border-2 border-gray-300 p-6 mb-6 shadow-sm">
+          <div class="bg-white rounded-3xl border-2 border-gray-300 p-6">
             <div class="flex justify-between items-center mb-6">
               <h2 class="text-xl font-semibold">Información personal</h2>
               <button class="bg-pire-green text-black px-6 py-2 rounded-full hover:bg-opacity-80 transition-colors"
@@ -107,7 +106,7 @@
           </div>
 
           <!-- Sección de Imagen y Contraseña en dos columnas -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Imagen de Perfil -->
             <div class="bg-white rounded-3xl border-2 border-gray-300 p-6 shadow-sm">
               <div class="flex justify-between items-center mb-6">
