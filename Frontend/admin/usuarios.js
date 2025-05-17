@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 let usuarios = [];
 console.log('usuarios.js cargado');
 
@@ -8,14 +9,14 @@ function cargarUsuarios() {
         window.location.href = '/login.html';
         return;
     }
-    fetch('http://127.0.0.1:8000/api/users', {
+    fetch(`${API_URL}/api/users`, {
         headers: {
             'Authorization': 'Bearer ' + token
         }
     })
     .then(res => res.json())
     .then(data => {
-        console.log('Usuarios recibidos:', data); // <-- Agrega esto
+        console.log('Usuarios recibidos:', data);
         if (!Array.isArray(data)) {
             alert(data.message || 'Error de autenticación');
             return;
@@ -73,7 +74,7 @@ function abrirModalEditar(id) {
 function eliminarUsuario(id) {
     const token = localStorage.getItem('jwt');
     if (!confirm('¿Seguro que deseas eliminar este usuario?')) return;
-    fetch(`http://127.0.0.1:8000/api/users/${id}/delete`, {
+    fetch(`${API_URL}/api/users/${id}/delete`, {
         method: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + token
@@ -83,11 +84,7 @@ function eliminarUsuario(id) {
     .then(() => cargarUsuarios());
 }
 
-// Quita el document.addEventListener('DOMContentLoaded', ...)
-// Y pon esto al final del archivo:
-
 (function() {
-    // Solo inicializar si existe el contenedor de usuarios
     if (!document.getElementById('tabla-usuarios')) return;
 
     cargarUsuarios();
@@ -123,7 +120,7 @@ function eliminarUsuario(id) {
 
         if (id) {
             // Editar usuario
-            fetch(`http://127.0.0.1:8000/api/users/${id}/edit`, {
+            fetch(`${API_URL}/api/users/${id}/edit`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +135,7 @@ function eliminarUsuario(id) {
             });
         } else {
             // Crear usuario
-            fetch('http://127.0.0.1:8000/api/user/create', {
+            fetch(`${API_URL}/api/user/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

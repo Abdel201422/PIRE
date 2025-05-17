@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 let comentarios = [];
 
 function cargarComentarios() {
@@ -7,7 +8,7 @@ function cargarComentarios() {
         window.location.href = '/login.html';
         return;
     }
-    fetch('http://127.0.0.1:8000/api/comentario/listar', {
+    fetch(`${API_URL}/api/comentario/listar`, {
         headers: {
             'Authorization': 'Bearer ' + token
         }
@@ -24,7 +25,7 @@ function mostrarComentarios(lista) {
     if (!tbody) return;
     tbody.innerHTML = '';
     lista.forEach(com => {
-        tr = document.createElement('tr');
+        const tr = document.createElement('tr');
         tr.innerHTML = `
             <td class="py-2 px-4 border-b">${com.id}</td>
             <td class="py-2 px-4 border-b">${com.comentario}</td>
@@ -42,7 +43,7 @@ function mostrarComentarios(lista) {
 function eliminarComentario(id) {
     const token = localStorage.getItem('jwt');
     if (!confirm('¿Seguro que deseas eliminar este comentario?')) return;
-    fetch(`http://127.0.0.1:8000/api/comentario/delete/${id}`, {
+    fetch(`${API_URL}/api/comentario/delete/${id}`, {
         method: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + token

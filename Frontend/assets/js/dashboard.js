@@ -1,6 +1,7 @@
 // js/dashboard.js
-import { infoUser} from './api/dataDashboard.js';
+import { infoUser } from './api/dataDashboard.js';
 import { loadBestDocuments } from './api/dataDashboard.js';
+import { API_URL } from './config.js';
 /* import { whoAdmin } from './api/dataDashboard.js'; */
 
 // Carga dinámica del componente header
@@ -109,14 +110,14 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 function cargarMisRecursos() {
-    const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
+    const mainContent = document.querySelector('main');
     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
 
     // Obtener los ciclos desde el backend
-    fetch('http://127.0.0.1:8000/api/ciclos/completos')
+    fetch(`${API_URL}/api/ciclos/completos`)
         .then(response => response.json())
         .then(data => {
-            mainContent.innerHTML = ''; // Limpia el contenido
+            mainContent.innerHTML = '';
             data.forEach(ciclo => {
                 const cicloDiv = document.createElement('div');
                 cicloDiv.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md', 'mb-4');
@@ -155,7 +156,7 @@ function cargarMisRecursos() {
 function cargarAsignaturas(codCiclo, container) {
     container.innerHTML = '<p class="text-gray-500">Cargando asignaturas...</p>';
 
-    fetch(`http://127.0.0.1:8000/api/ciclos/completos`)
+    fetch(`${API_URL}/api/ciclos/completos`)
         .then(response => response.json())
         .then(data => {
             container.innerHTML = '';
