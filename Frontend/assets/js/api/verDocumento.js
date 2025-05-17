@@ -1,4 +1,5 @@
 import { BACKEND_URL } from '../config.js'
+import { mostrarComentarios, sendComentario } from './getComentarios.js'
 
 const token = localStorage.getItem('jwt')
 
@@ -18,9 +19,56 @@ if (!documentoId) {
 document.addEventListener('DOMContentLoaded', () => {
     const documentoContainer = document.getElementById('document-preview')
     const downloadDocument = document.getElementById('downloadDocument')
+    const comentarButton = document.getElementById('comentarButton')
+    const textAreaComentar = document.getElementById('textAreaComentar')
+
+    if (comentarButton) {
+        comentarButton.addEventListener('click', () => {
+
+            if (textAreaComentar) {
+                sendComentario(textAreaComentar.value, documentoId)
+            }
+        })
+    }
 
     let url = ''
 
+    infoDocumento()
+    downloadDocumento(documentoContainer, downloadDocument, url)
+
+    // Agregar funcionalidad para puntuar documentos
+    const stars = document.querySelectorAll('#star-rating .star')
+    const starRatingButton = document.getElementById('submit-rating')
+    let puntuacionStar = 0
+
+    stars.forEach(star => {
+
+        star.addEventListener('click', () => {
+
+            puntuacionStar = star.getAttribute('data-value') // Obtener el valor de la estrella seleccionada
+            console.log('Puntuación seleccionada:', puntuacionStar)
+
+            // Marcar las estrellas seleccionadas
+            stars.forEach(s => {
+                if (s.getAttribute('data-value') <= puntuacionStar) {
+                    s.classList.add('selected')
+                } else {
+                    s.classList.remove('selected')
+                }
+            })
+        })
+    })
+
+    starRatingButton.addEventListener('click', () => {
+        if (puntuacionStar > 0) {
+            puntuarDocumento(documentoId, puntuacionStar)
+        }
+    })
+
+})
+
+// Descargar el documento
+function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
         fetch(`${BACKEND_URL}/api/documentos/download/${documentoId}`, {
             method: 'GET',
@@ -65,49 +113,54 @@ document.addEventListener('DOMContentLoaded', () => {
             a.remove()
             window.URL.revokeObjectURL(url)
         })
+    }
+}
 
-        // Cargar datos del documento para el frontend
-        fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` },
+// Cargar datos del documento para el frontend
+function infoDocumento() {
+    fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se pudo cargar la información del documento.')
+            }
+            return response.json()
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('No se pudo cargar la información del documento.')
-                }
-                return response.json()
-            })
-            .then(data => {
-                // Aquí puedes manejar los datos del documento
-                console.log(data)
+        .then(data => {
+            // Aquí puedes manejar los datos del documento
+            console.log(data)
 
-                // Datos del documento
-                const idTituloDocumento = document.getElementById('idTituloDocumento')
-                const nameAsignatura = document.getElementById('nameAsignatura')
-                const nameCurso = document.getElementById('nameCurso')
-                const nameCiclo = document.getElementById('nameCiclo')
-                const ratingValue = document.getElementById('rating-value')
+            // Datos del documento
+            const idTituloDocumento = document.getElementById('idTituloDocumento')
+            const descripcionDocumento = document.getElementById('descripcionDocumento')
+            const nameAsignatura = document.getElementById('nameAsignatura')
+            const nameCurso = document.getElementById('nameCurso')
+            const nameCiclo = document.getElementById('nameCiclo')
+            const ratingValue = document.getElementById('rating-value')
 
-                idTituloDocumento.textContent = data.titulo
-                nameAsignatura.textContent = data.asignatura
+            idTituloDocumento.textContent = data.titulo
+            descripcionDocumento.textContent = data.descripcion
+            nameAsignatura.textContent = data.asignatura
 
-                const cursoParte = data.curso.match(/\dº Curso/)
-                console.log(cursoParte)
-                nameCurso.textContent = cursoParte
-                nameCiclo.textContent = data.ciclo
-                ratingValue.textContent = data.puntuacion
+            const cursoParte = data.curso.match(/\dº Curso/)
+            console.log(cursoParte)
+            nameCurso.textContent = cursoParte
+            nameCiclo.textContent = data.ciclo
+            ratingValue.textContent = data.puntuacion
 
-                // Datos del usuario del documento
-                const nameUsuario = document.getElementById('nameUsuario')
-                nameUsuario.textContent = data.usuario.nombre + ' ' + data.usuario.apellido
+            // Datos del usuario del documento
+            const nameUsuario = document.getElementById('nameUsuario')
+            nameUsuario.textContent = data.usuario.nombre + ' ' + data.usuario.apellido
 
-                const userAvatar = document.getElementById('avatarUsuario')
-                if (userAvatar) {
-                    userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.usuario.avatar}" alt="Avatar">`
-                }
+            const userAvatar = document.getElementById('avatarUsuario')
+            if (userAvatar) {
+                userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.usuario.avatar}" alt="Avatar">`
+            }
 
-                const ratingValueTop = document.getElementById('rating-value-top')
-                ratingValueTop.innerHTML = `<span
+            const ratingValueTop = document.getElementById('rating-value-top')
+            ratingValueTop.innerHTML = `<span
                                     class="bg-[var(--color-orange-100)] px-4 py-2 rounded-full flex items-center gap-2">
                                     <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -117,19 +170,20 @@ document.addEventListener('DOMContentLoaded', () => {
                                     </svg>
                                     <span class="font-medium">${data.puntuacion}</span>
                                 </span>`
-            })
-            .catch(error => {
-                console.error('Error al cargar la información del documento:', error)
-            })
-    }
-})
+
+            mostrarComentarios(documentoId)
+        })
+        .catch(error => {
+            console.error('Error al cargar la información del documento:', error)
+        })
+}
 
 // Función para puntuar el documento
 function puntuarDocumento(documentoId, puntuacion) {
-    
+
     const token = localStorage.getItem('jwt') // Asegúrate de que el usuario esté autenticado
 
-    fetch(`http://127.0.0.1:8000/api/documentos/${documentoId}/puntuar`, {
+    fetch(`${BACKEND_URL}/api/documentos/${documentoId}/puntuar`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -144,7 +198,7 @@ function puntuarDocumento(documentoId, puntuacion) {
             } else {
                 alert('Puntuación registrada exitosamente.')
                 console.log('Puntuación registrada:', data.nuevaPuntuacion)
-                if(data.nuevaPuntuacion) {
+                if (data.nuevaPuntuacion) {
                     const ratingValue = document.getElementById('rating-value')
                     ratingValue.textContent = data.nuevaPuntuacion
                 }
@@ -154,33 +208,3 @@ function puntuarDocumento(documentoId, puntuacion) {
             console.error('Error al puntuar el documento:', err)
         })
 }
-
-// Agregar funcionalidad para puntuar documentos
-const stars = document.querySelectorAll('#star-rating .star')
-const starRatingButton = document.getElementById('submit-rating')
-let puntuacionStar = 0
-
-stars.forEach(star => {
-
-    star.addEventListener('click', () => {
-
-        puntuacionStar = star.getAttribute('data-value') // Obtener el valor de la estrella seleccionada
-        console.log('Puntuación seleccionada:', puntuacionStar)
-        
-        // Marcar las estrellas seleccionadas
-        stars.forEach(s => {
-            if (s.getAttribute('data-value') <= puntuacionStar) {
-                s.classList.add('selected')
-            } else {
-                s.classList.remove('selected')
-            }
-            
-        })
-    })
-})
-
-starRatingButton.addEventListener('click', () => {
-    if (puntuacionStar > 0) {
-        puntuarDocumento(documentoId, puntuacionStar)
-    }
-})

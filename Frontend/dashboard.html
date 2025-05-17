@@ -8,6 +8,9 @@
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/input.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <script type="module" src="./assets/js/dashboard.js"></script>
     <script>
         tailwind.config = {
@@ -16,7 +19,11 @@
                     colors: {
                         'pire-green': '#85E28C',
                         'pire-background': '#FAF8F4',
-                    }
+                        'pire-background-dashboard': '#FDFBF9',
+                    },
+                    fontFamily: {
+                        lexend: ['Lexend', 'sans'],
+                    },
                 }
             }
         }
@@ -24,7 +31,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-pire-background font-sans">
+<body class="bg-pire-background-dashboard font-lexend">
 
     <div class="flex h-screen">
         <!-- Sidebar -->
@@ -41,19 +48,16 @@
                 <div class="grid grid-cols-3 gap-4 p-4">
                     <!-- Bienvenida -->
                     <div id="seccion-bienvenida"
-                        class="col-span-2 bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        class="col-span-2 bg-white rounded-3xl p-6 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <h1 class="text-4xl font-bold mb-2">Bienvenido, <span id="userName"
                                 class="text-green-400">user</span></h1>
                         <h2 class="text-xl font-semibold mb-4">¿Listo para compartir, descubrir y aprender algo nuevo
                             hoy?</h2>
-                        <div id="userInfo" class="mt-4">
-                            <!-- Aquí se mostrarán los detalles del usuario -->
-                        </div>
                     </div>
 
                     <!-- Actividad reciente -->
                     <div id="seccion-actividad"
-                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        class="bg-white rounded-3xl p-6 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <div class="flex items-center mb-4">
                             <div class="bg-pire-green p-3 rounded-full mr-3">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,19 +69,14 @@
 
                         <ul id="lista-actividad" class="space-y-3 ml-4">
                             <!-- Pillar de la base de datos el ultimo recurso subido por el usuario e insertarlo con esta estructura de ejemplo: -->
-                            <li class="flex items-center">
+                            <li class="flex">
                                 <span class="text-brown-600 mr-2">📚</span>
-                                Subiste "Apuntes de Historia" hace 1 día
+                                <p>Subiste "<span id="ultimoDocumento" class="font-bold"></span>" <span id="ultimoDocumentoFecha"></span></p>
                             </li>
                             <!-- Pillar de la base de datos la ultima valoración recibida e insertarla con esta estructura de ejemplo: -->
-                            <li class="flex items-center">
+                            <li class="flex">
                                 <span class="text-yellow-500 mr-2">⭐</span>
-                                Recibiste una valoración de 5 estrellas
-                            </li>
-                            <!-- Si queremos hacer este apartado necesitamos CREAR OTRA ENTIDAD BIBLIOTECA que almacene los recursos descargados por el usuario, habría que pillar de la base de datos el ultimo recurso descargado por el usuario e insertarlo con esta estructura de ejemplo: -->
-                            <li class="flex items-center">
-                                <span class="text-blue-500 mr-2">📥</span>
-                                Descargaste "Resumen de Matemáticas"
+                                <p>Recibiste una valoración de <span id="ultimaPuntuacion" class="font-bold"></span> estrellas</p>
                             </li>
                         </ul>
                     </div>
@@ -87,7 +86,7 @@
                 <div id="seccion-estadisticas" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 px-4">
                     <!-- Recursos subidos -->
                     <div id="card-recursos"
-                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        class="bg-white rounded-3xl p-6 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <div class="flex items-center mb-3">
                             <div class="bg-pire-green p-3 rounded-full mr-3">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +103,7 @@
 
                     <!-- Valoraciones -->
                     <div id="card-valoraciones"
-                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        class="bg-white rounded-3xl p-6 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <div class="flex items-center mb-3">
                             <div class="bg-pire-green p-3 rounded-full mr-3">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -121,7 +120,7 @@
 
                     <!-- Comentarios -->
                     <div id="card-comentarios"
-                        class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        class="bg-white rounded-3xl p-6 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <div class="flex items-center mb-3">
                             <div class="bg-pire-green p-3 rounded-full mr-3">
                                 <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,60 +130,16 @@
                             <h3 class="text-lg font-semibold">Comentarios</h3>
                         </div>
                         <div class="ml-2">
-                            <h2 class="text-4xl font-bold">5</h2>
+                            <h2 id="userComentarios" class="text-4xl font-bold"></h2>
                             <p class="text-gray-500">comentarios</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Asignaturas -->
-
-                <!-- Pillar de la base de datos algunas asignaturas e insertarlas con esta estructura dentro del div con id "seccion-asignaturas"  -->
-                <div id="seccion-asignaturas" class="flex flex-wrap gap-3 mb-4 px-4">
-                    <div
-                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                        <div class="bg-green-100 p-2 rounded-full mr-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
-                            </svg>
-                        </div>
-                        <span class="text-sm font-medium">Todos</span>
-                    </div>
-
-                    <div id="asignatura-uno"
-                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                        <div class="bg-green-100 p-2 rounded-full mr-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
-                            </svg>
-                        </div>
-                        <span class="text-sm font-medium">Asignatura 1</span>
-                    </div>
-
-                    <div id="asignatura-dos"
-                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                        <div class="bg-green-100 p-2 rounded-full mr-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
-                            </svg>
-                        </div>
-                        <span class="text-sm font-medium">Asignatura 2</span>
-                    </div>
-
-                    <div id="asignatura-tres"
-                        class="flex items-center bg-white rounded-full px-5 py-2.5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                        <div class="bg-green-100 p-2 rounded-full mr-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15.2773 2C15.8741 2 16.4472 2.23723 16.8691 2.65918L19.3418 5.13184L19.4912 5.29688C19.8191 5.69721 20 6.20063 20 6.72266V16.75C20 17.9926 18.9926 19 17.75 19H16.248V19.75C16.2478 20.9924 15.2405 22 13.998 22H6.24805C5.00557 22 3.99831 20.9924 3.99805 19.75V7.24902C3.99805 6.00638 5.00541 4.99902 6.24805 4.99902H7.00391V4.25C7.00391 3.00736 8.01127 2 9.25391 2H15.2773ZM6.24805 6.49902C5.83383 6.49902 5.49805 6.83481 5.49805 7.24902V19.75C5.49831 20.164 5.834 20.5 6.24805 20.5H13.998C14.4121 20.5 14.7478 20.164 14.748 19.75V19H9.25391C8.01127 19 7.00391 17.9926 7.00391 16.75V6.49902H6.24805ZM9.25391 3.5C8.83969 3.5 8.50391 3.83579 8.50391 4.25V16.75C8.50391 17.1642 8.83969 17.5 9.25391 17.5H17.75C18.1642 17.5 18.5 17.1642 18.5 16.75V6.72266C18.5 6.57342 18.4556 6.42898 18.374 6.30664L18.2803 6.19238L15.8076 3.71973C15.667 3.57919 15.4762 3.5 15.2773 3.5H9.25391Z" fill="#1C1C1C"/>
-                            </svg>
-                        </div>
-                        <span class="text-sm font-medium">Asignatura 3</span>
-                    </div>
-                </div>
 
                 <!-- Recursos populares -->
                 <div id="seccion-populares"
-                    class="flex flex-col flex-grow bg-white rounded-xl p-6 border border-gray-300 mx-4 mb-4 h-full">
+                    class="flex flex-col flex-grow bg-white rounded-3xl p-6 border-2 border-gray-300 mx-4 mb-4 h-full">
                     <h2 class="text-xl font-semibold mb-4">Los recursos más populares</h2>
                     <div id="grid-recursos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow h-full">
                         <!-- Los documentos se generan aquí -->

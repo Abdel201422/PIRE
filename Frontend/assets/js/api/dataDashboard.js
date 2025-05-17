@@ -29,11 +29,14 @@ export function infoUser() {
                 const userName = document.getElementById('userName')
                 const userNameComplete = document.getElementById('userNameComplete')
                 const userNumDocumentos = document.getElementById('userNumDocumentos')
+                const userComentarios = document.getElementById('userComentarios')
+                const ultimoDocumento = document.getElementById('ultimoDocumento')
+                const ultimoDocumentoFecha = document.getElementById('ultimoDocumentoFecha')
+                const ultimaPuntuacion = document.getElementById('ultimaPuntuacion')
+
                 // Nuevos elementos para el header
                 const dropdownUserName = document.getElementById('dropdown-userName')
                 const dropdownUserEmail = document.getElementById('dropdown-userEmail')
-                
-
                 const userPuntuacion = document.getElementById('userPuntuacion')
                 const userAvatar = document.getElementById('user-avatar')
                 const userAdmin = document.getElementById('enlace-administrar')
@@ -42,14 +45,9 @@ export function infoUser() {
                     ui.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
                 } else {
                     
-                    if (userName) userName.textContent = data.user.nombre
-                    if (userNameComplete) userNameComplete.textContent = data.user.nombreCompleto
-                    
                     if (dropdownUserName) dropdownUserName.textContent = data.user.nombreCompleto
                     if (dropdownUserEmail) dropdownUserEmail.textContent = data.user.email
-                    
-                    
-                    
+
                     if (userName) {
                         userName.textContent = data.user.nombre
                     }
@@ -66,6 +64,22 @@ export function infoUser() {
                         userPuntuacion.textContent = data.user.puntuacion
                     }
 
+                    if (userComentarios) {
+                        userComentarios.textContent = data.user.nComentarios
+                    }
+
+                    if (ultimoDocumento) {
+                        ultimoDocumento.textContent = data.user.ultimoDocumento.titulo
+                    }
+
+                    if (ultimoDocumentoFecha) {
+                        ultimoDocumentoFecha.textContent = data.user.ultimoDocumento.fechaSubida
+                    }
+
+                    if (ultimaPuntuacion) {
+                        ultimaPuntuacion.textContent = data.user.ultimaValoracion
+                    }
+
                     if (userAvatar) {
                         userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.user.avatar}" alt="Avatar">`
                     }
@@ -76,6 +90,10 @@ export function infoUser() {
                         } else {
                             userAdmin.classList.add('hidden')
                         }
+                    }
+
+                    window.USER_INFO = {
+                        id: data.user.id
                     }
                 }
             })
@@ -126,7 +144,7 @@ export function loadBestDocuments() {
                         const div = document.createElement('div')
                         div.innerHTML = `
                         <a href="/documento.html?id=${doc.id}" class="h-full">
-                        <div class="flex flex-col h-full justify-between bg-white rounded-xl p-5 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <div class="flex flex-col h-full justify-between bg-[var(--color-gray-50)] rounded-3xl p-5 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                             <div>
                                 <div class="mb-2 text-xs text-green-600">${doc.asignatura}</div>
                                 <h3 class="font-medium text-xl mb-2">${doc.titulo}</h3>

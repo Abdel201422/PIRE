@@ -1,4 +1,5 @@
-import { BACKEND_URL } from '../config.js'
+// js/search.js
+import { BACKEND_URL } from '../config.js';
 
 const token = localStorage.getItem('jwt')
 
@@ -6,47 +7,53 @@ if (!token) {
     window.location.href = '/login.html'
 }
 
-// Obtener el parámetro "codigo" de la URL
-const urlParams = new URLSearchParams(window.location.search);
-const codigoAsignatura = urlParams.get('codigo');
+export function searchAll() {
+    const inputSearch = document.getElementById('input-busqueda')
+    
+    inputSearch.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
 
-if (!codigoAsignatura) {
-    alert('No se ha especificado una asignatura válida.');
-    window.location.href = '/education.html'; // Redirigir si no hay código
+            const query = e.target.value.trim()
+            if (query.length > 0) {
+                // Redirige a la página de resultados de búsqueda con el término como parámetro
+                window.location.href = `/search.html?query=${encodeURIComponent(query)}`
+            }
+        }
+    })
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const documentosContainer = document.getElementById('documentosContainer')
+export function searchDocument() {
+
+    const params = new URLSearchParams(window.location.search);
+const query = params.get('query');
+
+if (query) {
+    const inputSearch = document.getElementById('input-busqueda')
+
+    if (inputSearch) {
+        inputSearch.value = query
+    }
     
-    getDocumentos()
-
-    function getDocumentos() {
-        fetch(`${BACKEND_URL}/asignatura/${codigoAsignatura}`, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` },
-        })
-        .then(response => response.json())
-        .then(data => {
-            documentosContainer.innerHTML = '' // Limpiar contenedor
-
-            if (data.documentos.length == 0) {
-                documentosContainer.innerHTML = '<p>No hay documentos disponibles para esta asignatura.</p>'
-                return
+    fetch(`${BACKEND_URL}/api/documentos/search?query=${encodeURIComponent(query)}`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se pudo cargar los documentos.')
             }
 
-            console.log(data.asignatura)
+            return response.json()
+        })
+        .then(data => mostrarResultados(data.documentos))
+}
 
-            const rutaCiclo = data.asignatura.ciclo
-            const rutaCurso = data.asignatura.curso.match(/\dº Curso/)
-            const rutaAsignatura = data.asignatura.nombre
+// Renderiza los resultados en la página
+function mostrarResultados(documentos) {
 
-            const ruta = document.getElementById('ruta')
-            ruta.textContent = `${rutaCiclo} > ${rutaCurso} > ${rutaAsignatura}`
-
-            const nameAsignatura = document.getElementById('nameAsignatura')
-            nameAsignatura.textContent = data.asignatura.nombre
-
-            data.documentos.forEach(documento => {
+    const documentosContainer = document.getElementById('documentosContainer')
+    console.log(documentos)
+    documentos.forEach(documento => {
 
                 const docDiv = document.createElement('div')
                 docDiv.classList.add('flex', 'flex-row', 'gap-6', 'p-6', 'border-2', 'border-gray-300', 'rounded-3xl', 'cursor-pointer', 'hover:bg-green-100', 'hover:border-pire-green', 'transition-all', 'duration-200')
@@ -98,10 +105,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 documentosContainer.append(docDiv)
             })
-        })
-        .catch(error => {
-            console.error('Error al cargar documentos:', error)
-            documentosContainer.innerHTML = '<p>Error al cargar los documentos.</p>'
-        })
-    }   
-})
+}
+}

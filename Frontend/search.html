@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asignaturas</title>
+    <title>Explorar cursos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/input.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <script type="module" src="./assets/js/dashboard.js"></script>
-    <script type="module" src="./assets/js/api/getDocumentos.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -28,32 +27,26 @@
             }
         }
     </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-
 <body class="bg-pire-background-dashboard font-lexend">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
 
         <!-- Contenido principal -->
-        <div class="flex-1 flex flex-col w-full">
+        <div class="flex-1 flex flex-col">
             <!-- Header -->
             <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
             <!-- Dashboard Content -->
-            <main class="flex-1 overflow-y-auto p-0 flex-col max-w-6xl mx-auto w-full">
-                <div
-                    class="bg-[var(--color-gray-50)] rounded-3xl flex flex-col gap-4 p-6 border-2 border-gray-300 mx-4 mb-4 mt-4 max-w-full">
-                        <span id="ruta">ruta</span>
-                        <h2 id="nameAsignatura" class="text-xl font-semibold"></h2>
-                        <div id="documentosContainer" class="flex flex-col gap-6">
-            <!-- Aquí se cargarán los documentos dinámicamente -->
-        </div>
+            <main class="flex-1 overflow-y-auto max-w-screen-2xl w-full mx-auto">
+                <div class="bg-[var(--color-gray-50)] rounded-3xl flex flex-col gap-4 p-6 border-2 border-gray-300 mx-4 mb-4 mt-4 max-w-full">
+                        <!-- Aquí se cargarán los documentos dinámicamente -->
+                        <div id="documentosContainer" class="flex flex-col gap-6"></div>
                 </div>
             </main>
         </div>
     </div>
+    <script type="module" src="./assets/js/api/search.js"></script>
 </body>
-
 </html>
