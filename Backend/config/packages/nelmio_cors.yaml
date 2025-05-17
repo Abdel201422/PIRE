@@ -2,12 +2,7 @@
 nelmio_cors:
     defaults:
         origin_regex: true
-        allow_origin:
-            - 'http://localhost:3000'
-            - 'http://localhost'
-            - 'http://127.0.0.1:8000'
-            - 'http://127.0.0.1'
-            - 'https://insightful-enchantment-production.up.railway.app'   # <--- Agrega tu frontend Railway aquí
+        allow_origin: ['http://localhost:3000', 'http://localhost', 'http://127.0.0.1:8000', 'http://127.0.0.1', 'https://insightful-enchantment-production.up.railway.app']
         allow_credentials: true
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
         allow_headers: ['Content-Type', 'Authorization']
@@ -16,24 +11,14 @@ nelmio_cors:
 
     paths:
         '^/api/':
-            allow_origin:
-                - 'http://localhost:3000'
-                - 'http://localhost'
-                - 'http://127.0.0.1:8000'
-                - 'http://127.0.0.1'
-                - 'https://insightful-enchantment-production.up.railway.app'   # <--- También aquí
+            allow_origin: ['http://localhost:3000', 'http://localhost', 'http://127.0.0.1:8000', 'http://127.0.0.1', 'https://insightful-enchantment-production.up.railway.app']
             allow_credentials: true
             allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
             allow_headers: ['Content-Type', 'Authorization']
             max_age: 3600
 
         '^/dashboard$':
-            allow_origin:
-                - 'http://localhost:3000'
-                - 'http://localhost'
-                - 'http://127.0.0.1:8000'
-                - 'http://127.0.0.1'
-                - 'https://insightful-enchantment-production.up.railway.app'   # <--- También aquí si lo necesitas
+            allow_origin: ['http://localhost:3000', 'http://localhost', 'http://127.0.0.1:8000', 'http://127.0.0.1', 'https://insightful-enchantment-production.up.railway.app']
             allow_credentials: true
             allow_methods: ['GET', 'OPTIONS']
             allow_headers: ['Content-Type', 'Authorization']
