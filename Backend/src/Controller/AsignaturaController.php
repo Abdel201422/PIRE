@@ -85,6 +85,11 @@ final class AsignaturaController extends AbstractController
             if (empty($data['codigo']) || empty($data['nombre']) || empty($data['curso_id'])) {
                 return $this->json(['error' => 'Faltan datos obligatorios (codigo, nombre, curso_id)'], Response::HTTP_BAD_REQUEST);
             }
+            
+            // Validar longitud del código (máximo 4 caracteres)
+            if (strlen($data['codigo']) > 4) {
+                return $this->json(['error' => 'El código debe tener como máximo 4 caracteres'], Response::HTTP_BAD_REQUEST);
+            }
 
             // Comprobar si ya existe
             if ($asignaturaRepository->findOneBy(['codigo' => $data['codigo']])) {

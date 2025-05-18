@@ -107,6 +107,11 @@ final class CicloController extends AbstractController
                 return $this->json(['error' => 'Faltan datos obligatorios (cod_ciclo, nombre)'], Response::HTTP_BAD_REQUEST);
             }
 
+            // Validar longitud del código (exactamente 3 caracteres)
+            if (strlen($data['cod_ciclo']) != 3) {
+                return $this->json(['error' => 'El código del ciclo debe tener exactamente 3 caracteres'], Response::HTTP_BAD_REQUEST);
+            }
+
             // Comprobar si ya existe
             if ($cicloRepository->findOneBy(['cod_ciclo' => $data['cod_ciclo']])) {
                 return $this->json(['error' => 'Ya existe un ciclo con ese código'], Response::HTTP_CONFLICT);
@@ -120,6 +125,9 @@ final class CicloController extends AbstractController
 
             $entityManager->persist($ciclo);
             $entityManager->flush();
+
+            // Crear automáticamente dos cursos para este ciclo
+            $this->createDefaultCourses($ciclo, $entityManager);
 
             return $this->json([
                 'message' => 'Ciclo creado correctamente',
@@ -237,5 +245,27 @@ public function updateDeleteCiclo(
 
     return $this->json(['error' => 'Método no permitido'], Response::HTTP_METHOD_NOT_ALLOWED);
 }
+
+    /**
+     * Crea automáticamente dos cursos para un ciclo recién creado
+     */
+    private function createDefaultCourses(Ciclo $ciclo, EntityManagerInterface $entityManager): void
+    {
+        // Curso 1: Primero
+        $curso1 = new \App\Entity\Curso();
+        $curso1->setCodCurso($ciclo->getCodCiclo() . '1'); // Ejemplo: DAW1
+        $curso1->setNombre('1º Curso '. $ciclo->getNombre());
+        $curso1->setCiclo($ciclo);
+        $entityManager->persist($curso1);
+        
+        // Curso 2: Segundo
+        $curso2 = new \App\Entity\Curso();
+        $curso2->setCodCurso($ciclo->getCodCiclo() . '2'); // Ejemplo: DAW2
+        $curso2->setNombre('2º Curso '. $ciclo->getNombre());
+        $curso2->setCiclo($ciclo);
+        $entityManager->persist($curso2);
+        
+        $entityManager->flush();
+    }
 
 }

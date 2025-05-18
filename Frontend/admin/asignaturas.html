@@ -109,7 +109,7 @@
                 <div id="modal-confirmar" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                     <div class="bg-white rounded-xl p-6 w-full max-w-md">
                         <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
-                        <p class="mb-6">¿Estás seguro de que deseas eliminar esta asignatura? Esta acción no se puede deshacer.</p>
+                        <p class="mb-6">¿Estás seguro de que deseas eliminar esta asignatura? Esta acción eliminará todos los documentos, valoraciones y cometnarios asociados. Además no se puede deshacer.</p>
                         <div class="flex justify-end gap-2">
                             <button id="btn-cancelar-eliminar" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Cancelar</button>
                             <button id="btn-confirmar-eliminar" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Eliminar</button>
@@ -443,7 +443,10 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
+                    // Capturar la respuesta de error para leer el mensaje
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+                    });
                 }
                 return response.json();
             })
@@ -453,7 +456,8 @@
             })
             .catch(error => {
                 console.error('Error al guardar asignatura:', error);
-                alert('Error al guardar la asignatura. Por favor, intenta de nuevo.');
+                // Mostrar el mensaje de error específico
+                alert(error.message || 'Error al guardar la asignatura. Por favor, intenta de nuevo.');
                 
                 if (error.message.includes('401')) {
                     localStorage.removeItem('jwt');

@@ -19,7 +19,7 @@ class Ciclo
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $descripcion = null;
 
-    #[ORM\OneToMany(mappedBy: 'ciclo', targetEntity: Curso::class)]
+    #[ORM\OneToMany(mappedBy: 'ciclo', targetEntity: Curso::class, cascade: ["remove"])]
     private Collection $cursos;
 
     public function __construct()
@@ -29,7 +29,7 @@ class Ciclo
 
     // Getters y Setters
     public function getCodCiclo(): string { return $this->cod_ciclo; }
-    public function setCodCiclo(string $cod_ciclo): self { $this->cod_ciclo = $cod_ciclo; return $this; }
+    public function setCodCiclo(string $cod_ciclo): self { $this->cod_ciclo = strtoupper($cod_ciclo); return $this; }
     public function getNombre(): ?string { return $this->nombre; }
     public function setNombre(string $nombre): self { $this->nombre = $nombre; return $this; }
     public function getDescripcion(): ?string { return $this->descripcion; }

@@ -6,15 +6,15 @@ import { searchAll, searchDocument } from './api/search.js'
 
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
-
+    
     infoUser()
     loadBestDocuments()
-
+    
     // Cargar dinámicamente el Header
     const headerContainer = document.getElementById('header_dashboard');
     if (headerContainer) {
         fetch('/components/header_dashboard.html')
-            .then(response => response.text())
+        .then(response => response.text())
             .then(html => {
                 headerContainer.innerHTML = html;
 
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (editarPerfilLink) {
                         editarPerfilLink.addEventListener('click', function(e) {
                             e.preventDefault();
-                            window.location.href = 'configuracion_perfil.html';
+                            window.location.href = '../configuracion_perfil.html';
                         });
                     }
                     
@@ -65,22 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     dropdown.addEventListener('click', function(e) {
                         e.stopPropagation();
                     });
-
+                    
                     searchAll()
                     searchDocument()
                 }
             })
             .catch(error => console.error('Error al cargar el header:', error));
-    }
-
-    // Cargar dinámicamente el Sidebar
-    const sidebarContainer = document.getElementById('sidebar');
-    if (sidebarContainer) {
-        fetch('/components/sidebar.html')
+        }
+        
+        // Cargar dinámicamente el Sidebar
+        const sidebarContainer = document.getElementById('sidebar');
+        if (sidebarContainer) {
+            fetch('/components/sidebar.html')
             .then(response => response.text())
             .then(html => {
                 sidebarContainer.innerHTML = html;
-
+                
                 // 💡 En este punto el elemento ya existe en el DOM
                 const logoutLink = document.getElementById('logoutLink');
                 if (logoutLink) {
@@ -90,30 +90,30 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = '/';
                     });
                 }
-
+                
                 /* // Asignar el evento de clic al enlace "Mis Recursos"
                 const enlaceMisRecursos = document.getElementById('enlace-recursos');
                 if (enlaceMisRecursos) {
                     enlaceMisRecursos.addEventListener('click', function (e) {
                         e.preventDefault(); // Evita el comportamiento predeterminado del enlace
                         cargarMisRecursos(); // Llama a la función para cargar los ciclos
-                    });
-                } */
+                        });
+                        } */
+                    })
+                    .catch(error => console.error('Error al cargar el sidebar:', error));
+                }
             })
-            .catch(error => console.error('Error al cargar el sidebar:', error));
-    }
-})
-
-/* function cargarMisRecursos() {
-    const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
-
-    // Obtener los ciclos desde el backend
-    fetch('http://127.0.0.1:8000/api/ciclos/completos') 
-        .then(response => response.json())
-        .then(data => {
-            mainContent.innerHTML = ''; // Limpia el contenido
-            data.forEach(ciclo => {
+            
+            /* function cargarMisRecursos() {
+                const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
+                mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
+                
+                // Obtener los ciclos desde el backend
+                fetch('http://127.0.0.1:8000/api/ciclos/completos') 
+                .then(response => response.json())
+                .then(data => {
+                    mainContent.innerHTML = ''; // Limpia el contenido
+                    data.forEach(ciclo => {
                 const cicloDiv = document.createElement('div');
                 cicloDiv.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md', 'mb-4');
                 cicloDiv.innerHTML = `

@@ -48,10 +48,10 @@ class Documento
     #[ORM\Column(length: 50)]
     private ?string $tipo_archivo = null;
 
-    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Valoracion::class)]
+    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Valoracion::class, cascade: ["remove"])]
     private Collection $valoraciones;
 
-    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Comentario::class)]
+    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Comentario::class, cascade: ["remove"])]
     private Collection $comentarios;
 
     

@@ -46,30 +46,34 @@ class DashboardController extends AbstractController
             $puntuacionPromedio = round($puntuacionPromedio, 1);
         }
 
+        // Inicialización de variables
+        $ultimoDoc = null;
+        $textoTiempo = 'N/A';
+
         // Obtener el último documento subido por el usuario
         $ultimoDocumento = $this->documentoRepository->findOneBy(['user' => $user], ['fecha_subida' => 'DESC']);
-        $fecha = $ultimoDocumento->getFechaSubida();
-        $fechaAhora = new \DateTime();
-
-        $diff = $fechaAhora->diff($fecha);
-        $dias = $diff->days;
-
-        $textoTiempo = '';
         
-        if ($dias === 0) { $textoTiempo = 'hoy';
-        } elseif ($dias === 1) { $textoTiempo = 'hace 1 día';
-        } else { $textoTiempo = 'hace ' . $dias . ' días';
-        }
-
         if ($ultimoDocumento) {
+            $fecha = $ultimoDocumento->getFechaSubida();
+            $fechaAhora = new \DateTime();
+
+            $diff = $fechaAhora->diff($fecha);
+            $dias = $diff->days;
+
+            if ($dias === 0) { $textoTiempo = 'hoy';
+            } elseif ($dias === 1) { $textoTiempo = 'hace 1 día';
+            } else { $textoTiempo = 'hace ' . $dias . ' días';
+            }
+
             $ultimoDoc = [
                 'titulo' => $ultimoDocumento->getTitulo(),
                 'fechaSubida' => $textoTiempo,
-                ];
+            ];
         }
 
         // Obtener la última valoración
         $ultimaValoracion = $this->valoracionRepository->findUltimaPuntuacionRecibida($user);
+        $ultimaPuntuacion = $ultimaValoracion ? $ultimaValoracion->getPuntuacion() : 0;
 
         return new JsonResponse([
             'user' => [
@@ -84,7 +88,7 @@ class DashboardController extends AbstractController
                 'avatar' => $user->getAvatar(),
                 'puntuacion' => $puntuacionPromedio,
                 'ultimoDocumento' => $ultimoDoc,
-                'ultimaValoracion' => $ultimaValoracion->getPuntuacion(),
+                'ultimaValoracion' => $ultimaPuntuacion,
             ]
         ]);
     }

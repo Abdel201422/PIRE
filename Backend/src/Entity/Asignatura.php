@@ -20,7 +20,7 @@ class Asignatura
     #[ORM\JoinColumn(name: "curso_cod_curso", referencedColumnName: "cod_curso", nullable: false)]
     private ?Curso $curso = null;
     
-    #[ORM\OneToMany(mappedBy: 'asignatura', targetEntity: Documento::class)]
+    #[ORM\OneToMany(mappedBy: 'asignatura', targetEntity: Documento::class, cascade: ["remove"])]
     private Collection $documentos;
     
     public function __construct()
@@ -56,7 +56,7 @@ class Asignatura
     
     public function setCodigo(string $codigo): self 
     { 
-        $this->codigo = $codigo; return $this; 
+        $this->codigo = strtoupper($codigo); return $this; 
     }
     /**
      * @return Collection<int, Documento>
