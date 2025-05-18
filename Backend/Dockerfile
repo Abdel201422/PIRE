@@ -39,8 +39,7 @@ RUN php bin/console cache:clear --no-warmup --env=prod \
 # 10. Ajustar permisos
 RUN chown -R www-data:www-data var/ vendor/
 
-# 11. Exponer puerto
-EXPOSE 9000
+RUN php bin/console lexik:jwt:generate-keypair
 
-# 12. Comando final
-CMD ["php-fpm"]
+# 11. Comando final: Servidor embebido de Symfony
+CMD ["symfony", "server:start", "--no-tls", "--port=${PORT:-8080}", "--allow-http", "--ansi"]
