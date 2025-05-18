@@ -1,7 +1,7 @@
 # config/packages/nelmio_cors.yaml
 nelmio_cors:
     defaults:
-        origin_regex: true
+        origin_regex: false
         allow_origin: ['http://localhost:3000', 'http://localhost', 'http://127.0.0.1:8000', 'http://127.0.0.1', 'https://insightful-enchantment-production.up.railway.app']
         allow_credentials: true
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
