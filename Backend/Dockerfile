@@ -39,13 +39,8 @@ RUN php bin/console cache:clear --no-warmup --env=prod \
 # 10. Ajustar permisos
 RUN chown -R www-data:www-data var/ vendor/
 
-RUN php bin/console lexik:jwt:generate-keypair
+# 11. Exponer puerto
+EXPOSE 9000
 
-# 11. Comando final: Servidor embebido de Symfony
-CMD ["symfony", "server:start", "--no-tls", "--port=${PORT:-8080}", "--allow-http", "--ansi"]
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-# Usa el entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+# 12. Comando final
+CMD ["php-fpm"]
