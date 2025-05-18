@@ -43,3 +43,9 @@ RUN php bin/console lexik:jwt:generate-keypair
 
 # 11. Comando final: Servidor embebido de Symfony
 CMD ["symfony", "server:start", "--no-tls", "--port=${PORT:-8080}", "--allow-http", "--ansi"]
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Usa el entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
