@@ -1,6 +1,15 @@
 <!-- components/header.html -->
- <header class="bg-pire-background border-b-2 border-gray-300 z-10">
+<header class="bg-pire-background border-b-2 border-gray-300 z-10">
         <div class="px-4 py-3 flex items-center justify-between">
+            <!-- Botón de hamburguesa para móviles -->
+            <div id="mobile-menu-button" class="md:hidden">
+                <button class="p-2 rounded-md text-gray-700 hover:bg-pire-green/10 focus:outline-none">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H21V8H3V6ZM3 11H21V13H3V11ZM3 16H21V18H3V16Z" fill="#1C1C1C"/>
+                </svg>
+            </button>
+            </div>
+
             <!-- Barra de búsqueda -->
             <div id="barra-busqueda" class="relative flex-1 max-w-lg">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
@@ -9,7 +18,7 @@
                     </svg>
                         
                 </span>
-                <input id="input-busqueda" type="text" class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full bg-[var(--color-gray-50)] focus:outline-none focus:border-gray-300 text-sm" placeholder="Busca asignaturas o documentos">
+                <input id="input-busqueda" type="text" class="block md:w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full bg-[var(--color-gray-50)] focus:outline-none focus:border-gray-300 text-sm" placeholder="Busca asignaturas o documentos">
             </div>
             
             <!-- User Info -->
@@ -17,8 +26,8 @@
                 <div class="flex items-center relative cursor-pointer gap-2" id="user-info">
                     <div class="h-8 w-8 rounded-full bg-[#FDFDFD] flex items-center justify-center cursor-pointer overflow-hidden" id="user-avatar">
                     </div>
-                    <div class="mr-3 text-right">
-                        <div id="userNameComplete" class="text-sm font-medium text-gray-700">Nombre Usuario</div>
+                    <div class="mr-3 text-right hidden md:block">
+                        <div id="userNameComplete" class="text-sm font-medium text-gray-700"></div>
                     </div>
                     
                     

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario - PIRE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/input.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <script type="module" src="./assets/js/dashboard.js"></script>
+    <script type="module" src="./assets/js/api/getDocumentosUser.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pire-green': '#85E28C',
+                        'pire-background': '#FAF8F4',
+                        'pire-background-dashboard': '#FDFBF9',
+                    },
+                    fontFamily: {
+                        lexend: ['Lexend', 'sans'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-pire-background-dashboard font-lexend">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
+
+        <!-- Contenido principal -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header -->
+            <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
+
+            <!-- Dashboard Content -->
+            <main class="flex-1 overflow-y-auto p-0 flex-col max-w-6xl mx-auto w-full">
+                <div class="flex flex-col p-4 gap-4">
+
+                    <!-- Documentos más populares -->
+                    <div class="bg-white rounded-3xl border-2 border-gray-300 p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-semibold">Tus documentos más populares</h2>
+                        </div>
+
+                        <!-- Document List -->
+                        <div id="documentosContainer" class="divide-y divide-gray-200">
+                            <div class="flex justify-between px-6 py-4 text-sm">
+                                <span>Título del documento</span>
+                                <span>Valoraciones</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+        <!-- <div class="flex justify-center">
+            <nav class="inline-flex rounded-md shadow">
+                <a href="#" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Anterior</span>
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-blue-600 hover:bg-blue-50">
+                    1
+                </a>
+                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    2
+                </a>
+                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    3
+                </a>
+                <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    ...
+                </a>
+                <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    8
+                </a>
+                <a href="#" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Siguiente</span>
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </nav>
+        </div> -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+
+    <script type="module" src="./assets/js/api/dataConfiguracion_perfil.js"></script>
+</body>
+
+</html>

@@ -45,7 +45,7 @@
             <!-- Dashboard Content -->
             <main class="flex-1 overflow-y-auto p-0 flex flex-col max-w-screen-2xl w-full h-full mx-auto">
                 <!-- Sección superior: Bienvenida y Actividad reciente -->
-                <div class="grid grid-cols-3 gap-4 p-4">
+                <div class="flex flex-col md:grid md:grid-cols-3 gap-4 p-4">
                     <!-- Bienvenida -->
                     <div id="seccion-bienvenida"
                         class="col-span-2 bg-white rounded-3xl p-6 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
@@ -139,9 +139,9 @@
 
                 <!-- Recursos populares -->
                 <div id="seccion-populares"
-                    class="flex flex-col flex-grow bg-white rounded-3xl p-6 border-2 border-gray-300 mx-4 mb-4 h-full">
+                    class="flex flex-col flex-grow bg-white rounded-3xl p-6 border-2 border-gray-300 mx-4 mb-4">
                     <h2 class="text-xl font-semibold mb-4">Los recursos más populares</h2>
-                    <div id="grid-recursos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow h-full">
+                    <div id="grid-recursos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow">
                         <!-- Los documentos se generan aquí -->
                     </div>
                 </div>

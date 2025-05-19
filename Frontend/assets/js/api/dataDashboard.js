@@ -99,6 +99,7 @@ export function infoUser() {
             })
             .catch(err => {
                 console.error('Error:', err)
+                window.location.href = '/login.html'
                 document.getElementById('userInfo').innerHTML =
                     `<p style="color: red">Error al cargar el dashboard.</p>`
             })
