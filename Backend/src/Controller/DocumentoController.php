@@ -43,6 +43,30 @@ public function index(DocumentoRepository $documentoRepository): Response
     );
 }
 
+    // Método para obtener los documentos de un usuario
+    #[Route('/api/documentos', name: 'app_user_documento', methods: ['GET'])]
+    public function documentosPorUsuario(DocumentoRepository $documentoRepository): JsonResponse 
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->json(['error' => 'No autenticado'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $documentos = $documentoRepository->findByUserId($user->getId());
+
+        $data = [];
+        foreach ($documentos as $documento) {
+            $data[] = [
+                'id' => $documento->getId(),
+                'titulo' => $documento->getTitulo(),
+                'puntuacion' => $documento->calcularMediaValoraciones(),
+            ];
+        }
+
+        return $this->json($data, Response::HTTP_OK);
+    }
+
     // Método para obtener documentos por asignatura
     #[Route('/asignatura/{codigo}', name: 'app_documento_asignatura', methods: ['GET'])]
     public function documentosPorAsignatura(string $codigo, AsignaturaRepository $asignaturaRepository, DocumentoRepository $documentoRepository): Response

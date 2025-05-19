@@ -40,4 +40,14 @@ class DocumentoRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByUserId(string $userId): array
+    {
+        return $this->createQueryBuilder('d')
+            ->join('d.user', 'u')
+            ->where('u.id = :id')
+            ->setParameter('id', $userId)
+            ->getQuery()
+            ->getResult();
+    }
 }
