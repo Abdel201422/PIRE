@@ -1,28 +1,15 @@
-# config/packages/nelmio_cors.yaml
 nelmio_cors:
     defaults:
-        #origin_regex: false
-        #allow_origin: ['http://localhost:3000', 'http://localhost', 'http://127.0.0.1:8000', 'http://127.0.0.1', 'https://insightful-enchantment-production.up.railway.app']
-        #allow_credentials: true
-        #allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
-        #allow_headers: ['Content-Type', 'Authorization']
-        #expose_headers: ['Link']
-        #max_age: 3600
-        allow_origin: ['*']
-        allow_headers: ['*']
-        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-
+        allow_origin: ['https://insightful-enchantment-production.up.railway.app']
+        allow_credentials: true
+        allow_headers: ['Content-Type', 'Authorization']
+        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+        max_age: 3600
     paths:
         '^/api/':
-            allow_origin: ['http://localhost:3000', 'http://localhost', 'http://127.0.0.1:8000', 'http://127.0.0.1', 'https://insightful-enchantment-production.up.railway.app']
+            origin_regex: false
+            allow_origin: ['https://insightful-enchantment-production.up.railway.app']
             allow_credentials: true
+            allow_headers: ['Content-Type', 'Authorization']
             allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
-            allow_headers: ['Content-Type', 'Authorization']
-            max_age: 3600
-
-        '^/dashboard$':
-            allow_origin: ['http://localhost:3000', 'http://localhost', 'http://127.0.0.1:8000', 'http://127.0.0.1', 'https://insightful-enchantment-production.up.railway.app']
-            allow_credentials: true
-            allow_methods: ['GET', 'OPTIONS']
-            allow_headers: ['Content-Type', 'Authorization']
             max_age: 3600
