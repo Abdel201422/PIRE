@@ -1,0 +1,60 @@
+<div class="bg-white rounded-xl p-8 border border-gray-300 shadow-md max-w-5xl mx-auto">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-pire-green">Gestión de Usuarios</h1>
+        <button id="btn-crear" class="bg-pire-green text-white px-5 py-2 rounded font-semibold hover:bg-green-600 transition">Crear Usuario</button>
+    </div>
+    <div class="flex items-center mb-4 gap-4">
+        <input type="text" id="filtro" placeholder="Filtrar por nombre, apellido o email..." class="border border-gray-300 rounded px-3 py-2 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-pire-green transition">
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded shadow text-sm">
+            <thead>
+                <tr class="bg-pire-background text-gray-700">
+                    <th class="py-2 px-4 border-b font-semibold">ID</th>
+                    <th class="py-2 px-4 border-b font-semibold">Nombre</th>
+                    <th class="py-2 px-4 border-b font-semibold">Apellido</th>
+                    <th class="py-2 px-4 border-b font-semibold">Email</th>
+                    <th class="py-2 px-4 border-b font-semibold">Roles</th>
+                    <th class="py-2 px-4 border-b font-semibold">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-usuarios">
+                <!-- Aquí se cargan los usuarios -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Crear/Editar Usuario -->
+<div id="modal-usuario" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h2 id="modal-titulo" class="text-xl font-bold mb-4 text-pire-green"></h2>
+        <form id="form-usuario" autocomplete="off">
+            <input type="hidden" id="usuario-id">
+            <div class="mb-3">
+                <label for="usuario-nombre" class="block text-sm font-medium mb-1">Nombre</label>
+                <input type="text" id="usuario-nombre" required class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pire-green transition">
+            </div>
+            <div class="mb-3">
+                <label for="usuario-apellido" class="block text-sm font-medium mb-1">Apellido</label>
+                <input type="text" id="usuario-apellido" class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pire-green transition">
+            </div>
+            <div class="mb-3">
+                <label for="usuario-email" class="block text-sm font-medium mb-1">Email</label>
+                <input type="email" id="usuario-email" required class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pire-green transition">
+            </div>
+            <div class="mb-3">
+                <label for="usuario-password" class="block text-sm font-medium mb-1">Contraseña</label>
+                <input type="password" id="usuario-password" class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pire-green transition">
+            </div>
+            <div class="mb-3">
+                <label for="usuario-roles" class="block text-sm font-medium mb-1">Roles (separados por coma)</label>
+                <input type="text" id="usuario-roles" placeholder="ROLE_USER,ROLE_ADMIN" class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pire-green transition">
+            </div>
+            <div class="flex justify-end gap-2 mt-4">
+                <button type="button" id="btn-cancelar" class="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100 transition">Cancelar</button>
+                <button type="submit" class="bg-pire-green text-white px-4 py-2 rounded font-semibold hover:bg-green-600 transition">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>

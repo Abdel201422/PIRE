@@ -1,6 +1,7 @@
 // js/dashboard.js
-import { infoUser} from './api/dataDashboard.js';
+import { infoUser } from './api/dataDashboard.js';
 import { loadBestDocuments } from './api/dataDashboard.js';
+import { API_URL } from './config.js';
 /* import { whoAdmin } from './api/dataDashboard.js'; */
 
 // Carga dinámica del componente header
@@ -95,20 +96,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         cargarMisRecursos(); // Llama a la función para cargar los ciclos
                     });
                 }
+
+                const enlaceAdministrar = document.getElementById('enlace-administrar');
+                if (enlaceAdministrar) {
+                    enlaceAdministrar.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarAdminPanel();
+                    });
+                }
             })
             .catch(error => console.error('Error al cargar el sidebar:', error));
     }
 })
 
 function cargarMisRecursos() {
-    const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
+    const mainContent = document.querySelector('main');
     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
 
     // Obtener los ciclos desde el backend
-    fetch('http://127.0.0.1:8000/api/ciclos/completos')
+    fetch(`${API_URL}/api/ciclos/completos`)
         .then(response => response.json())
         .then(data => {
-            mainContent.innerHTML = ''; // Limpia el contenido
+            mainContent.innerHTML = '';
             data.forEach(ciclo => {
                 const cicloDiv = document.createElement('div');
                 cicloDiv.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md', 'mb-4');
@@ -147,7 +156,7 @@ function cargarMisRecursos() {
 function cargarAsignaturas(codCiclo, container) {
     container.innerHTML = '<p class="text-gray-500">Cargando asignaturas...</p>';
 
-    fetch(`http://127.0.0.1:8000/api/ciclos/completos`)
+    fetch(`${API_URL}/api/ciclos/completos`)
         .then(response => response.json())
         .then(data => {
             container.innerHTML = '';
@@ -198,4 +207,73 @@ function renderDocumentos(documentos) {
         `;
         container.appendChild(documentoDiv);
     });
+}
+
+function cargarAdminPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando administración...</h2>';
+    fetch('/admin/admin.html')
+        .then(res => res.text())
+        .then(html => {
+            // Extrae solo el contenido del <main> de admin.html
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const adminMain = tempDiv.querySelector('main');
+            if (adminMain) {
+                mainContent.innerHTML = adminMain.innerHTML;
+
+                // Listener para "Gestionar Usuarios"
+                const enlaceUsuarios = mainContent.querySelector('#enlace-usuarios-admin');
+                if (enlaceUsuarios) {
+                    enlaceUsuarios.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarUsuariosPanel();
+                    });
+                }
+                // Listener para "Gestionar Comentarios"
+                const enlaceComentarios = mainContent.querySelector('#enlace-comentarios-admin');
+                if (enlaceComentarios) {
+                     enlaceComentarios.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarComentariosPanel();
+                    });
+                }
+            } else {
+                mainContent.innerHTML = '<p class="text-red-500">No se pudo cargar el panel de administración.</p>';
+            }
+        });
+}
+
+function cargarUsuariosPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando usuarios...</h2>';
+    fetch('/admin/usuarios.html')
+        .then(res => res.text())
+        .then(html => {
+            mainContent.innerHTML = html;
+            // Elimina scripts anteriores de usuarios.js
+            document.querySelectorAll('script[src="/admin/usuarios.js"]').forEach(s => s.remove());
+            // Cargar el JS de usuarios
+            const script = document.createElement('script');
+            script.src = '/admin/usuarios.js?v=' + Date.now(); // <-- fuerza recarga y evita caché
+            script.onload = () => console.log('usuarios.js insertado y ejecutado');
+            script.onerror = () => console.error('Error al cargar usuarios.js');
+            document.body.appendChild(script);
+        });
+}
+
+function cargarComentariosPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando comentarios...</h2>';
+    fetch('/admin/comentarios.html')
+        .then(res => res.text())
+        .then(html => {
+            mainContent.innerHTML = html;
+            // Elimina scripts anteriores de comentarios.js
+            document.querySelectorAll('script[src^="/admin/comentarios.js"]').forEach(s => s.remove());
+            // Cargar el JS de comentarios
+            const script = document.createElement('script');
+            script.src = '/admin/comentarios.js?v=' + Date.now();
+            document.body.appendChild(script);
+        });
 }

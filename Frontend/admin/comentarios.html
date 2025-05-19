@@ -1,0 +1,25 @@
+<div class="bg-white rounded-xl p-8 border border-gray-300 shadow-md max-w-5xl mx-auto">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-pire-green">Gestión de Comentarios</h1>
+    </div>
+    <div class="flex items-center mb-4 gap-4">
+        <input type="text" id="filtro-comentarios" placeholder="Filtrar por email de usuario..." class="border border-gray-300 rounded px-3 py-2 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-pire-green transition">
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded shadow text-sm">
+            <thead>
+                <tr class="bg-pire-background text-gray-700">
+                    <th class="py-2 px-4 border-b font-semibold">ID</th>
+                    <th class="py-2 px-4 border-b font-semibold">Comentario</th>
+                    <th class="py-2 px-4 border-b font-semibold">Fecha</th>
+                    <th class="py-2 px-4 border-b font-semibold">Documento</th>
+                    <th class="py-2 px-4 border-b font-semibold">Usuario (Email)</th>
+                    <th class="py-2 px-4 border-b font-semibold">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-comentarios">
+                <!-- Aquí se cargan los comentarios -->
+            </tbody>
+        </table>
+    </div>
+</div>

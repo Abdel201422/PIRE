@@ -64,6 +64,8 @@ final class UserController extends AbstractController
             $data[] = [
                 'id' => $user->getId(),
                 'email' => $user->getEmail(),
+                'nombre' => $user->getNombre(),
+                'apellido' => $user->getApellido(),
                 'roles' => $user->getRoles(),
             ];
         }
@@ -72,16 +74,18 @@ final class UserController extends AbstractController
     }
 
     // Crear un nuevo usuario
-    #[Route('/api/users', name: 'api_users_create', methods: ['POST'])]
+    #[Route('/api/user/create', name: 'api_users_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['email'], $data['password'], $data['roles'])) {
+        if (!isset($data['email'], $data['password'], $data['roles'], $data['nombre'], $data['apellido'])) {
             return $this->json(['error' => 'Datos incompletos'], Response::HTTP_BAD_REQUEST);
         }
 
         $user = new User();
+        $user->setNombre($data['nombre']);  
+        $user->setApellido($data['apellido']);
         $user->setEmail($data['email']);
         $user->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
         $user->setRoles($data['roles']);
@@ -111,6 +115,14 @@ final class UserController extends AbstractController
 
         if (isset($data['email'])) {
             $user->setEmail($data['email']);
+        }
+
+        if (isset($data['nombre'])) {
+            $user->setNombre($data['nombre']);
+        }
+
+        if (isset($data['apellido'])) {
+            $user->setApellido($data['apellido']);
         }
 
         if (isset($data['password'])) {
@@ -149,7 +161,7 @@ final class UserController extends AbstractController
 public function changePassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): JsonResponse
 {
     $user = $this->getUser();
-    if (!$user) {
+    if (!$user instanceof User) {
         return new JsonResponse(['error' => 'No autenticado'], 401);
     }
     $data = json_decode($request->getContent(), true);
