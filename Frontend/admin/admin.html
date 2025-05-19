@@ -6,6 +6,7 @@
     <title>Administrar</title>
     <link rel="stylesheet" href="/assets/css/input.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="./assets/js/dashboard.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -36,7 +37,7 @@
                     <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <h3 class="text-lg font-semibold mb-2">Usuarios</h3>
                         <p class="text-sm text-gray-500 mb-4">Gestiona los usuarios del sistema.</p>
-                        <a href="/admin/usuarios.html" class="text-pire-green font-semibold">Gestionar Usuarios</a>
+                        <a href="#" id="enlace-usuarios-admin" class="text-pire-green font-semibold">Gestionar Usuarios</a>
                     </div>
                     <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <h3 class="text-lg font-semibold mb-2">Asignaturas</h3>
@@ -47,6 +48,11 @@
                         <h3 class="text-lg font-semibold mb-2">Ciclos</h3>
                         <p class="text-sm text-gray-500 mb-4">Gestiona los ciclos formativos.</p>
                         <a href="/admin/ciclos.html" class="text-pire-green font-semibold">Gestionar Ciclos</a>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
+                        <h3 class="text-lg font-semibold mb-2">Comentarios</h3>
+                        <p class="text-sm text-gray-500 mb-4">Gestiona los comentarios del sistema.</p>
+                        <a href="#" id="enlace-comentarios-admin" class="text-pire-green font-semibold">Gestionar Comentarios</a>
                     </div>
                 </div>
             </main>

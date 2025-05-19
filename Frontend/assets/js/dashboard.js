@@ -90,6 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         window.location.href = '/';
                     });
                 }
+
+                
+                const enlaceAdministrar = document.getElementById('admin-enlace');
+                if (enlaceAdministrar) {
+                    enlaceAdministrar.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarAdminPanel();
+                    });
+                }
                 
                 /* // Asignar el evento de clic al enlace "Mis Recursos"
                 const enlaceMisRecursos = document.getElementById('enlace-recursos');
@@ -98,10 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         e.preventDefault(); // Evita el comportamiento predeterminado del enlace
                         cargarMisRecursos(); // Llama a la función para cargar los ciclos
                         });
-                        } */
-                    })
-                    .catch(error => console.error('Error al cargar el sidebar:', error));
-                }
+                } */
+                })
+                .catch(error => console.error('Error al cargar el sidebar:', error));
+            }
+
+                
             })
             
             /* function cargarMisRecursos() {
@@ -203,3 +214,135 @@ function renderDocumentos(documentos) {
         container.appendChild(documentoDiv);
     });
 } */
+
+
+function cargarAdminPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando administración...</h2>';
+    fetch('/admin/admin.html')
+        .then(res => res.text())
+        .then(html => {
+            // Extrae solo el contenido del <main> de admin.html
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const adminMain = tempDiv.querySelector('main');
+            if (adminMain) {
+                mainContent.innerHTML = adminMain.innerHTML;
+
+                // Listener para "Gestionar Usuarios"
+                const enlaceUsuarios = mainContent.querySelector('#enlace-usuarios-admin');
+                if (enlaceUsuarios) {
+                    enlaceUsuarios.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarUsuariosPanel();
+                    });
+                }
+                // Listener para "Gestionar Comentarios"
+                const enlaceComentarios = mainContent.querySelector('#enlace-comentarios-admin');
+                if (enlaceComentarios) {
+                     enlaceComentarios.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarComentariosPanel();
+                    });
+                }
+                // Listener para "Gestionar Asignaturas"
+                const enlaceAsignaturas = mainContent.querySelector('#enlace-asignaturas-admin');
+                if (enlaceAsignaturas) {
+                    enlaceAsignaturas.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarAsignaturasPanel();
+                    });
+                }
+                // Listener para "Gestionar Ciclos"
+                const enlaceCiclos = mainContent.querySelector('#enlace-ciclos-admin');
+                if (enlaceCiclos) {
+                    enlaceCiclos.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        cargarCiclosPanel();
+                    });
+                }
+            } else {
+                mainContent.innerHTML = '<p class="text-red-500">No se pudo cargar el panel de administración.</p>';
+            }
+        });
+}
+
+function cargarUsuariosPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando usuarios...</h2>';
+    fetch('/admin/usuarios.html')
+        .then(res => res.text())
+        .then(html => {
+            mainContent.innerHTML = html;
+            // Elimina scripts anteriores de usuarios.js
+            document.querySelectorAll('script[src="/admin/usuarios.js"]').forEach(s => s.remove());
+            // Cargar el JS de usuarios
+            const script = document.createElement('script');
+            script.src = '/admin/usuarios.js?v=' + Date.now(); // <-- fuerza recarga y evita caché
+            script.onload = () => {
+                console.log('usuarios.js insertado y ejecutado');
+                if (window.initUsuariosPanel) window.initUsuariosPanel();
+            };
+            script.onerror = () => console.error('Error al cargar usuarios.js');
+            document.body.appendChild(script);
+        });
+}
+
+function cargarComentariosPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando comentarios...</h2>';
+    fetch('/admin/comentarios.html')
+        .then(res => res.text())
+        .then(html => {
+            mainContent.innerHTML = html;
+            // Elimina scripts anteriores de comentarios.js
+            document.querySelectorAll('script[src^="/admin/comentarios.js"]').forEach(s => s.remove());
+            // Cargar el JS de comentarios
+            const script = document.createElement('script');
+            script.src = '/admin/comentarios.js?v=' + Date.now();
+            script.onload = () => {
+                if (window.initComentariosPanel) window.initComentariosPanel();
+            };
+            document.body.appendChild(script);
+        });
+}
+
+function cargarAsignaturasPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando asignaturas...</h2>';
+    fetch('/admin/asignaturas.html')
+        .then(res => res.text())
+        .then(html => {
+            mainContent.innerHTML = html;
+            // Elimina scripts anteriores de asignaturas.js
+            document.querySelectorAll('script[src^="/admin/asignaturas.js"]').forEach(s => s.remove());
+            // Cargar el JS de asignaturas como módulo para soportar imports
+            const script = document.createElement('script');
+            script.type = 'module'; // Añadir type="module" para soportar imports
+            script.src = '/admin/asignaturas.js?v=' + Date.now();
+            script.onload = () => {
+                if (window.initAsignaturasPanel) window.initAsignaturasPanel();
+            };
+            document.body.appendChild(script);
+        });
+}
+
+function cargarCiclosPanel() {
+    const mainContent = document.querySelector('main');
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando ciclos...</h2>';
+    fetch('/admin/ciclos.html')
+        .then(res => res.text())
+        .then(html => {
+            mainContent.innerHTML = html;
+            // Elimina scripts anteriores de ciclos.js
+            document.querySelectorAll('script[src^="/admin/ciclos.js"]').forEach(s => s.remove());
+            // Cargar el JS de ciclos como módulo para soportar imports
+            const script = document.createElement('script');
+            script.type = 'module'; // Añadir type="module" para soportar imports
+            script.src = '/admin/ciclos.js?v=' + Date.now();
+            script.onload = () => {
+                if (window.initCiclosPanel) window.initCiclosPanel();
+            };
+            document.body.appendChild(script);
+        });
+}
