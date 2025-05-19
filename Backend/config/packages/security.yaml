@@ -58,10 +58,10 @@ security:
 
   # 4) Control de acceso (solo la primera regla que coincida)
   access_control:
-    - { path: ^/api/login$,    roles: PUBLIC_ACCESS }
-    - { path: ^/api/register,  roles: PUBLIC_ACCESS }
+    - { path: ^/api/login$,    roles: PUBLIC_ACCESS, methods: [OPTIONS, POST] }
+    - { path: ^/api/register,  roles: PUBLIC_ACCESS, methods: [OPTIONS, POST] }
+    - { path: ^/api,           roles: PUBLIC_ACCESS, methods: [OPTIONS] }
     - { path: ^/api,           roles: IS_AUTHENTICATED_FULLY }
-    - { path: ^/api/users/me,  roles: IS_AUTHENTICATED_FULLY }
 
 # 5) Overrides para tests (acelerar hashing)
 when@test:
