@@ -7,7 +7,6 @@ import { searchAll, searchDocument } from './api/search.js'
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
     
-    infoUser()
     loadBestDocuments()
     
     // Cargar dinámicamente el Header
@@ -15,8 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (headerContainer) {
         fetch('/components/header_dashboard.html')
         .then(response => response.text())
-            .then(html => {
-                headerContainer.innerHTML = html;
+        .then(html => {
+            headerContainer.innerHTML = html;
+            infoUser()
 
                 // Funcionalidad para alternar el menú desplegable del usuario
                 const userAvatar = document.getElementById('user-avatar');
@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.text())
             .then(html => {
                 sidebarContainer.innerHTML = html;
+                infoUser();
                 
-                // 💡 En este punto el elemento ya existe en el DOM
                 const logoutLink = document.getElementById('logoutLink');
                 if (logoutLink) {
                     logoutLink.addEventListener('click', function (e) {
