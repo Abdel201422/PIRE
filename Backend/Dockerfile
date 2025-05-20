@@ -9,7 +9,7 @@ RUN apk add --no-cache icu-dev oniguruma-dev libxml2-dev \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # 4. Instalar Symfony CLI (ÚLTIMA VERSIÓN VÁLIDA - 5.5.1 al 02/05/2025)
-RUN apk add --no-cache wget curl bash \
+RUN apk add --no-cache wget curl bash git \
     && curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
@@ -25,11 +25,13 @@ ENV APP_ENV=prod \
     DATABASE_URL="sqlite:///:memory:"
 
 # 8. Instalar dependencias
-RUN composer install \
+RUN rm -rf vendor/ \
+  && composer install \
       --no-interaction \
       --optimize-autoloader \
       --no-dev \
       --no-scripts \
+      --ignore-platform-reqs \
   && composer dump-autoload --optimize
 
 # 9. Limpiar caché
