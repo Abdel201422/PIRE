@@ -245,22 +245,7 @@ function cargarAdminPanel() {
                         cargarComentariosPanel();
                     });
                 }
-                // Listener para "Gestionar Asignaturas"
-                const enlaceAsignaturas = mainContent.querySelector('#enlace-asignaturas-admin');
-                if (enlaceAsignaturas) {
-                    enlaceAsignaturas.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        cargarAsignaturasPanel();
-                    });
-                }
-                // Listener para "Gestionar Ciclos"
-                const enlaceCiclos = mainContent.querySelector('#enlace-ciclos-admin');
-                if (enlaceCiclos) {
-                    enlaceCiclos.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        cargarCiclosPanel();
-                    });
-                }
+                
             } else {
                 mainContent.innerHTML = '<p class="text-red-500">No se pudo cargar el panel de administración.</p>';
             }
@@ -302,46 +287,6 @@ function cargarComentariosPanel() {
             script.src = '/admin/comentarios.js?v=' + Date.now();
             script.onload = () => {
                 if (window.initComentariosPanel) window.initComentariosPanel();
-            };
-            document.body.appendChild(script);
-        });
-}
-
-function cargarAsignaturasPanel() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando asignaturas...</h2>';
-    fetch('/admin/asignaturas.html')
-        .then(res => res.text())
-        .then(html => {
-            mainContent.innerHTML = html;
-            // Elimina scripts anteriores de asignaturas.js
-            document.querySelectorAll('script[src^="/admin/asignaturas.js"]').forEach(s => s.remove());
-            // Cargar el JS de asignaturas como módulo para soportar imports
-            const script = document.createElement('script');
-            script.type = 'module'; // Añadir type="module" para soportar imports
-            script.src = '/admin/asignaturas.js?v=' + Date.now();
-            script.onload = () => {
-                if (window.initAsignaturasPanel) window.initAsignaturasPanel();
-            };
-            document.body.appendChild(script);
-        });
-}
-
-function cargarCiclosPanel() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando ciclos...</h2>';
-    fetch('/admin/ciclos.html')
-        .then(res => res.text())
-        .then(html => {
-            mainContent.innerHTML = html;
-            // Elimina scripts anteriores de ciclos.js
-            document.querySelectorAll('script[src^="/admin/ciclos.js"]').forEach(s => s.remove());
-            // Cargar el JS de ciclos como módulo para soportar imports
-            const script = document.createElement('script');
-            script.type = 'module'; // Añadir type="module" para soportar imports
-            script.src = '/admin/ciclos.js?v=' + Date.now();
-            script.onload = () => {
-                if (window.initCiclosPanel) window.initCiclosPanel();
             };
             document.body.appendChild(script);
         });
