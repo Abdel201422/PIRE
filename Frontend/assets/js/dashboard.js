@@ -1,5 +1,5 @@
 // js/dashboard.js
-import { infoUser} from './api/dataDashboard.js';
+import { infoUser } from './api/dataDashboard.js';
 import { loadBestDocuments } from './api/dataDashboard.js';
 import { searchAll, searchDocument } from './api/search.js'
 /* import { whoAdmin } from './api/dataDashboard.js'; */
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function cargarAsignaturas(codCiclo, container) {
     container.innerHTML = '<p class="text-gray-500">Cargando asignaturas...</p>';
 
-    fetch(`http://127.0.0.1:8000/api/ciclos/completos`)
+    fetch(`${API_URL}/api/ciclos/completos`)
         .then(response => response.json())
         .then(data => {
             container.innerHTML = '';
