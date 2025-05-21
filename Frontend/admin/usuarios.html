@@ -16,6 +16,7 @@
                     colors: {
                         'pire-green': '#85E28C',
                         'pire-background': '#FAF8F4',
+                        'pire-background-dashboard': '#FDFBF9',
                     },
                     fontFamily: {
                         lexend: ['Lexend', 'sans'],
@@ -26,7 +27,7 @@
     </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-pire-background font-lexend">
+<body class="bg-pire-background-dashboard font-lexend">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div id="sidebar"></div>
@@ -59,7 +60,7 @@
                     </div>
                 </div>
                 <!-- Tabla de Usuarios -->
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                <div class="bg-[var(--color-gray-50)] rounded-3xl overflow-hidden border-2 border-gray-300">
                     <table class="min-w-full">
                         <thead class="bg-pire-green/20">
                             <tr>
