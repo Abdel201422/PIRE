@@ -1,5 +1,5 @@
 import { BACKEND_URL } from './config.js'
-import { API_URL } from './config.js';
+
 document.addEventListener('DOMContentLoaded', function () {
             const asignaturaSelect = document.getElementById('asignatura');
             const fileInput = document.getElementById('file');

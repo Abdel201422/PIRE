@@ -20,7 +20,7 @@ class Curso
     #[ORM\JoinColumn(name: "ciclo_cod_ciclo", referencedColumnName: "cod_ciclo", nullable: false)]
     private ?Ciclo $ciclo = null;
 
-    #[ORM\OneToMany(mappedBy: 'curso', targetEntity: Asignatura::class)]
+    #[ORM\OneToMany(mappedBy: 'curso', targetEntity: Asignatura::class, cascade: ["remove"])]
     private Collection $asignaturas;
 
     public function __construct()

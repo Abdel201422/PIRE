@@ -1,5 +1,4 @@
-export const BACKEND_URL = "https://pire-production.up.railway.app";
-export const API_URL = "https://pire-production.up.railway.app";
+export const BACKEND_URL = 'http://127.0.0.1:8000';
 
 // Asegurarse de que el favicon esté configurado
 const setFavicon = () => {

@@ -24,11 +24,20 @@ class DocumentoRepository extends ServiceEntityRepository
     }
 
     public function findByAsignatura(Asignatura $asignatura): array
-{
-    return $this->createQueryBuilder('d')
-        ->andWhere('d.asignatura = :asignatura')
-        ->setParameter('asignatura', $asignatura)
-        ->getQuery()
-        ->getResult();
-}
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.asignatura = :asignatura')
+            ->setParameter('asignatura', $asignatura)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function searchByTitulo(string $query): array
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.titulo LIKE :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult();
+    }
 }

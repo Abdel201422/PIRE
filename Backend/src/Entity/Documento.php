@@ -30,7 +30,7 @@ class Documento
     private ?Asignatura $asignatura = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'documentos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?User $user = null;
 
     #[ORM\Column(type: 'datetime', nullable: true, options: ["default" => "CURRENT_TIMESTAMP"])]
@@ -48,10 +48,10 @@ class Documento
     #[ORM\Column(length: 50)]
     private ?string $tipo_archivo = null;
 
-    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Valoracion::class)]
+    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Valoracion::class, cascade: ["remove"])]
     private Collection $valoraciones;
 
-    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Comentario::class)]
+    #[ORM\OneToMany(mappedBy: 'documento', targetEntity: Comentario::class, cascade: ["remove"])]
     private Collection $comentarios;
 
     
