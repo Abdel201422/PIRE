@@ -7,7 +7,11 @@
     <title>Inicio de sesión - PIRE</title>
     <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/input.css">
     <script type="module" src="./assets/js/login.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -15,22 +19,26 @@
                     colors: {
                         'pire-green': '#85E28C',
                         'pire-background': '#FAF8F4',
-                    }
+                        'pire-background-dashboard': '#FDFBF9',
+                    },
+                    fontFamily: {
+                        lexend: ['Lexend', 'sans'],
+                    },
                 }
             }
         }
     </script>
 </head>
-<body class="h-screen flex flex-col">
+<body class="h-screen flex flex-col font-lexend">
     <div class="flex-1 flex relative">
         <!-- Imagen de fondo con overlay verde -->
         <div class="absolute inset-0 bg-cover bg-center brightness-90" style="background-image: url('./assets/images/imagen_inicio_sesion.webp');"></div>
         
         <!-- Contenedor del formulario -->
-        <div class="relative w-full h-full flex justify-center items-center">
+        <div class="relative w-full h-full flex justify-center items-center px-6 lg:px-8">
             <div class="bg-pire-background rounded-3xl p-8 shadow-lg w-full sm:w-[90%] md:w-[70%] lg:w-[40rem] max-w-[40rem] mx-auto md:mx-0 md:ml-[2rem] lg:ml-[10rem] xl:ml-[40rem]">
                 <h1 id="titulo-login" class="text-4xl md:text-5xl font-bold mb-5 font-heading">Inicio de sesión</h1>
-                <p class="text-base md:text-lg mb-6 font-body">¿Eres un usuario nuevo? <a id="enlace-registro" href="./register.html" class="text-pire-green hover:underline">Crear una cuenta</a></p>
+                <p class="text-base md:text-lg mb-6">¿Eres un usuario nuevo? <a id="enlace-registro" href="./register.html" class="text-pire-green hover:underline">Crear una cuenta</a></p>
                 
                 <form id="loginForm" class="space-y-4">
                     <div>
@@ -43,7 +51,7 @@
                         <input type="password" id="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-full text-sm md:text-base" placeholder="Contraseña" required>
                     </div>
                     
-                    <button id="boton-login" type="submit" class="w-full py-3 bg-pire-green text-white rounded-full hover:bg-green-600 transition duration-300 text-base md:text-lg font-body">Iniciar sesión</button>
+                    <button id="boton-login" type="submit" class="w-full py-3 bg-pire-green text-[var(--color-gray-900)] rounded-full hover:bg-green-600 hover:text-white transition duration-300 text-base md:text-lg">Iniciar sesión</button>
                 </form>
                 
                 <div id="response" class="mt-4 text-center text-sm md:text-base font-body"></div>
@@ -51,9 +59,11 @@
         </div>
     </div>
     
-    <footer class="py-4 px-6 bg-white flex justify-between items-center">
-        <div class="text-sm md:text-base text-gray-700 font-body">© 2025 PIRE. Todos los derechos reservados.</div>
-        <button id="boton-login-footer" class="bg-gray-800 text-white px-5 py-2 rounded-full text-sm md:text-base font-body">Iniciar sesión</button>
+    <footer id="piePagina" class="bg-white border-t-2 border-gray-300 py-4">
+        <div class="container mx-auto gap-4 px-4 flex flex-col-reverse sm:flex-row justify-between items-center">
+            <p class="text-gray-500 text-xs sm:text-sm mb-4 sm:mb-0">© 2025 PIRE. Todos los derechos reservados.</p>
+            <a href="/"><img src="../assets/images/logo.svg" /></a>
+        </div>
     </footer>
 </body>
 </html>

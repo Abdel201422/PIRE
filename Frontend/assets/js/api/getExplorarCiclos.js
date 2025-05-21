@@ -56,7 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         const cursoCorto = `${partes[0]} ${partes[1]}`; // "1º Curso" o "2º Curso"
 
                         const asignaturaDiv = document.createElement('div')
-                        asignaturaDiv.classList.add('flex', 'w-max', 'items-center', 'border-2', 'border-gray-300', 'rounded-full', 'p-2', 'pr-4', 'hover:bg-green-100', 'hover:border-pire-green', 'transition-all', 'duration-200', 'cursor-pointer')
+                        asignaturaDiv.classList.add('flex', 'w-full', 'sm:w-max', 'items-center', 'border-2', 'border-gray-300', 'rounded-full', 'p-2', 'pr-4', 'hover:bg-green-100', 'hover:border-pire-green','transition-all', 'duration-200', 'cursor-pointer'
+)
+
+                        //asignaturaDiv.classList.add('flex', 'w-max', 'items-center', 'border-2', 'border-gray-300', 'rounded-full', 'p-2', 'pr-4', 'hover:bg-green-100', 'hover:border-pire-green', 'transition-all', 'duration-200', 'cursor-pointer')
 
                         asignaturaDiv.innerHTML = `
                         <a href="/asignatura.html?codigo=${asignatura.codigo}" class="flex items-center">
@@ -66,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         </svg>
                                     </div>
                                     <div class="flex flex-col">
-                                        <span class="text-base">${asignatura.nombre}</span>
+                                        <span class="text-base break-words whitespace-normal">${asignatura.nombre}</span>
                                         <span class="text-sm text-gray-400">${cursoCorto}</span>
                                     </div></a>`
 
