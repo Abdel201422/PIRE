@@ -216,78 +216,78 @@ function renderDocumentos(documentos) {
 } */
 
 
-function cargarAdminPanel() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando administración...</h2>';
-    fetch('/admin/admin.html')
-        .then(res => res.text())
-        .then(html => {
-            // Extrae solo el contenido del <main> de admin.html
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-            const adminMain = tempDiv.querySelector('main');
-            if (adminMain) {
-                mainContent.innerHTML = adminMain.innerHTML;
+// function cargarAdminPanel() {
+//     const mainContent = document.querySelector('main');
+//     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando administración...</h2>';
+//     fetch('/admin/admin.html')
+//         .then(res => res.text())
+//         .then(html => {
+//             // Extrae solo el contenido del <main> de admin.html
+//             const tempDiv = document.createElement('div');
+//             tempDiv.innerHTML = html;
+//             const adminMain = tempDiv.querySelector('main');
+//             if (adminMain) {
+//                 mainContent.innerHTML = adminMain.innerHTML;
 
-                // Listener para "Gestionar Usuarios"
-                const enlaceUsuarios = mainContent.querySelector('#enlace-usuarios-admin');
-                if (enlaceUsuarios) {
-                    enlaceUsuarios.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        cargarUsuariosPanel();
-                    });
-                }
-                // Listener para "Gestionar Comentarios"
-                const enlaceComentarios = mainContent.querySelector('#enlace-comentarios-admin');
-                if (enlaceComentarios) {
-                     enlaceComentarios.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        cargarComentariosPanel();
-                    });
-                }
+//                 // Listener para "Gestionar Usuarios"
+//                 const enlaceUsuarios = mainContent.querySelector('#enlace-usuarios-admin');
+//                 if (enlaceUsuarios) {
+//                     enlaceUsuarios.addEventListener('click', function(e) {
+//                         e.preventDefault();
+//                         cargarUsuariosPanel();
+//                     });
+//                 }
+//                 // Listener para "Gestionar Comentarios"
+//                 const enlaceComentarios = mainContent.querySelector('#enlace-comentarios-admin');
+//                 if (enlaceComentarios) {
+//                      enlaceComentarios.addEventListener('click', function(e) {
+//                         e.preventDefault();
+//                         cargarComentariosPanel();
+//                     });
+//                 }
                 
-            } else {
-                mainContent.innerHTML = '<p class="text-red-500">No se pudo cargar el panel de administración.</p>';
-            }
-        });
-}
+//             } else {
+//                 mainContent.innerHTML = '<p class="text-red-500">No se pudo cargar el panel de administración.</p>';
+//             }
+//         });
+// }
 
-function cargarUsuariosPanel() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando usuarios...</h2>';
-    fetch('/admin/usuarios.html')
-        .then(res => res.text())
-        .then(html => {
-            mainContent.innerHTML = html;
-            // Elimina scripts anteriores de usuarios.js
-            document.querySelectorAll('script[src="/admin/usuarios.js"]').forEach(s => s.remove());
-            // Cargar el JS de usuarios
-            const script = document.createElement('script');
-            script.src = '/admin/usuarios.js?v=' + Date.now(); // <-- fuerza recarga y evita caché
-            script.onload = () => {
-                console.log('usuarios.js insertado y ejecutado');
-                if (window.initUsuariosPanel) window.initUsuariosPanel();
-            };
-            script.onerror = () => console.error('Error al cargar usuarios.js');
-            document.body.appendChild(script);
-        });
-}
+// function cargarUsuariosPanel() {
+//     const mainContent = document.querySelector('main');
+//     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando usuarios...</h2>';
+//     fetch('/admin/usuarios.html')
+//         .then(res => res.text())
+//         .then(html => {
+//             mainContent.innerHTML = html;
+//             // Elimina scripts anteriores de usuarios.js
+//             document.querySelectorAll('script[src="/admin/usuarios.js"]').forEach(s => s.remove());
+//             // Cargar el JS de usuarios
+//             const script = document.createElement('script');
+//             script.src = '/admin/usuarios.js?v=' + Date.now(); // <-- fuerza recarga y evita caché
+//             script.onload = () => {
+//                 console.log('usuarios.js insertado y ejecutado');
+//                 if (window.initUsuariosPanel) window.initUsuariosPanel();
+//             };
+//             script.onerror = () => console.error('Error al cargar usuarios.js');
+//             document.body.appendChild(script);
+//         });
+// }
 
-function cargarComentariosPanel() {
-    const mainContent = document.querySelector('main');
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando comentarios...</h2>';
-    fetch('/admin/comentarios.html')
-        .then(res => res.text())
-        .then(html => {
-            mainContent.innerHTML = html;
-            // Elimina scripts anteriores de comentarios.js
-            document.querySelectorAll('script[src^="/admin/comentarios.js"]').forEach(s => s.remove());
-            // Cargar el JS de comentarios
-            const script = document.createElement('script');
-            script.src = '/admin/comentarios.js?v=' + Date.now();
-            script.onload = () => {
-                if (window.initComentariosPanel) window.initComentariosPanel();
-            };
-            document.body.appendChild(script);
-        });
-}
+// function cargarComentariosPanel() {
+//     const mainContent = document.querySelector('main');
+//     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando comentarios...</h2>';
+//     fetch('/admin/comentarios.html')
+//         .then(res => res.text())
+//         .then(html => {
+//             mainContent.innerHTML = html;
+//             // Elimina scripts anteriores de comentarios.js
+//             document.querySelectorAll('script[src^="/admin/comentarios.js"]').forEach(s => s.remove());
+//             // Cargar el JS de comentarios
+//             const script = document.createElement('script');
+//             script.src = '/admin/comentarios.js?v=' + Date.now();
+//             script.onload = () => {
+//                 if (window.initComentariosPanel) window.initComentariosPanel();
+//             };
+//             document.body.appendChild(script);
+//         });
+// }

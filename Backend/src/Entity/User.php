@@ -44,13 +44,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $avatar;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Documento::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Documento::class, cascade: ["remove"], orphanRemoval: true)]
     private $documentos;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Valoracion::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Valoracion::class, cascade: ["remove"], orphanRemoval: true)]
     private $valoraciones;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comentario::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comentario::class, cascade: ["remove"], orphanRemoval: true)]
     private $comentarios;
 
     #[ORM\Column]

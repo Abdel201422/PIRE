@@ -6,6 +6,9 @@
     <title>Administrar</title>
     <link rel="stylesheet" href="/assets/css/input.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
     <script type="module" src="./assets/js/dashboard.js"></script>
     <script>
         tailwind.config = {
@@ -14,13 +17,16 @@
                     colors: {
                         'pire-green': '#85E28C',
                         'pire-background': '#FAF8F4',
-                    }
+                    },
+                    fontFamily: {
+                        lexend: ['Lexend', 'sans'],
+                    },
                 }
             }
         }
     </script>
 </head>
-<body class="bg-pire-background">
+<body class="bg-pire-background font-lexend">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
@@ -37,7 +43,7 @@
                     <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <h3 class="text-lg font-semibold mb-2">Usuarios</h3>
                         <p class="text-sm text-gray-500 mb-4">Gestiona los usuarios del sistema.</p>
-                        <a href="#" id="enlace-usuarios-admin" class="text-pire-green font-semibold">Gestionar Usuarios</a>
+                        <a href="/admin/usuarios.html" class="text-pire-green font-semibold">Gestionar Usuarios</a>
                     </div>
                     <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <h3 class="text-lg font-semibold mb-2">Asignaturas</h3>
@@ -52,7 +58,7 @@
                     <div class="bg-white rounded-xl p-6 border border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                         <h3 class="text-lg font-semibold mb-2">Comentarios</h3>
                         <p class="text-sm text-gray-500 mb-4">Gestiona los comentarios del sistema.</p>
-                        <a href="#" id="enlace-comentarios-admin" class="text-pire-green font-semibold">Gestionar Comentarios</a>
+                        <a href="/admin/comentarios.html" class="text-pire-green font-semibold">Gestionar Comentarios</a>
                     </div>
                 </div>
             </main>
