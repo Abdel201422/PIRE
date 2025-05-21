@@ -26,9 +26,9 @@ class ComentarioController extends AbstractController
             $data[] = [
                 'id' => $comentario->getId(),
                 'comentario' => $comentario->getComentario(),
-                'fecha' => $comentario->getFecha()?->format('Y-m-d H:i:s'),
-                'documento' => $comentario->getDocumento()?->getId(),
-                'user' => $comentario->getUser()?->getId(),
+                'fecha' => $comentario->getFecha()?->format('Y-m-d H:i'),
+                'documento' => $comentario->getDocumento()?->getTitulo(),
+                'user_email' => $comentario->getUser()?->getEmail(),
             ];
         }
 

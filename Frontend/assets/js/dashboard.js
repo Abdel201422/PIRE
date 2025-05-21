@@ -6,17 +6,16 @@ import { searchAll, searchDocument } from './api/search.js'
 
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
-
-    infoUser()
+    
     loadBestDocuments()
-
+    
     // Cargar dinámicamente el Header
     const headerContainer = document.getElementById('header_dashboard')
     if (headerContainer) {
         fetch('/components/header_dashboard.html')
             .then(response => response.text())
             .then(html => {
-                headerContainer.innerHTML = html
+                headerContainer.innerHTML = html;
 
                 // Funcionalidad para alternar el menú desplegable del usuario
                 const userAvatar = document.getElementById('user-avatar')
@@ -39,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const editarPerfilLink = document.getElementById('editar-perfil-link')
                     if (editarPerfilLink) {
                         editarPerfilLink.addEventListener('click', function(e) {
-                            e.preventDefault()
-                            window.location.href = 'configuracion_perfil.html'
-                        })
+                            e.preventDefault();
+                            window.location.href = 'configuracion_perfil.html';
+                        });
                     }
                     
                     // Manejar el botón de cierre de sesión
@@ -63,38 +62,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Evita que el menú desplegable se cierre al hacer clic dentro de él
                     dropdown.addEventListener('click', function(e) {
-                        e.stopPropagation()
-                    })
+                        e.stopPropagation();
+                    });
 
-                    // Toggle del menú en móviles
-                    const menuButtonMobile = document.getElementById('mobile-menu-button')
-                    
-                    menuButtonMobile.addEventListener('click', function() {
-                        const panel = document.getElementById('panel-lateral')
-                        const overlay = document.getElementById('mobile-overlay')
-        
-                        panel.classList.toggle('-translate-x-full')
-                        overlay.classList.toggle('hidden')
-                        menuButtonMobile.classList.toggle('hidden')
-                    })
-    
                     searchAll()
                     searchDocument()
                 }
             })
-            .catch(error => console.error('Error al cargar el header:', error))
+            .catch(error => console.error('Error al cargar el header:', error));
     }
 
     // Cargar dinámicamente el Sidebar
-    const sidebarContainer = document.getElementById('sidebar')
+    const sidebarContainer = document.getElementById('sidebar');
     if (sidebarContainer) {
         fetch('/components/sidebar.html')
             .then(response => response.text())
             .then(html => {
-                sidebarContainer.innerHTML = html
+                sidebarContainer.innerHTML = html;
 
                 // 💡 En este punto el elemento ya existe en el DOM
-                const logoutLink = document.getElementById('logoutLink')
+                const logoutLink = document.getElementById('logoutLink');
                 if (logoutLink) {
                     logoutLink.addEventListener('click', function (e) {
                         e.preventDefault()
@@ -103,42 +90,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 }
 
-                // Cerrar menú al hacer clic en el overlay
-                document.getElementById('mobile-overlay').addEventListener('click', function() {
-                    const panel = document.getElementById('panel-lateral')
-                    const overlay = document.getElementById('mobile-overlay')
-                    const menuButtonMobile = document.getElementById('mobile-menu-button')
-        
-                    panel.classList.add('-translate-x-full')
-                    overlay.classList.add('hidden')
-                    menuButtonMobile.classList.remove('hidden')
-                    
-                })
                 /* // Asignar el evento de clic al enlace "Mis Recursos"
                 const enlaceMisRecursos = document.getElementById('enlace-recursos')
                 if (enlaceMisRecursos) {
                     enlaceMisRecursos.addEventListener('click', function (e) {
-                        e.preventDefault() // Evita el comportamiento predeterminado del enlace
-                        cargarMisRecursos() // Llama a la función para cargar los ciclos
-                    })
+                        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                        cargarMisRecursos(); // Llama a la función para cargar los ciclos
+                    });
                 } */
             })
-            .catch(error => console.error('Error al cargar el sidebar:', error))
+            .catch(error => console.error('Error al cargar el sidebar:', error));
     }
 })
 
 /* function cargarMisRecursos() {
-    const mainContent = document.querySelector('main') // Contenedor principal del dashboard
-    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>'
+    const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
+    mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
 
     // Obtener los ciclos desde el backend
     fetch('http://127.0.0.1:8000/api/ciclos/completos') 
         .then(response => response.json())
         .then(data => {
-            mainContent.innerHTML = '' // Limpia el contenido
+            mainContent.innerHTML = ''; // Limpia el contenido
             data.forEach(ciclo => {
-                const cicloDiv = document.createElement('div')
-                cicloDiv.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md', 'mb-4')
+                const cicloDiv = document.createElement('div');
+                cicloDiv.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-md', 'mb-4');
                 cicloDiv.innerHTML = `
                     <h3 class="text-lg font-semibold mb-2">${ciclo.nombre}</h3>
                     <p class="text-sm text-gray-600 mb-4">${ciclo.descripcion || ''}</p>
@@ -226,3 +202,80 @@ function renderDocumentos(documentos) {
         container.appendChild(documentoDiv)
     })
 } */
+
+
+// function cargarAdminPanel() {
+//     const mainContent = document.querySelector('main');
+//     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando administración...</h2>';
+//     fetch('/admin/admin.html')
+//         .then(res => res.text())
+//         .then(html => {
+//             // Extrae solo el contenido del <main> de admin.html
+//             const tempDiv = document.createElement('div');
+//             tempDiv.innerHTML = html;
+//             const adminMain = tempDiv.querySelector('main');
+//             if (adminMain) {
+//                 mainContent.innerHTML = adminMain.innerHTML;
+
+//                 // Listener para "Gestionar Usuarios"
+//                 const enlaceUsuarios = mainContent.querySelector('#enlace-usuarios-admin');
+//                 if (enlaceUsuarios) {
+//                     enlaceUsuarios.addEventListener('click', function(e) {
+//                         e.preventDefault();
+//                         cargarUsuariosPanel();
+//                     });
+//                 }
+//                 // Listener para "Gestionar Comentarios"
+//                 const enlaceComentarios = mainContent.querySelector('#enlace-comentarios-admin');
+//                 if (enlaceComentarios) {
+//                      enlaceComentarios.addEventListener('click', function(e) {
+//                         e.preventDefault();
+//                         cargarComentariosPanel();
+//                     });
+//                 }
+                
+//             } else {
+//                 mainContent.innerHTML = '<p class="text-red-500">No se pudo cargar el panel de administración.</p>';
+//             }
+//         });
+// }
+
+// function cargarUsuariosPanel() {
+//     const mainContent = document.querySelector('main');
+//     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando usuarios...</h2>';
+//     fetch('/admin/usuarios.html')
+//         .then(res => res.text())
+//         .then(html => {
+//             mainContent.innerHTML = html;
+//             // Elimina scripts anteriores de usuarios.js
+//             document.querySelectorAll('script[src="/admin/usuarios.js"]').forEach(s => s.remove());
+//             // Cargar el JS de usuarios
+//             const script = document.createElement('script');
+//             script.src = '/admin/usuarios.js?v=' + Date.now(); // <-- fuerza recarga y evita caché
+//             script.onload = () => {
+//                 console.log('usuarios.js insertado y ejecutado');
+//                 if (window.initUsuariosPanel) window.initUsuariosPanel();
+//             };
+//             script.onerror = () => console.error('Error al cargar usuarios.js');
+//             document.body.appendChild(script);
+//         });
+// }
+
+// function cargarComentariosPanel() {
+//     const mainContent = document.querySelector('main');
+//     mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando comentarios...</h2>';
+//     fetch('/admin/comentarios.html')
+//         .then(res => res.text())
+//         .then(html => {
+//             mainContent.innerHTML = html;
+//             // Elimina scripts anteriores de comentarios.js
+//             document.querySelectorAll('script[src^="/admin/comentarios.js"]').forEach(s => s.remove());
+//             // Cargar el JS de comentarios
+//             const script = document.createElement('script');
+//             script.src = '/admin/comentarios.js?v=' + Date.now();
+//             script.onload = () => {
+//                 if (window.initComentariosPanel) window.initComentariosPanel();
+//             };
+//             document.body.appendChild(script);
+//         });
+// }

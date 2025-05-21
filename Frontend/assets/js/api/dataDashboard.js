@@ -69,11 +69,15 @@ export function infoUser() {
                     }
 
                     if (ultimoDocumento) {
-                        ultimoDocumento.textContent = data.user.ultimoDocumento.titulo
+                        ultimoDocumento.textContent = data.user.ultimoDocumento
+                            ? data.user.ultimoDocumento.titulo
+                            : 'Sin documentos';
                     }
 
                     if (ultimoDocumentoFecha) {
-                        ultimoDocumentoFecha.textContent = data.user.ultimoDocumento.fechaSubida
+                        ultimoDocumentoFecha.textContent = data.user.ultimoDocumento
+                            ? data.user.ultimoDocumento.fechaSubida
+                            : '';
                     }
 
                     if (ultimaPuntuacion) {
