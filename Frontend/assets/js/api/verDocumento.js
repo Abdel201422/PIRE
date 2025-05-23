@@ -82,16 +82,17 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             return response.json()
         })
         .then(data => {
+            console.log(data)
             // Construimos la URL del documento usando DOC_URL
             const userId = data.usuario.id
             const fileName = data.titulo.split('/').pop()
             
             // Intentamos acceder al documento directamente usando DOC_URL
-            const docUrl = `${DOC_URL}/uploads/${userId}/${fileName}`
+            //const docUrl = `${DOC_URL}/uploads/${userId}/${fileName}`
             
             // Mostramos el documento según su tipo
             let content = ''
-            if (data.titulo.toLowerCase().endsWith('.pdf')) {
+            /* if (data.titulo.toLowerCase().endsWith('.pdf')) {
                 content = `<embed src="${docUrl}" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
             } else if (data.titulo.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
                 content = `<div class="overflow-y-auto h-full">
@@ -100,7 +101,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             } else {
                 content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
             }
-
+ */
             documentoContainer.innerHTML = content
 
             // Configurar el botón de descarga
