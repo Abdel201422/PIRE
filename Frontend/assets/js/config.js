@@ -1,4 +1,5 @@
-export const BACKEND_URL = 'http://127.0.0.1:8000';
+export const BACKEND_URL = 'https://pire1-fqb0ezg0egdbh4hy.canadacentral-01.azurewebsites.net/Backend/public/index.php';
+export const DOC_URL = 'https://pire1-fqb0ezg0egdbh4hy.canadacentral-01.azurewebsites.net/Backend/public';
 
 // Asegurarse de que el favicon esté configurado
 const setFavicon = () => {

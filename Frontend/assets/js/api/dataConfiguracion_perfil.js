@@ -1,4 +1,5 @@
 import { BACKEND_URL } from '../config.js';
+import { DOC_URL } from '../config.js';
 
 function rellenarPerfilUsuario() {
   const token = localStorage.getItem('jwt');
@@ -32,7 +33,7 @@ function rellenarPerfilUsuario() {
         // Imagen de perfil
         const avatarDivs = document.querySelectorAll('#profile-image-container, #profile-image-preview');
         if (avatarDivs.length > 0) {
-          let avatarUrl = `${BACKEND_URL}/${data.user.avatar}` || '';
+          let avatarUrl = data.user.avatar ? `${DOC_URL}/${data.user.avatar}` : '';
           if (avatarUrl) {
             avatarDivs.forEach(div => {
               div.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="object-cover w-full h-full" />`;

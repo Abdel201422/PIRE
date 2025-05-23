@@ -1,4 +1,5 @@
 import { BACKEND_URL } from '../config.js'
+import { DOC_URL } from '../config.js'
 import { setupLogout } from './auth.js'
 
 setupLogout()
@@ -85,7 +86,7 @@ export function infoUser() {
                     }
 
                     if (userAvatar) {
-                        userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.user.avatar}" alt="Avatar">`
+                        userAvatar.innerHTML = `<img src="${DOC_URL}/${data.user.avatar}" alt="Avatar">`
                     }
 
                     if (userAdmin) {
