@@ -78,17 +78,19 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
                 if (!response.ok) {
                     throw new Error('No se pudo cargar el archivo.')
                 }
-                return response.blob()
+                //return response.blob()
+                return response.json()
             })
-            .then(blob => {
-                console.log('Blob:', blob)
-                url = URL.createObjectURL(blob)
-                const mimeType = blob.type
+            .then(data => {
+                //console.log('Blob:', blob)
+                //url = URL.createObjectURL(blob)
+                //const mimeType = blob.type
 
+                url = data.ruta
                 let content = ''
                 if (mimeType === 'application/pdf') {
                     content = `<embed src="${url}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-                } else if (mimeType.startsWith('image/')) {
+                } else if (data.tipo.startsWith('image/')) {
                     content = `<div class="overflow-y-auto h-full">
                 <img src="${url}" alt="Documento" class="w-full h-auto rounded shadow" />
             </div>`
