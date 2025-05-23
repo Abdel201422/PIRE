@@ -70,47 +70,48 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
-        // Primero obtenemos los datos del documento para obtener la ruta del archivo
-        fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
+        fetch(`${BACKEND_URL}/api/documentos/download/${documentoId}`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('No se pudo obtener la información del documento.')
-            }
-            return response.json()
-        })
-        .then(data => {
-            // Construimos la URL del documento usando DOC_URL
-            const userId = data.usuario.id
-            const fileName = data.titulo
-            
-            // Intentamos acceder al documento directamente usando DOC_URL
-            const docUrl = `${DOC_URL}/uploads/${userId}/${fileName}`
-            
-            // Mostramos el documento según su tipo
-            let content = ''
-            if (data.titulo.toLowerCase().endsWith('.pdf')) {
-                content = `<embed src="${docUrl}" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-            } else if (data.titulo.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
-                content = `<div class="overflow-y-auto h-full">
-                    <img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" />
-                </div>`
-            } else {
-                content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
-            }
-
-            documentoContainer.innerHTML = content
-
-            // Configurar el botón de descarga
-            downloadDocument.addEventListener('click', () => {
-                window.open(docUrl, '_blank')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el archivo.')
+                }
+                return response.blob()
             })
-        })
-        .catch(error => {
-            console.error('Error al obtener información del documento:', error)
-            documentoContainer.innerHTML = '<p>Error al cargar la información del documento.</p>'
+            .then(blob => {
+                console.log('Blob:', blob)
+                url = URL.createObjectURL(blob)
+                const mimeType = blob.type
+
+                let content = ''
+                if (mimeType === 'application/pdf') {
+                    content = `<embed src="${url}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
+                } else if (mimeType.startsWith('image/')) {
+                    content = `<div class="overflow-y-auto h-full">
+                <img src="${url}" alt="Documento" class="w-full h-auto rounded shadow" />
+            </div>`
+                } else {
+                    content = `<p>El archivo no se puede previsualizar. <a href="${url}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
+                }
+
+                documentoContainer.innerHTML = content
+            })
+            .catch(error => {
+                console.error('Error al cargar el archivo:', error)
+                documentoContainer.innerHTML = '<p>Error al cargar el documento.</p>'
+            })
+
+        downloadDocument.addEventListener('click', () => {
+
+            const a = document.createElement('a')
+            a.href = url
+            a.download = ''
+            document.body.appendChild(a)
+            a.click()
+            a.remove()
+            window.URL.revokeObjectURL(url)
         })
     }
 }
