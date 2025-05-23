@@ -84,7 +84,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
         .then(data => {
             // Construimos la URL del documento usando DOC_URL
             const userId = data.usuario.id
-            const fileName = data.titulo
+            const fileName = data.titulo.split('/').pop()
             
             // Intentamos acceder al documento directamente usando DOC_URL
             const docUrl = `${DOC_URL}/uploads/${userId}/${fileName}`
