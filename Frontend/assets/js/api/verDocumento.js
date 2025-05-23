@@ -13,7 +13,7 @@ const documentoId = urlParams.get('id')
 
 if (!documentoId) {
     alert('No se ha especificado un documento válido.')
-    window.location.href = '/education.html' // Redirigir si no hay ID
+    //window.location.href = '/education.html' // Redirigir si no hay ID
 }
 
 document.addEventListener('DOMContentLoaded', () => {
