@@ -119,7 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const panelLateral = document.getElementById('panel-lateral')
             const mobileOverlay = document.getElementById('mobile-overlay')
 
-            mobileMenuButton.addEventListener('click', () => {
+            if (mobileMenuButton && panelLateral && mobileOverlay) {
+                console.log('todos-------')
+                mobileMenuButton.addEventListener('click', () => {
                 
                 if (panelLateral.classList.contains('-translate-x-full')) {
                     panelLateral.classList.remove('-translate-x-full')
@@ -129,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     panelLateral.classList.add('-translate-x-full')
                 }
             })
-            
+            } 
+
             /* function cargarMisRecursos() {
                 const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
                 mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
