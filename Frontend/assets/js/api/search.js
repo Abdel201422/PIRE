@@ -16,7 +16,7 @@ export function searchAll() {
             const query = e.target.value.trim()
             if (query.length > 0) {
                 // Redirige a la página de resultados de búsqueda con el término como parámetro
-                window.location.href = `/search.html?query=${encodeURIComponent(query)}`
+                window.location.href = `/search?query=${encodeURIComponent(query)}`
             }
         }
     })
