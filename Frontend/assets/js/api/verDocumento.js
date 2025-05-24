@@ -11,7 +11,7 @@ if (!token) {
 // Obtener el parámetro "id" de la URL
 const urlParams = new URLSearchParams(window.location.search)
 const documentoId = urlParams.get('id')
-console.log('-------------------> ' + documentoId)
+
 if (!documentoId) {
     alert('No se ha especificado un documento válido.')
     window.location.href = '/education.html' // Redirigir si no hay ID
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         star.addEventListener('click', () => {
 
             puntuacionStar = star.getAttribute('data-value') // Obtener el valor de la estrella seleccionada
-            console.log('Puntuación seleccionada:', puntuacionStar)
+            //console.log('Puntuación seleccionada:', puntuacionStar)
 
             // Marcar las estrellas seleccionadas
             stars.forEach(s => {
@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
+        console.log('-----> dentro ' + documentoId)
         // Primero obtenemos los datos del documento para obtener la ruta del archivo
         fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
             method: 'GET',
@@ -89,22 +90,25 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             
             // Mostramos el documento según su tipo
             let content = ''
-            if (data.titulo.toLowerCase().endsWith('.pdf')) {
+            
+            if (data.ruta.toLowerCase().endsWith('.pdf')) {
+            
                 content = `<embed src="${docUrl}" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-            } else if (data.titulo.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            
                 content = `<div class="overflow-y-auto h-full">
                     <img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" />
                 </div>`
             } else {
                 content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
             }
- 
+
             documentoContainer.innerHTML = content
 
             // Configurar el botón de descarga
             downloadDocument.addEventListener('click', () => {
                 window.open(docUrl, '_blank')
-            })
+            }) 
         })
         .catch(error => {
             console.error('Error al obtener información del documento:', error)
@@ -127,7 +131,7 @@ function infoDocumento() {
         })
         .then(data => {
             // Aquí puedes manejar los datos del documento
-            console.log(data)
+            //console.log(data)
 
             // Datos del documento
             const idTituloDocumento = document.getElementById('idTituloDocumento')
@@ -142,7 +146,7 @@ function infoDocumento() {
             nameAsignatura.textContent = data.asignatura
 
             const cursoParte = data.curso.match(/\dº Curso/)
-            console.log(cursoParte)
+            //console.log(cursoParte)
             nameCurso.textContent = cursoParte
             nameCiclo.textContent = data.ciclo
             ratingValue.textContent = data.puntuacion
@@ -194,7 +198,7 @@ function puntuarDocumento(documentoId, puntuacion) {
                 alert(`Error: ${data.error}`)
             } else {
                 alert('Puntuación registrada exitosamente.')
-                console.log('Puntuación registrada:', data.nuevaPuntuacion)
+                //console.log('Puntuación registrada:', data.nuevaPuntuacion)
                 if (data.nuevaPuntuacion) {
                     const ratingValue = document.getElementById('rating-value')
                     ratingValue.textContent = data.nuevaPuntuacion
