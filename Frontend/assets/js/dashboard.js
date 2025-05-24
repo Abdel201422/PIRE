@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (enlaceAdministrar) {
                     enlaceAdministrar.addEventListener('click', function(e) {
                         e.preventDefault();
-                        cargarAdminPanel();
+                        //cargarAdminPanel();
                     });
                 }
 
