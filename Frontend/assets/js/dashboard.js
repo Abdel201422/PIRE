@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (mobileMenuButton && panelLateral && mobileOverlay) {
                 
+                console.log('-------------------')
                 mobileMenuButton.addEventListener('click', () => {
                 
                     if (panelLateral.classList.contains('-translate-x-full')) {
