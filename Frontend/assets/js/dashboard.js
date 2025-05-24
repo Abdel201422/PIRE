@@ -105,17 +105,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const mobileOverlay = document.getElementById('mobile-overlay')
 
             if (mobileMenuButton && panelLateral && mobileOverlay) {
-                console.log('todos-------')
+                
                 mobileMenuButton.addEventListener('click', () => {
                 
-                if (panelLateral.classList.contains('-translate-x-full')) {
-                    panelLateral.classList.remove('-translate-x-full')
-                    mobileOverlay.classList.remove('hidden')
-                }else {
-                    mobileOverlay.classList.add('hidden')
+                    if (panelLateral.classList.contains('-translate-x-full')) {
+                        panelLateral.classList.remove('-translate-x-full')
+                        mobileOverlay.classList.remove('hidden')
+                    }else {
+                        mobileOverlay.classList.add('hidden')
+                        panelLateral.classList.add('-translate-x-full')
+                    }
+                })
+
+                mobileOverlay.addEventListener('click', () => {
                     panelLateral.classList.add('-translate-x-full')
-                }
-            })
+                    mobileOverlay.classList.add('hidden')
+                })
             } 
                 
                 /* // Asignar el evento de clic al enlace "Mis Recursos"
