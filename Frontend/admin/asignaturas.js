@@ -186,13 +186,13 @@ function renderizarTablaAsignaturas(asignaturas) {
         } catch (error) {
             console.error('Error al acceder al contador de documentos:', error);
         }
-        
+
         html += `
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-gray-900">${codigo}</div>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-6 py-4">
                     <div class="text-sm text-gray-900">${nombre}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
