@@ -1,7 +1,8 @@
 // js/dashboard.js
 import { infoUser } from './api/dataDashboard.js';
 import { loadBestDocuments } from './api/dataDashboard.js';
-import { searchAll, searchDocument } from './api/search.js'
+import { searchAll } from './api/search.js'
+import {searchDocument } from './api/search.js'
 /* import { whoAdmin } from './api/dataDashboard.js'; */
 
 // Carga dinámica del componente header
@@ -96,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (enlaceAdministrar) {
                     enlaceAdministrar.addEventListener('click', function(e) {
                         e.preventDefault();
-                        cargarAdminPanel();
+                        //cargarAdminPanel();
                     });
                 }
 
