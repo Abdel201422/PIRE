@@ -86,7 +86,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
         .then(data => {
             console.log(data)
             // Construimos la URL del documento usando DOC_URL
-            const userId = data.usuario.id
+            /* const userId = data.usuario.id
             const fileName = data.ruta.split('/').pop()
             
             // Intentamos acceder al documento directamente usando DOC_URL
@@ -113,7 +113,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             // Configurar el botón de descarga
             downloadDocument.addEventListener('click', () => {
                 window.open(docUrl, '_blank')
-            })
+            }) */
         })
         .catch(error => {
             console.error('Error al obtener información del documento:', error)
