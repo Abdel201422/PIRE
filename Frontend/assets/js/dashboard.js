@@ -19,9 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
             infoUser()
 
             const mobileMenuButton = document.getElementById('mobile-menu-button')
+            const panelLateral = document.getElementById('panel-lateral')
 
             mobileMenuButton.addEventListener('click', () => {
-                console.log('click')
+                
+                if (panelLateral.classList.contains('-translate-x-full')) {
+                    panelLateral.classList.remove('-translate-x-full')
+                }else {
+                    panelLateral.classList.add('-translate-x-full')
+                }
             })
 
                 // Funcionalidad para alternar el menú desplegable del usuario
