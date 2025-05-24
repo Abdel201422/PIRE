@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 documentosContainer.innerHTML = '' // Limpiar contenedor
 
                 if (data.documentos.length == 0) {
-                    documentosContainer.innerHTML = '<p>No hay documentos disponibles para esta asignatura.</p>'
+                    documentosContainer.innerHTML = '<a href="/education.html">Volver atrás</a><p>No hay documentos disponibles para esta asignatura.</p>'
                     return
                 }
 
