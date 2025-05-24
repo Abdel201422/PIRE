@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     cursos.asignaturas.forEach(asignatura => {
 
-                        const partes = asignatura.curso.split(' ');
-                        const cursoCorto = `${partes[0]} ${partes[1]}`; // "1º Curso" o "2º Curso"
+                        const partes = asignatura.curso.split(' ')
+                        const cursoCorto = `${partes[0]} ${partes[1]}` // "1º Curso" o "2º Curso"
 
                         const asignaturaDiv = document.createElement('div')
                         asignaturaDiv.classList.add('flex', 'w-full', 'sm:w-max', 'items-center', 'border-2', 'border-gray-300', 'rounded-full', 'p-2', 'pr-4', 'hover:bg-green-100', 'hover:border-pire-green','transition-all', 'duration-200', 'cursor-pointer'
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <span class="text-sm text-gray-400">${cursoCorto}</span>
                                     </div></a>`
 
-                                    console.log('Código de la asignatura:', asignatura.codigo);
+                                    console.log('Código de la asignatura:', asignatura.codigo)
 
                         
                         asignaturasWrapper.appendChild(asignaturaDiv)

@@ -1,62 +1,62 @@
-import { BACKEND_URL } from '/assets/js/config.js';
+import { BACKEND_URL } from '/assets/js/config.js'
 
 // Verificar autenticación
-const token = localStorage.getItem('jwt');
+const token = localStorage.getItem('jwt')
 if (!token) {
-    window.location.href = '/login.html';
+    window.location.href = '/login.html'
 }
 
 // Variables globales
-let usuarios = [];
-let usuarioActual = null;
+let usuarios = []
+let usuarioActual = null
 
 // Cargar componentes dinámicamente
-import { infoUser } from '/assets/js/api/dataDashboard.js';
+import { infoUser } from '/assets/js/api/dataDashboard.js'
 document.addEventListener('DOMContentLoaded', () => {
-    infoUser();
+    infoUser()
     // Cargar datos de usuarios
-    cargarUsuarios();
+    cargarUsuarios()
 
     // Configurar eventos de los modales
-    configurarEventosModales();
+    configurarEventosModales()
     
     // Configurar evento de búsqueda
-    configurarBusqueda();
-});
+    configurarBusqueda()
+})
 
 // Función para configurar la búsqueda
 function configurarBusqueda() {
-    const inputBusqueda = document.getElementById('busqueda-usuarios');
+    const inputBusqueda = document.getElementById('busqueda-usuarios')
     
     inputBusqueda.addEventListener('input', () => {
-        filtrarUsuarios(inputBusqueda.value.toLowerCase());
-    });
+        filtrarUsuarios(inputBusqueda.value.toLowerCase())
+    })
 }
 
 // Función para filtrar usuarios según el texto de búsqueda
 function filtrarUsuarios(textoBusqueda) {
-    if (!Array.isArray(usuarios) || usuarios.length === 0) return;
+    if (!Array.isArray(usuarios) || usuarios.length === 0) return
     
     // Si no hay texto de búsqueda, mostrar todos los usuarios
     if (!textoBusqueda.trim()) {
-        mostrarUsuarios(usuarios);
-        return;
+        mostrarUsuarios(usuarios)
+        return
     }
     
     // Filtrar los usuarios que coinciden con el texto de búsqueda
     const usuariosFiltrados = usuarios.filter(user => {
-        if (!user) return false;
+        if (!user) return false
         
-        const nombre = (user.nombre || '').toLowerCase();
-        const apellido = (user.apellido || '').toLowerCase();
-        const email = (user.email || '').toLowerCase();
+        const nombre = (user.nombre || '').toLowerCase()
+        const apellido = (user.apellido || '').toLowerCase()
+        const email = (user.email || '').toLowerCase()
         
         return nombre.includes(textoBusqueda) || 
                apellido.includes(textoBusqueda) || 
-               email.includes(textoBusqueda);
-    });
+               email.includes(textoBusqueda)
+    })
     
-    mostrarUsuarios(usuariosFiltrados);
+    mostrarUsuarios(usuariosFiltrados)
 }
 
 // Cargar usuarios desde la API
@@ -67,51 +67,51 @@ function cargarUsuarios() {
     })
     .then(response => {
         // Verificar si la respuesta es JSON antes de intentar analizarla
-        const contentType = response.headers.get('content-type');
+        const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+                    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`)
                 }).catch(e => {
                     // Si falla el parsing JSON del error, lanzar el error original
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                });
+                    throw new Error(`Error ${response.status}: ${response.statusText}`)
+                })
             }
-            return response.json();
+            return response.json()
         } else {
             // Si no es JSON, manejar como texto
-            throw new Error(`La respuesta no es JSON. Status: ${response.status}`);
+            throw new Error(`La respuesta no es JSON. Status: ${response.status}`)
         }
     })
     .then(data => {
-        console.log('Datos de usuarios recibidos:', data);
+        console.log('Datos de usuarios recibidos:', data)
         if (!Array.isArray(data)) {
-            throw new Error(data.message || 'Error de autenticación: la respuesta no es un array');
+            throw new Error(data.message || 'Error de autenticación: la respuesta no es un array')
         }
-        usuarios = data;
-        mostrarUsuarios(data);
+        usuarios = data
+        mostrarUsuarios(data)
     })
     .catch(error => {
-        console.error('Error al cargar usuarios:', error);
+        console.error('Error al cargar usuarios:', error)
         document.getElementById('tabla-usuarios').innerHTML = `
             <tr>
                 <td colspan="6" class="px-6 py-4 text-center text-red-500">
                     Error al cargar los usuarios: ${error.message}. Por favor, intenta de nuevo.
                 </td>
             </tr>
-        `;
+        `
         
         if (error.message.includes('401')) {
-            localStorage.removeItem('jwt');
-            window.location.href = '/login.html';
+            localStorage.removeItem('jwt')
+            window.location.href = '/login.html'
         }
-    });
+    })
 }
 
 // Renderizar la tabla de usuarios
 function mostrarUsuarios(lista) {
-    const tbody = document.getElementById('tabla-usuarios');
-    if (!tbody) return;
+    const tbody = document.getElementById('tabla-usuarios')
+    if (!tbody) return
     
     if (lista.length === 0) {
         tbody.innerHTML = `
@@ -120,11 +120,11 @@ function mostrarUsuarios(lista) {
                     No hay usuarios disponibles.
                 </td>
             </tr>
-        `;
-        return;
+        `
+        return
     }
     
-    let html = '';
+    let html = ''
     lista.forEach(user => {
         html += `
             <tr>
@@ -142,121 +142,121 @@ function mostrarUsuarios(lista) {
                     </button>
                 </td>
             </tr>
-        `;
-    });
+        `
+    })
     
-    tbody.innerHTML = html;
+    tbody.innerHTML = html
     
     // Configurar eventos para los botones de acción
     document.querySelectorAll('[data-accion="editar"]').forEach(btn => {
-        btn.addEventListener('click', () => editarUsuario(parseInt(btn.dataset.id)));
-    });
+        btn.addEventListener('click', () => editarUsuario(parseInt(btn.dataset.id)))
+    })
     
     document.querySelectorAll('[data-accion="eliminar"]').forEach(btn => {
-        btn.addEventListener('click', () => confirmarEliminarUsuario(parseInt(btn.dataset.id)));
-    });
+        btn.addEventListener('click', () => confirmarEliminarUsuario(parseInt(btn.dataset.id)))
+    })
 }
 
 // Función para configurar eventos de los modales
 function configurarEventosModales() {
     // Modal de nuevo usuario
-    const btnNuevoUsuario = document.getElementById('btn-nuevo-usuario');
-    const modalUsuario = document.getElementById('modal-usuario');
-    const btnCancelar = document.getElementById('btn-cancelar');
-    const formUsuario = document.getElementById('form-usuario');
+    const btnNuevoUsuario = document.getElementById('btn-nuevo-usuario')
+    const modalUsuario = document.getElementById('modal-usuario')
+    const btnCancelar = document.getElementById('btn-cancelar')
+    const formUsuario = document.getElementById('form-usuario')
     
     btnNuevoUsuario.addEventListener('click', () => {
-        document.getElementById('modal-titulo').textContent = 'Nuevo Usuario';
-        document.getElementById('usuario-id').value = '';
-        document.getElementById('usuario-nombre').value = '';
-        document.getElementById('usuario-apellido').value = '';
-        document.getElementById('usuario-email').value = '';
-        document.getElementById('usuario-password').value = '';
-        document.getElementById('usuario-roles').value = 'ROLE_USER';
-        usuarioActual = null;
-        modalUsuario.classList.remove('hidden');
-    });
+        document.getElementById('modal-titulo').textContent = 'Nuevo Usuario'
+        document.getElementById('usuario-id').value = ''
+        document.getElementById('usuario-nombre').value = ''
+        document.getElementById('usuario-apellido').value = ''
+        document.getElementById('usuario-email').value = ''
+        document.getElementById('usuario-password').value = ''
+        document.getElementById('usuario-roles').value = 'ROLE_USER'
+        usuarioActual = null
+        modalUsuario.classList.remove('hidden')
+    })
     
     btnCancelar.addEventListener('click', () => {
-        modalUsuario.classList.add('hidden');
-    });
+        modalUsuario.classList.add('hidden')
+    })
     
     formUsuario.addEventListener('submit', (e) => {
-        e.preventDefault();
-        guardarUsuario();
-    });
+        e.preventDefault()
+        guardarUsuario()
+    })
     
     // Modal de confirmación para eliminar
-    const modalConfirmar = document.getElementById('modal-confirmar');
-    const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar');
-    const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar');
+    const modalConfirmar = document.getElementById('modal-confirmar')
+    const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar')
+    const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar')
     
     btnCancelarEliminar.addEventListener('click', () => {
-        modalConfirmar.classList.add('hidden');
-    });
+        modalConfirmar.classList.add('hidden')
+    })
     
     btnConfirmarEliminar.addEventListener('click', () => {
-        eliminarUsuario();
-    });
+        eliminarUsuario()
+    })
 }
 
 // Función para editar un usuario
 function editarUsuario(id) {
-    const user = usuarios.find(u => u.id === id);
-    if (!user) return;
+    const user = usuarios.find(u => u.id === id)
+    if (!user) return
     
-    usuarioActual = user;
+    usuarioActual = user
     
-    document.getElementById('modal-titulo').textContent = 'Editar Usuario';
-    document.getElementById('usuario-id').value = user.id;
-    document.getElementById('usuario-nombre').value = user.nombre || '';
-    document.getElementById('usuario-apellido').value = user.apellido || '';
-    document.getElementById('usuario-email').value = user.email;
-    document.getElementById('usuario-password').value = '';
-    document.getElementById('usuario-roles').value = user.roles.join(',');
+    document.getElementById('modal-titulo').textContent = 'Editar Usuario'
+    document.getElementById('usuario-id').value = user.id
+    document.getElementById('usuario-nombre').value = user.nombre || ''
+    document.getElementById('usuario-apellido').value = user.apellido || ''
+    document.getElementById('usuario-email').value = user.email
+    document.getElementById('usuario-password').value = ''
+    document.getElementById('usuario-roles').value = user.roles.join(',')
     
-    document.getElementById('modal-usuario').classList.remove('hidden');
+    document.getElementById('modal-usuario').classList.remove('hidden')
 }
 
 // Función para confirmar la eliminación de un usuario
 function confirmarEliminarUsuario(id) {
-    usuarioActual = usuarios.find(u => u.id === id);
-    if (!usuarioActual) return;
+    usuarioActual = usuarios.find(u => u.id === id)
+    if (!usuarioActual) return
     
-    document.getElementById('modal-confirmar').classList.remove('hidden');
+    document.getElementById('modal-confirmar').classList.remove('hidden')
 }
 
 // Función para guardar un usuario (nuevo o editado)
 function guardarUsuario() {
-    const id = document.getElementById('usuario-id').value;
-    const nombre = document.getElementById('usuario-nombre').value;
-    const apellido = document.getElementById('usuario-apellido').value;
-    const email = document.getElementById('usuario-email').value;
-    const password = document.getElementById('usuario-password').value;
-    const roles = document.getElementById('usuario-roles').value.split(',').map(r => r.trim());
+    const id = document.getElementById('usuario-id').value
+    const nombre = document.getElementById('usuario-nombre').value
+    const apellido = document.getElementById('usuario-apellido').value
+    const email = document.getElementById('usuario-email').value
+    const password = document.getElementById('usuario-password').value
+    const roles = document.getElementById('usuario-roles').value.split(',').map(r => r.trim())
     
-    let datos;
+    let datos
     if (!id) {
         // Nuevo usuario: password es obligatorio
         if (!password) {
-            alert('La contraseña es obligatoria para nuevos usuarios.');
-            return;
+            alert('La contraseña es obligatoria para nuevos usuarios.')
+            return
         }
-        datos = { email, roles, nombre, apellido, password };
+        datos = { email, roles, nombre, apellido, password }
     } else {
         // Edición: password solo si se proporciona
-        datos = { email, roles, nombre, apellido };
-        if (password) datos.password = password;
+        datos = { email, roles, nombre, apellido }
+        if (password) datos.password = password
     }
     
     const url = id 
         ? `${BACKEND_URL}/api/users/${id}/edit` // Editar
-        : `${BACKEND_URL}/api/users`; // Nuevo - ahora usa el mismo patrón que ciclos.js
+        : `${BACKEND_URL}/api/users` // Nuevo - ahora usa el mismo patrón que ciclos.js
     
-    const method = id ? 'PUT' : 'POST';
+    const method = id ? 'PUT' : 'POST'
     
-    console.log('Enviando solicitud a:', url);
-    console.log('Datos:', id ? datos : { ...datos, password: '***' });
+    console.log('Enviando solicitud a:', url)
+    console.log('Datos:', id ? datos : { ...datos, password: '***' })
     
     fetch(url, {
         method: method,
@@ -268,45 +268,45 @@ function guardarUsuario() {
     })
     .then(response => {
         // Verificar si la respuesta es JSON antes de intentar analizarla
-        const contentType = response.headers.get('content-type');
+        const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+                    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`)
                 }).catch(e => {
                     // Si falla el parsing JSON del error, lanzar el error original
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                });
+                    throw new Error(`Error ${response.status}: ${response.statusText}`)
+                })
             }
-            return response.json();
+            return response.json()
         } else {
             // Si no es JSON, manejar como texto
             return response.text().then(text => {
-                console.error('Respuesta no-JSON recibida:', text);
-                throw new Error(`La respuesta no es JSON. Status: ${response.status}`);
-            });
+                console.error('Respuesta no-JSON recibida:', text)
+                throw new Error(`La respuesta no es JSON. Status: ${response.status}`)
+            })
         }
     })
     .then(data => {
-        console.log('Respuesta al guardar usuario:', data);
-        document.getElementById('modal-usuario').classList.add('hidden');
-        cargarUsuarios(); // Recargar la lista de usuarios
+        console.log('Respuesta al guardar usuario:', data)
+        document.getElementById('modal-usuario').classList.add('hidden')
+        cargarUsuarios() // Recargar la lista de usuarios
     })
     .catch(error => {
-        console.error('Error al guardar usuario:', error);
+        console.error('Error al guardar usuario:', error)
         // Mostrar el mensaje de error específico
-        alert(error.message || 'Error al guardar el usuario. Por favor, intenta de nuevo.');
+        alert(error.message || 'Error al guardar el usuario. Por favor, intenta de nuevo.')
         
         if (error.message.includes('401')) {
-            localStorage.removeItem('jwt');
-            window.location.href = '/login.html';
+            localStorage.removeItem('jwt')
+            window.location.href = '/login.html'
         }
-    });
+    })
 }
 
 // Función para eliminar un usuario
 function eliminarUsuario() {
-    if (!usuarioActual) return;
+    if (!usuarioActual) return
     
     fetch(`${BACKEND_URL}/api/users/${usuarioActual.id}/delete`, {
         method: 'DELETE',
@@ -314,38 +314,38 @@ function eliminarUsuario() {
     })
     .then(response => {
         // Verificar si la respuesta es JSON antes de intentar analizarla
-        const contentType = response.headers.get('content-type');
+        const contentType = response.headers.get('content-type')
         if (contentType && contentType.includes('application/json')) {
             if (!response.ok) {
                 return response.json().then(errorData => {
-                    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
+                    throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`)
                 }).catch(e => {
                     // Si falla el parsing JSON del error, lanzar el error original
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                });
+                    throw new Error(`Error ${response.status}: ${response.statusText}`)
+                })
             }
-            return response.json();
+            return response.json()
         } else {
             // Si no es JSON, manejar como texto
             return response.text().then(text => {
-                console.error('Respuesta no-JSON recibida:', text);
-                throw new Error(`La respuesta no es JSON. Status: ${response.status}`);
-            });
+                console.error('Respuesta no-JSON recibida:', text)
+                throw new Error(`La respuesta no es JSON. Status: ${response.status}`)
+            })
         }
     })
     .then(data => {
-        document.getElementById('modal-confirmar').classList.add('hidden');
-        cargarUsuarios(); // Recargar la lista de usuarios
-        usuarioActual = null;
+        document.getElementById('modal-confirmar').classList.add('hidden')
+        cargarUsuarios() // Recargar la lista de usuarios
+        usuarioActual = null
     })
     .catch(error => {
-        console.error('Error al eliminar usuario:', error);
-        alert('Error al eliminar el usuario. Por favor, intenta de nuevo: ' + error.message);
+        console.error('Error al eliminar usuario:', error)
+        alert('Error al eliminar el usuario. Por favor, intenta de nuevo: ' + error.message)
         
         if (error.message.includes('401')) {
-            localStorage.removeItem('jwt');
-            window.location.href = '/login.html';
+            localStorage.removeItem('jwt')
+            window.location.href = '/login.html'
         }
-    });
+    })
 }
 

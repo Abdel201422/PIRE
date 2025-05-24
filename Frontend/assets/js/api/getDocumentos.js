@@ -7,12 +7,12 @@ if (!token) {
 }
 
 // Obtener el parámetro "codigo" de la URL
-const urlParams = new URLSearchParams(window.location.search);
-const codigoAsignatura = urlParams.get('codigo');
+const urlParams = new URLSearchParams(window.location.search)
+const codigoAsignatura = urlParams.get('codigo')
 
 if (!codigoAsignatura) {
-    alert('No se ha especificado una asignatura válida.');
-    window.location.href = '/education.html'; // Redirigir si no hay código
+    alert('No se ha especificado una asignatura válida.')
+    window.location.href = '/education.html' // Redirigir si no hay código
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (documento.tipo_archivo === 'application/pdf') {
                         icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl bg-red-400">PDF</div>`
                     } else if (documento.tipo_archivo.startsWith('image/')) {
-                        icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248);">IMAGEN</div>`
+                        icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248)">IMAGEN</div>`
                     } else {
                         icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl bg-gray-400">ARCHIVO</div>`
                     }

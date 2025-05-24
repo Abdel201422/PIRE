@@ -1,5 +1,5 @@
 // js/search.js
-import { BACKEND_URL } from '../config.js';
+import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
 
@@ -24,8 +24,8 @@ export function searchAll() {
 
 export function searchDocument() {
 
-    const params = new URLSearchParams(window.location.search);
-const query = params.get('query');
+    const params = new URLSearchParams(window.location.search)
+const query = params.get('query')
 
 if (query) {
     const inputSearch = document.getElementById('input-busqueda')
@@ -61,11 +61,11 @@ function mostrarResultados(documentos) {
                 let icono = ''
 
                 if (documento.tipo_archivo === 'application/pdf') {
-                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #F87171;">PDF</div>`
+                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #F87171">PDF</div>`
                 } else if (documento.tipo_archivo.startsWith('image/')) {
-                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248);">IMAGEN</div>`
+                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248)">IMAGEN</div>`
                 } else {
-                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #9CA3AF;">ARCHIVO</div>`
+                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #9CA3AF">ARCHIVO</div>`
                 }
 
                 docDiv.innerHTML = `${icono}

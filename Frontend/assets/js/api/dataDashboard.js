@@ -72,13 +72,13 @@ export function infoUser() {
                     if (ultimoDocumento) {
                         ultimoDocumento.textContent = data.user.ultimoDocumento
                             ? 'Subiste' + data.user.ultimoDocumento.titulo
-                            : 'No tienes documentos subidos';
+                            : 'No tienes documentos subidos'
                     }
 
                     if (ultimoDocumentoFecha) {
                         ultimoDocumentoFecha.textContent = data.user.ultimoDocumento
                             ? data.user.ultimoDocumento.fechaSubida
-                            : '';
+                            : ''
                     }
 
                     if (ultimaPuntuacion) {
@@ -187,12 +187,12 @@ export function loadBestDocuments() {
 // Verificar si el usuario es administrador
 /* export function whoAdmin() {
     // Verificar si el usuario está autenticado
-    const token = localStorage.getItem('jwt');
+    const token = localStorage.getItem('jwt')
     const enlaceAdministrar = document.getElementById('enlace-administrar')
 
     if (!token) {
-        console.log('No hay token, el usuario no está autenticado');
-        return;
+        console.log('No hay token, el usuario no está autenticado')
+        return
     }
 
     fetch(`${BACKEND_URL}/api/users/me`, {
@@ -201,17 +201,17 @@ export function loadBestDocuments() {
     })
         .then(async response => {
             if (!response.ok) {
-                const text = await response.text();
-                throw new Error(text);
+                const text = await response.text()
+                throw new Error(text)
             }
-            return response.json();
+            return response.json()
         })
         .then(user => {
             // Check for 'roles' array (plural) instead of 'role'
             if (user.roles && user.roles.includes('ROLE_ADMIN')) {
-                enlaceAdministrar.classList.remove('hidden');
+                enlaceAdministrar.classList.remove('hidden')
             }
         })
-        .catch(error => console.error('Error al verificar el rol del usuario:', error));
+        .catch(error => console.error('Error al verificar el rol del usuario:', error))
 
 } */
