@@ -83,7 +83,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             return response.json()
         })
         .then(data => {
-            console.log('archivo -> ' . data)
+            console.log(data)
             // Construimos la URL del documento usando DOC_URL
             const userId = data.usuario.id
             const fileName = data.titulo.split('/').pop()
