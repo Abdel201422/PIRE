@@ -149,7 +149,7 @@ export function loadBestDocuments() {
                         console.log(doc)
                         const div = document.createElement('div')
                         div.innerHTML = `
-                        <a href="/documento.html?id=${doc.id}" class="h-full">
+                        <a href="/documento?id=${doc.id}" class="h-full">
                         <div class="flex flex-col h-full justify-between bg-[var(--color-gray-50)] rounded-3xl p-5 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                             <div>
                                 <div class="mb-2 text-xs text-green-600">${doc.asignatura}</div>
