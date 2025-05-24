@@ -99,23 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         cargarAdminPanel();
                     });
                 }
-                
-                /* // Asignar el evento de clic al enlace "Mis Recursos"
-                const enlaceMisRecursos = document.getElementById('enlace-recursos');
-                if (enlaceMisRecursos) {
-                    enlaceMisRecursos.addEventListener('click', function (e) {
-                        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
-                        cargarMisRecursos(); // Llama a la función para cargar los ciclos
-                        });
-                } */
-                })
-                .catch(error => console.error('Error al cargar el sidebar:', error));
-            }
 
-                
-            })
-            
-            const mobileMenuButton = document.getElementById('mobile-menu-button')
+                const mobileMenuButton = document.getElementById('mobile-menu-button')
             const panelLateral = document.getElementById('panel-lateral')
             const mobileOverlay = document.getElementById('mobile-overlay')
 
@@ -132,6 +117,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             } 
+                
+                /* // Asignar el evento de clic al enlace "Mis Recursos"
+                const enlaceMisRecursos = document.getElementById('enlace-recursos');
+                if (enlaceMisRecursos) {
+                    enlaceMisRecursos.addEventListener('click', function (e) {
+                        e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                        cargarMisRecursos(); // Llama a la función para cargar los ciclos
+                        });
+                } */
+                })
+                .catch(error => console.error('Error al cargar el sidebar:', error));
+            }
+
+                
+            })
 
             /* function cargarMisRecursos() {
                 const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
