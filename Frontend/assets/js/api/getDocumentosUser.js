@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
         data.forEach(documento => {
             const a = document.createElement('a')
             a.href = `./documento?id=${documento.id}`
+            a.classList.add('block')
             
             const div = document.createElement('div')
-            div.className = 'px-6 py-4 flex justify-between items-center hover:bg-gray-50 transition-colors'
+            div.className = 'px-6 py-4 flex justify-between items-center hover:bg-gray-50 transition-colors divide-y divide-gray-200'
         
             div.innerHTML = `
                 <div class="flex items-center space-x-4">
