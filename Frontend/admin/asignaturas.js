@@ -92,7 +92,7 @@ function cargarAsignaturas() {
         console.error('Error al cargar asignaturas:', error);
         document.getElementById('tabla-asignaturas').innerHTML = `
             <tr>
-                <td colspan="5" class="px-6 py-4 text-center text-red-500">
+                <td colspan="5" class="px-3 py-4 text-center text-red-500">
                     Error al cargar las asignaturas: ${error.message}. Por favor, intenta de nuevo.
                 </td>
             </tr>
