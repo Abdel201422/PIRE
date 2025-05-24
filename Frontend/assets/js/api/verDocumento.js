@@ -89,7 +89,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
         .then(data => {
             console.log(data)
             // Construimos la URL del documento usando DOC_URL
-            const docUrl = `${DOC_URL}/${data.rutaPublica}`
+            const docUrl = `${DOC_URL}/${data.ruta}`
             console.log(docUrl)
             // Mostramos el documento según su tipo
             let content = ''
