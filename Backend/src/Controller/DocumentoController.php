@@ -160,6 +160,7 @@ public function index(DocumentoRepository $documentoRepository): Response
         $data = [
             'id' => $documento->getId(),
             'titulo' => $documento->getTitulo(),
+            'ruta' => $documento->getRutaArchivo(),
             'descripcion' => $documento->getDescripcion(),
             'asignatura' => $asignatura->getNombre(),
             'curso' => $asignatura->getCurso()->getNombre(),
@@ -314,7 +315,7 @@ public function index(DocumentoRepository $documentoRepository): Response
         }
 
         // Obtener la ruta del archivo
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/' . $documento->getRutaArchivo();
+        $filePath = '/home/site/wwwroot/Backend/public/' . $documento->getRutaArchivo();
 
         if (!file_exists($filePath)) {
             return new JsonResponse(['error' => 'El archivo no existe en el servidor'], 404);

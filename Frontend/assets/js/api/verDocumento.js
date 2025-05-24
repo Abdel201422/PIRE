@@ -1,4 +1,5 @@
-import { BACKEND_URL, DOC_URL } from '../config.js'
+import { BACKEND_URL } from '../config.js'
+import { DOC_URL } from '../config.js'
 import { mostrarComentarios, sendComentario } from './getComentarios.js'
 
 const token = localStorage.getItem('jwt')
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         star.addEventListener('click', () => {
 
             puntuacionStar = star.getAttribute('data-value') // Obtener el valor de la estrella seleccionada
-            console.log('Puntuación seleccionada:', puntuacionStar)
+            //console.log('Puntuación seleccionada:', puntuacionStar)
 
             // Marcar las estrellas seleccionadas
             stars.forEach(s => {
@@ -130,7 +131,7 @@ function infoDocumento() {
         })
         .then(data => {
             // Aquí puedes manejar los datos del documento
-            console.log(data)
+            //console.log(data)
 
             // Datos del documento
             const idTituloDocumento = document.getElementById('idTituloDocumento')
@@ -145,7 +146,7 @@ function infoDocumento() {
             nameAsignatura.textContent = data.asignatura
 
             const cursoParte = data.curso.match(/\dº Curso/)
-            console.log(cursoParte)
+            //console.log(cursoParte)
             nameCurso.textContent = cursoParte
             nameCiclo.textContent = data.ciclo
             ratingValue.textContent = data.puntuacion
@@ -197,7 +198,7 @@ function puntuarDocumento(documentoId, puntuacion) {
                 alert(`Error: ${data.error}`)
             } else {
                 alert('Puntuación registrada exitosamente.')
-                console.log('Puntuación registrada:', data.nuevaPuntuacion)
+                //console.log('Puntuación registrada:', data.nuevaPuntuacion)
                 if (data.nuevaPuntuacion) {
                     const ratingValue = document.getElementById('rating-value')
                     ratingValue.textContent = data.nuevaPuntuacion
