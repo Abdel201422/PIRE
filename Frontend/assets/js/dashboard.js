@@ -6,10 +6,42 @@ import {searchDocument } from './api/search.js'
 /* import { whoAdmin } from './api/dataDashboard.js'; */
 
 // Carga dinámica del componente header
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async() => {
     
+    await Promise.all([
+        cargarHeader(),
+        cargarSidebar()
+    ])
+
     loadBestDocuments()
     
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button')
+    const panelLateral = document.getElementById('panel-lateral')
+    const mobileOverlay = document.getElementById('mobile-overlay')
+
+    if (mobileMenuButton && panelLateral && mobileOverlay) {
+
+        mobileMenuButton.addEventListener('click', () => {
+
+            if (panelLateral.classList.contains('-translate-x-full')) {
+                panelLateral.classList.remove('-translate-x-full')
+                mobileOverlay.classList.remove('hidden')
+            } else {
+                mobileOverlay.classList.add('hidden')
+                panelLateral.classList.add('-translate-x-full')
+            }
+        })
+
+        mobileOverlay.addEventListener('click', () => {
+            panelLateral.classList.add('-translate-x-full')
+            mobileOverlay.classList.add('hidden')
+        })
+    }
+                
+})
+
+async function cargarHeader() {
     // Cargar dinámicamente el Header
     const headerContainer = document.getElementById('header_dashboard');
     if (headerContainer) {
@@ -73,8 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => console.error('Error al cargar el header:', error));
         }
-        
-        // Cargar dinámicamente el Sidebar
+}
+
+async function cargarSidebar() {
+    // Cargar dinámicamente el Sidebar
         const sidebarContainer = document.getElementById('sidebar');
         if (sidebarContainer) {
             fetch('/components/sidebar.html')
@@ -112,10 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .catch(error => console.error('Error al cargar el sidebar:', error));
             }
-
-                
-            })
-
+}
             /* function cargarMisRecursos() {
                 const mainContent = document.querySelector('main'); // Contenedor principal del dashboard
                 mainContent.innerHTML = '<h2 class="text-xl font-semibold mb-4">Cargando recursos...</h2>';
