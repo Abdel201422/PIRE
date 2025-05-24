@@ -313,15 +313,20 @@ public function index(DocumentoRepository $documentoRepository): Response
             return new JsonResponse(['error' => 'Documento no encontrado'], 404);
         }
 
-        // Obtener la ruta del archivo
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/' . $documento->getRutaArchivo();
-
-        if (!file_exists($filePath)) {
-            return new JsonResponse(['error' => 'El archivo no existe en el servidor'], 404);
+        // Obtener el usuario autenticado
+        $user = $this->getUser();
+        if (!$user) {
+            return new JsonResponse(['error' => 'Usuario no autenticado'], 401);
         }
 
+        // Obtener la ruta del archivo
+        $rutaRelativa = $documento->getRutaArchivo();
+
         // Retornar el archivo para su descarga
-        return $this->file($filePath, $documento->getTitulo() . '.' . pathinfo($filePath, PATHINFO_EXTENSION));
+        return new JsonResponse([
+            'userId' => $user->getId(),
+            'ruta' => $rutaRelativa,
+        ]);
     }
 
     #[Route('/api/documentos/{id}/puntuar', name: 'puntuar_documento', methods: ['POST'])]

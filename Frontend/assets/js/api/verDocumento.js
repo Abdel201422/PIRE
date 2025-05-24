@@ -85,7 +85,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
         .then(data => {
             console.log(data)
             // Construimos la URL del documento usando DOC_URL
-            const userId = data.usuario.id
+            /* const userId = data.usuario.id
             const fileName = data.titulo.split('/').pop()
             
             // Intentamos acceder al documento directamente usando DOC_URL
@@ -101,7 +101,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
                 </div>`
             } else {
                 content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
-            }
+            } */
 
             documentoContainer.innerHTML = content
 
