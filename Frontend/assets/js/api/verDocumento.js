@@ -1,4 +1,5 @@
-import { BACKEND_URL, DOC_URL } from '../config.js'
+import { BACKEND_URL } from '../config.js'
+import { DOC_URL } from '../config.js'
 import { mostrarComentarios, sendComentario } from './getComentarios.js'
 
 const token = localStorage.getItem('jwt')
