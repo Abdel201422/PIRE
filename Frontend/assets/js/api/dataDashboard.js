@@ -82,7 +82,7 @@ export function infoUser() {
                     }
 
                     if (ultimaPuntuacion) {
-                        ultimaPuntuacion.textContent = data.user.ultimaValoracion
+                        ultimaPuntuacion.textContent = data.user.ultimaValoracion ? 'Recibiste una valoración de ' + data.user.ultimaValoracion + ' estrellas' : 'No has recibido ninguna valoración'
                     }
 
                     if (userAvatar) {
