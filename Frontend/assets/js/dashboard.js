@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async() => {
     loadBestDocuments()
     
 
-    const mobileMenuButton = document.getElementById('mobile-menu-button')
+    /* const mobileMenuButton = document.getElementById('mobile-menu-button')
     const panelLateral = document.getElementById('panel-lateral')
     const mobileOverlay = document.getElementById('mobile-overlay')
 
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async() => {
             panelLateral.classList.add('-translate-x-full')
             mobileOverlay.classList.add('hidden')
         })
-    }
+    } */
                 
 })
 
@@ -50,6 +50,17 @@ async function cargarHeader() {
         .then(html => {
             headerContainer.innerHTML = html;
             infoUser()
+
+            // Aquí asignamos el evento al botón del menú móvil, que está en header
+        const mobileMenuButton = headerContainer.querySelector('#mobile-menu-button');
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                // Como el panel lateral está en sidebar, disparamos un evento custom o hacemos algo diferente
+                // Lo mejor es guardar la referencia globalmente o manejar desde sidebar
+                // Aquí solo indicamos que el botón fue pulsado.
+                document.dispatchEvent(new CustomEvent('toggleMobileMenu'));
+            });
+        }
 
                 // Funcionalidad para alternar el menú desplegable del usuario
                 const userAvatar = document.getElementById('user-avatar');
@@ -125,6 +136,26 @@ async function cargarSidebar() {
                         window.location.href = '/';
                     });
                 }
+
+                // Aquí el panel lateral y el overlay están en sidebar
+        const panelLateral = sidebarContainer.querySelector('#panel-lateral');
+        const mobileOverlay = sidebarContainer.querySelector('#mobile-overlay');
+
+        // Escuchar el evento custom lanzado desde header para abrir/cerrar menú
+        document.addEventListener('toggleMobileMenu', () => {
+            if (panelLateral.classList.contains('-translate-x-full')) {
+                panelLateral.classList.remove('-translate-x-full');
+                mobileOverlay.classList.remove('hidden');
+            } else {
+                mobileOverlay.classList.add('hidden');
+                panelLateral.classList.add('-translate-x-full');
+            }
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            panelLateral.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        });
 
                 
                 const enlaceAdministrar = document.getElementById('admin-enlace');
