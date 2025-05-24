@@ -71,17 +71,49 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
-        fetch(`${BACKEND_URL}/api/documentos/download/${documentoId}`, {
+        /* fetch(`${BACKEND_URL}/api/documentos/download/${documentoId}`, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` },
+        }) */
+        // Primero obtenemos los datos del documento para obtener la ruta del archivo
+        fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('No se pudo cargar el archivo.')
-                }
-                return response.blob()
-            })
-            .then(blob => {
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la información del documento.')
+            }
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            // Construimos la URL del documento usando DOC_URL
+            const docUrl = `${DOC_URL}/${data.rutaPublica}`
+            
+            // Mostramos el documento según su tipo
+            let content = ''
+            
+            if (data.ruta.toLowerCase().endsWith('.pdf')) {
+            
+                content = `<embed src="${docUrl}" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
+            } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            
+                content = `<div class="overflow-y-auto h-full">
+                    <img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" />
+                </div>`
+            } else {
+                content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
+            }
+
+            documentoContainer.innerHTML = content
+
+            // Configurar el botón de descarga
+            downloadDocument.addEventListener('click', () => {
+                window.open(docUrl, '_blank')
+            }) 
+        })
+            /* .then(blob => {
                 console.log('Blob:', blob)
                 url = URL.createObjectURL(blob)
                 const mimeType = blob.type
@@ -98,7 +130,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
                 }
 
                 documentoContainer.innerHTML = content
-            })
+            }) */
             .catch(error => {
                 console.error('Error al cargar el archivo:', error)
                 documentoContainer.innerHTML = '<p>Error al cargar el documento.</p>'
