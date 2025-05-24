@@ -11,7 +11,7 @@ if (!token) {
 // Obtener el parámetro "id" de la URL
 const urlParams = new URLSearchParams(window.location.search)
 const documentoId = urlParams.get('id')
-console.log('-------------------> ' + documentoId)
+
 if (!documentoId) {
     alert('No se ha especificado un documento válido.')
     window.location.href = '/education.html' // Redirigir si no hay ID
@@ -83,7 +83,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             return response.json()
         })
         .then(data => {
-            console.log(data)
+            console.log('archivo -> ' + data)
             // Construimos la URL del documento usando DOC_URL
             const userId = data.usuario.id
             const fileName = data.titulo.split('/').pop()
@@ -102,7 +102,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             } else {
                 content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
             }
- 
+
             documentoContainer.innerHTML = content
 
             // Configurar el botón de descarga
