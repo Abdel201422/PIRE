@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
+        console.log('-----> dentro')
         // Primero obtenemos los datos del documento para obtener la ruta del archivo
         fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
             method: 'GET',
