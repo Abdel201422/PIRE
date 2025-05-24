@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 documentosContainer.innerHTML = '' // Limpiar contenedor
 
                 if (data.documentos.length == 0) {
-                    ruta.innerHTML = '<a href="/education.html">Volver atrás</a>'
+                    ruta.innerHTML = '<a href="/education.html" class="text-green-400 hover:text-green-600 hover:underline">Volver atrás</a>'
                     documentosContainer.innerHTML = '<p>No hay documentos disponibles para esta asignatura.</p>'
                     return
                 }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h3 class="text-lg sm:text-xl font-bold">${documento.nombre}</h3>
                             <p class="text-sm sm:text-base text-gray-500">${documento.descripcion}</p>
                         </div>
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mt-4">
+                        <div class="flex flex-row justify-between items-center gap-2 mt-4">
                             <div class="flex flex-row gap-2 items-center">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 2V4" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 2V4" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 8H21" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7.99998V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V7.99998M21 7.99998V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V7.99998" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 <p class="text-sm text-[#4A4A4A]">${documento.fecha_subida}</p>
