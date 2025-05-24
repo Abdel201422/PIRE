@@ -93,7 +93,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             const docUrl = `${DOC_URL}/uploads/${userId}/${fileName}`
             console.log(' --> ruta del archivo = ' + docUrl)
             // Mostramos el documento según su tipo
-            /*let content = ''
+            let content = ''
             if (data.titulo.toLowerCase().endsWith('.pdf')) {
                 content = `<embed src="${docUrl}" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
             } else if (data.titulo.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
@@ -102,14 +102,14 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
                 </div>`
             } else {
                 content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
-            } */
+            }
 
-            /* documentoContainer.innerHTML = content
+            documentoContainer.innerHTML = content
 
             // Configurar el botón de descarga
             downloadDocument.addEventListener('click', () => {
                 window.open(docUrl, '_blank')
-            }) */
+            })
         })
         .catch(error => {
             console.error('Error al obtener información del documento:', error)
