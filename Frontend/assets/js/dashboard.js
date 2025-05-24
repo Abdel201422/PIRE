@@ -18,18 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
             headerContainer.innerHTML = html;
             infoUser()
 
-            const mobileMenuButton = document.getElementById('mobile-menu-button')
-            const panelLateral = document.getElementById('panel-lateral')
-
-            mobileMenuButton.addEventListener('click', () => {
-                
-                if (panelLateral.classList.contains('-translate-x-full')) {
-                    panelLateral.classList.remove('-translate-x-full')
-                }else {
-                    panelLateral.classList.add('-translate-x-full')
-                }
-            })
-
                 // Funcionalidad para alternar el menú desplegable del usuario
                 const userAvatar = document.getElementById('user-avatar');
                 const userInfo = document.getElementById('user-info');
@@ -125,6 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
                 
+            })
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button')
+            const panelLateral = document.getElementById('panel-lateral')
+            const mobileOverlay = document.getElementById('mobile-overlay')
+
+            mobileMenuButton.addEventListener('click', () => {
+                
+                if (panelLateral.classList.contains('-translate-x-full')) {
+                    panelLateral.classList.remove('-translate-x-full')
+                    mobileOverlay.classList.remove('hidden')
+                }else {
+                    mobileOverlay.classList.add('hidden')
+                    panelLateral.classList.add('-translate-x-full')
+                }
             })
             
             /* function cargarMisRecursos() {
