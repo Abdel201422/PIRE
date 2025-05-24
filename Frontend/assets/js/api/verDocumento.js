@@ -96,7 +96,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             
             if (data.ruta.toLowerCase().endsWith('.pdf')) {
             
-                content = `<embed src="${docUrl}" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
+                content = `<embed src="${docUrl}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
             } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
             
                 content = `<div class="overflow-y-auto h-full">
