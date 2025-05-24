@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const btnTodos = document.createElement('button')
             btnTodos.textContent = 'Todos los ciclos'
             btnTodos.dataset.ciclo = 'todos'
-            btnTodos.className = 'flex-none tab-button border-b-2 border-pire-green pl-4 pr-4 font-semibold'
+            btnTodos.className = 'flex-none snap-start tab-button border-b-2 border-pire-green pl-4 pr-4 font-semibold'
             tabsContainer.appendChild(btnTodos)
 
             data.forEach(ciclos => {
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const btnCiclo = document.createElement('button')
                 btnCiclo.textContent = ciclos.nombre
                 btnCiclo.dataset.ciclo = ciclos.nombre
-                btnCiclo.className = 'flex-none tab-button pl-4 pr-4'
+                btnCiclo.className = 'flex-none tab-button pl-4 pr-4 snap-start'
                 tabsContainer.appendChild(btnCiclo)
 
                 const ciclo = document.createElement('div')
