@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
-        console.log('-----> dentro')
+        console.log('-----> dentro ' + documentoId)
         // Primero obtenemos los datos del documento para obtener la ruta del archivo
         fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
             method: 'GET',
@@ -104,12 +104,12 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
                 content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
             } */
 
-            documentoContainer.innerHTML = content
+            /* documentoContainer.innerHTML = content
 
             // Configurar el botón de descarga
             downloadDocument.addEventListener('click', () => {
                 window.open(docUrl, '_blank')
-            })
+            }) */
         })
         .catch(error => {
             console.error('Error al obtener información del documento:', error)
