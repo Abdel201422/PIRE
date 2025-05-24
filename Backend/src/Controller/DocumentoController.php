@@ -160,6 +160,7 @@ public function index(DocumentoRepository $documentoRepository): Response
         $data = [
             'id' => $documento->getId(),
             'titulo' => $documento->getTitulo(),
+            'ruta' => $documento->getRutaArchivo(),
             'descripcion' => $documento->getDescripcion(),
             'asignatura' => $asignatura->getNombre(),
             'curso' => $asignatura->getCurso()->getNombre(),
