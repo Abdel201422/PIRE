@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
             infoUser()
 
             const mobileMenuButton = document.getElementById('mobile-menu-button')
-            const mobileMenu = document.getElementById('mobile-menu')
+            const panelLateral = document.getElementById('panel-lateral')
 
-            if (mobileMenuButton && mobileMenu) {
+            if (mobileMenuButton && panelLateral) {
                 mobileMenuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden')
+                    panelLateral.classList.toggle('hidden')
                 })
             }
 
