@@ -153,7 +153,7 @@ export function loadBestDocuments() {
                         <div class="flex flex-col h-full justify-between bg-[var(--color-gray-50)] rounded-3xl p-5 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                             <div>
                                 <div class="mb-2 text-xs text-green-600">${doc.asignatura}</div>
-                                <h3 class="font-medium text-xl mb-2">${doc.titulo}</h3>
+                                <h3 class="font-medium text-xl mb-2 truncate">${doc.titulo}</h3>
                             </div>
                             <div class="flex items-center justify-end mt-4">
                                 

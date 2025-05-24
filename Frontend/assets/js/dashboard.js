@@ -2,7 +2,7 @@
 import { infoUser } from './api/dataDashboard.js';
 import { loadBestDocuments } from './api/dataDashboard.js';
 import { searchAll } from './api/search.js'
-import {searchDocument } from './api/search.js'
+import { searchDocument } from './api/search.js'
 /* import { whoAdmin } from './api/dataDashboard.js'; */
 
 // Carga dinámica del componente header
