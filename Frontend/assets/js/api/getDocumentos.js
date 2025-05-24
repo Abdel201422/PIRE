@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     getDocumentos()
 
     function getDocumentos() {
+        const ruta = document.getElementById('ruta')
+
         fetch(`${BACKEND_URL}/asignatura/${codigoAsignatura}`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
@@ -30,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 documentosContainer.innerHTML = '' // Limpiar contenedor
 
                 if (data.documentos.length == 0) {
-                    documentosContainer.innerHTML = '<a href="/education.html">Volver atrás</a><p>No hay documentos disponibles para esta asignatura.</p>'
+                    ruta.innerHTML = '<a href="/education.html">Volver atrás</a>'
+                    documentosContainer.innerHTML = '<p>No hay documentos disponibles para esta asignatura.</p>'
                     return
                 }
 
@@ -40,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const rutaCurso = data.asignatura.curso.match(/\dº Curso/)
                 const rutaAsignatura = data.asignatura.nombre
 
-                const ruta = document.getElementById('ruta')
                 ruta.textContent = `${rutaCiclo} > ${rutaCurso} > ${rutaAsignatura}`
 
                 const nameAsignatura = document.getElementById('nameAsignatura')
