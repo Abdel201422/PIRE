@@ -92,11 +92,15 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             // Intentamos acceder al documento directamente usando DOC_URL
             const docUrl = `${DOC_URL}/uploads/${userId}/${fileName}`
             console.log(' --> ruta del archivo = ' + docUrl)
+            
             // Mostramos el documento según su tipo
             let content = ''
-            if (data.titulo.toLowerCase().endsWith('.pdf')) {
+            
+            if (data.ruta.toLowerCase().endsWith('.pdf')) {
+            
                 content = `<embed src="${docUrl}" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-            } else if (data.titulo.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            
                 content = `<div class="overflow-y-auto h-full">
                     <img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" />
                 </div>`
