@@ -71,8 +71,8 @@ export function infoUser() {
 
                     if (ultimoDocumento) {
                         ultimoDocumento.textContent = data.user.ultimoDocumento
-                            ? data.user.ultimoDocumento.titulo
-                            : 'Sin documentos';
+                            ? 'Subiste "' + data.user.ultimoDocumento.titulo + '"'
+                            : 'No has subido nada';
                     }
 
                     if (ultimoDocumentoFecha) {
@@ -81,8 +81,10 @@ export function infoUser() {
                             : '';
                     }
 
-                    if (ultimaPuntuacion) {
-                        ultimaPuntuacion.textContent = data.user.ultimaValoracion
+                    if (ultimaPuntuacion > 0) {
+                        ultimaPuntuacion.textContent = 'Recibiste una valoración de ' + data.user.ultimaValoracion + ' estrellas'
+                    }else {
+                        ultimaPuntuacion.textContent = 'No tienes ninguna valoración'
                     }
 
                     if (userAvatar) {
