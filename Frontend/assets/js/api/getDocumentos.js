@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Evento para redirigir a la página de visualización
                     docDiv.addEventListener('click', () => {
-                        window.location.href = `/documento.html?id=${documento.id}`
+                        window.location.href = `/documento?id=${documento.id}`
                     })
 
                     documentosContainer.append(docDiv)

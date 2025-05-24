@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         data.forEach(documento => {
             const a = document.createElement('a')
-            a.href = `./documento.html?id=${documento.id}`
+            a.href = `./documento?id=${documento.id}`
             
             const div = document.createElement('div')
             div.className = 'px-6 py-4 flex justify-between items-center hover:bg-gray-50 transition-colors'
