@@ -80,105 +80,45 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('No se pudo obtener la información del documento.')
-                }
-                return response.json()
-            })
-            .then(data => {
-                console.log(data)
-                // Construimos la URL del documento usando DOC_URL
-                const docUrl = `${DOC_URL}/${data.ruta}`
-
-                // Mostramos el documento según su tipo
-                let content = ''
-
-                // Función para mostrar PDF con PDF.js
-                async function renderPDF(url, container) {
-                    // Carga la librería PDF.js (worker)
-                    if (!window.pdfjsLib) {
-                        await loadPDFjs()
-                    }
-                    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
-
-                    const loadingTask = pdfjsLib.getDocument(url);
-                    loadingTask.promise.then(async pdf => {
-                        container.innerHTML = '' // limpio contenedor
-
-                        // Para simplificar solo renderizamos la primera página:
-                        const page = await pdf.getPage(1);
-                        const scale = 1.5;
-                        const viewport = page.getViewport({ scale: scale });
-
-                        const canvas = document.createElement('canvas');
-                        container.appendChild(canvas);
-                        const context = canvas.getContext('2d');
-                        canvas.height = viewport.height;
-                        canvas.width = viewport.width;
-
-                        const renderContext = {
-                            canvasContext: context,
-                            viewport: viewport
-                        };
-
-                        await page.render(renderContext).promise;
-                    }).catch(err => {
-                        container.innerHTML = `<p>Error al cargar el PDF. <a href="${url}" target="_blank" class="text-blue-500 underline">Abrir en otra pestaña</a></p>`
-                        console.error(err);
-                    });
-                }
-
-                // Función para cargar PDF.js si no está cargado
-                function loadPDFjs() {
-                    return new Promise((resolve, reject) => {
-                        if (window.pdfjsLib) return resolve();
-
-                        const script = document.createElement('script');
-                        script.src = 'https://mozilla.github.io/pdf.js/build/pdf.js';
-                        script.onload = () => resolve();
-                        script.onerror = reject;
-                        document.head.appendChild(script);
-                    });
-                }
-
-                if (data.ruta.toLowerCase().endsWith('.pdf')) {
-                    // Para PDF usamos PDF.js
-                    renderPDF(docUrl, documentoContainer);
-                } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
-                    documentoContainer.innerHTML = `<div class="overflow-y-auto h-full"><img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" /></div>`;
-                } else {
-                    documentoContainer.innerHTML = `
-                        <p>El archivo no se puede previsualizar. 
-                            <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a>
-                        </p>`;
-                }
-
-                /* if (data.ruta.toLowerCase().endsWith('.pdf')) {
-                
-                    //content = `<embed src="${docUrl}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-                    content = `<iframe src="${docUrl}#toolbar=0" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>
-    `
-                } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
-                
-                    content = `<div class="overflow-y-auto h-full">
-                        <img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" />
-                    </div>`
-                } else {
-                    content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
-                }
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la información del documento.')
+            }
+            return response.json()
+        })
+        .then(data => {
+            console.log(data)
+            // Construimos la URL del documento usando DOC_URL
+            const docUrl = `${DOC_URL}/${data.ruta}`
     
-                documentoContainer.innerHTML = content
-     */
-                // Configurar el botón de descarga
-                downloadDocument.addEventListener('click', () => {
-                    window.open(docUrl, '_blank')
-                })
-            })
-            .catch(error => {
+            // Mostramos el documento según su tipo
+            let content = ''
+            
+            if (data.ruta.toLowerCase().endsWith('.pdf')) {
+            
+                //content = `<embed src="${docUrl}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
+                content = `<iframe src="${docUrl}#toolbar=0" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>
+`
+            } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            
+                content = `<div class="overflow-y-auto h-full">
+                    <img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" />
+                </div>`
+            } else {
+                content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
+            }
+
+            documentoContainer.innerHTML = content
+
+            // Configurar el botón de descarga
+            downloadDocument.addEventListener('click', () => {
+                window.open(docUrl, '_blank')
+            }) 
+        })
+        .catch(error => {
                 console.error('Error al cargar el archivo:', error)
                 documentoContainer.innerHTML = '<p>Error al cargar el documento.</p>'
-            })
+        })
 
         downloadDocument.addEventListener('click', () => {
 
