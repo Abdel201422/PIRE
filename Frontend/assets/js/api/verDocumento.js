@@ -97,7 +97,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             if (data.ruta.toLowerCase().endsWith('.pdf')) {
             
                 //content = `<embed src="${docUrl}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-                content = `<iframe src="https://pire1-fqb0ezg0egdbh4hy.canadacentral-01.azurewebsites.net/Backend/public/uploads/2/DAW_2024-25_Examen_EvFinalOrd_v2.pdf#toolbar=0" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>
+                content = `<iframe src="${docUrl}#toolbar=0" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>
 `
             } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
             
