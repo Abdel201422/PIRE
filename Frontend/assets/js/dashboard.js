@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
             headerContainer.innerHTML = html;
             infoUser()
 
+            const mobileMenuButton = document.getElementById('mobile-menu-button')
+
+            mobileMenuButton.addEventListener('click', () => {
+                console.log('click')
+            })
+
                 // Funcionalidad para alternar el menú desplegable del usuario
                 const userAvatar = document.getElementById('user-avatar');
                 const userInfo = document.getElementById('user-info');
