@@ -309,19 +309,27 @@ public function index(DocumentoRepository $documentoRepository): Response
         // Buscar el documento por ID
         $documento = $documentoRepository->find($id);
 
-        if (!$documento) {
-            return new JsonResponse(['error' => 'Documento no encontrado'], 404);
-        }
+    if (!$documento) {
+        return new JsonResponse(['error' => 'Documento no encontrado'], 404);
+    }
 
-        // Obtener la ruta del archivo
-        $filePath = $this->getParameter('kernel.project_dir') . '/public/' . $documento->getRutaArchivo();
+    // Obtener la ruta relativa del archivo desde /public (ejemplo: uploads/archivo.pdf)
+    $rutaRelativa = $documento->getRutaArchivo();
 
-        if (!file_exists($filePath)) {
-            return new JsonResponse(['error' => 'El archivo no existe en el servidor'], 404);
-        }
+    // Comprobar si el archivo existe en el servidor
+    $filePath = $this->getParameter('kernel.project_dir') . '/public/' . $rutaRelativa;
+    if (!file_exists($filePath)) {
+        return new JsonResponse(['error' => 'El archivo no existe en el servidor'], 404);
+    }
 
-        // Retornar el archivo para su descarga
-        return $this->file($filePath, $documento->getTitulo() . '.' . pathinfo($filePath, PATHINFO_EXTENSION));
+    // Construir la URL pÃºblica (relativa para frontend)
+    // Si tu frontend estÃ¡ en el mismo dominio, solo basta la ruta relativa con /
+    //$urlPublica = '/' . ltrim($rutaRelativa, '/');
+
+    return new JsonResponse([
+        'ruta' => $filePath,
+        'rutaPublica' => $rutaRelativa
+    ]);
     }
 
     #[Route('/api/documentos/{id}/puntuar', name: 'puntuar_documento', methods: ['POST'])]
