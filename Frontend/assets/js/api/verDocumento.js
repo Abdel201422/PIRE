@@ -11,7 +11,7 @@ if (!token) {
 // Obtener el parámetro "id" de la URL
 const urlParams = new URLSearchParams(window.location.search)
 const documentoId = urlParams.get('id')
-
+console.log('-------------------> ' + documentoId)
 if (!documentoId) {
     alert('No se ha especificado un documento válido.')
     //window.location.href = '/education.html' // Redirigir si no hay ID
