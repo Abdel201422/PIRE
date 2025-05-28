@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error: ${data.error}</div>`
                     } else {
                         responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">${data.message}</div>`
-                        // Resetear el formulario
+                        
                         document.getElementById('uploadForm').reset()
                         selectedFileDiv.textContent = ''
                         

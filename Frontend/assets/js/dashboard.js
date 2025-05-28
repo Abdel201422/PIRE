@@ -31,7 +31,7 @@ async function cargarHeader() {
                     mobileMenuButton.addEventListener('click', () => {
                         // Como el panel lateral está en sidebar, disparamos un evento custom o hacemos algo diferente
                         // Lo mejor es guardar la referencia globalmente o manejar desde sidebar
-                        // Aquí solo indicamos que el botón fue pulsado.
+                        // Aquí solo indicamos que el botón fue pulsado
                         document.dispatchEvent(new CustomEvent('toggleMobileMenu'))
                     })
                 }
@@ -115,7 +115,7 @@ async function cargarSidebar() {
                 const panelLateral = sidebarContainer.querySelector('#panel-lateral')
                 const mobileOverlay = sidebarContainer.querySelector('#mobile-overlay')
 
-                // Escuchar el evento custom lanzado desde header para abrir/cerrar menú
+                // Escuchar el evento lanzado desde header para abrir/cerrar menú
                 document.addEventListener('toggleMobileMenu', () => {
                     if (panelLateral.classList.contains('-translate-x-full')) {
                         panelLateral.classList.remove('-translate-x-full')

@@ -1,3 +1,5 @@
+// js/api/verDocumento.js
+
 import { BACKEND_URL } from '../config.js'
 import { DOC_URL } from '../config.js'
 import { mostrarComentarios, sendComentario } from './getComentarios.js'
@@ -46,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         star.addEventListener('click', () => {
 
-            puntuacionStar = star.getAttribute('data-value') // Obtener el valor de la estrella seleccionada
+            puntuacionStar = star.getAttribute('data-value')
             //console.log('Puntuación seleccionada:', puntuacionStar)
 
             // Marcar las estrellas seleccionadas
@@ -71,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
-        // Primero obtenemos los datos del documento para obtener la ruta del archivo
         fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
@@ -141,9 +142,6 @@ function infoDocumento() {
             return response.json()
         })
         .then(data => {
-            // Aquí puedes manejar los datos del documento
-            //console.log(data)
-
             // Datos del documento
             const idTituloDocumento = document.getElementById('idTituloDocumento')
             const descripcionDocumento = document.getElementById('descripcionDocumento')
@@ -193,7 +191,7 @@ function infoDocumento() {
 // Función para puntuar el documento
 function puntuarDocumento(documentoId, puntuacion) {
 
-    const token = localStorage.getItem('jwt') // Asegúrate de que el usuario esté autenticado
+    const token = localStorage.getItem('jwt')
 
     fetch(`${BACKEND_URL}/api/documentos/${documentoId}/puntuar`, {
         method: 'POST',

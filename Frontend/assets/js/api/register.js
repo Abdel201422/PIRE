@@ -1,3 +1,5 @@
+// js/api/register.js
+
 import { BACKEND_URL } from '../config.js'
 
 export function setupRegisterForm() {

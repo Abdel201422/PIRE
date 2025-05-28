@@ -1,3 +1,5 @@
+// js/api/getExplorarCiclos.js
+
 import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')

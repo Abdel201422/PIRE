@@ -143,7 +143,7 @@ export function loadBestDocuments() {
                 const gridRecursos = document.getElementById('grid-recursos')
 
                 if (gridRecursos) {
-                    gridRecursos.innerHTML = '' // Limpiar contenido previo
+                    gridRecursos.innerHTML = ''
 
                     data.forEach(doc => {
                         console.log(doc)

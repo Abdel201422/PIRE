@@ -1,3 +1,5 @@
+// js/api/getDocumentos.js
+
 import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
@@ -29,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
             .then(response => response.json())
             .then(data => {
-                documentosContainer.innerHTML = '' // Limpiar contenedor
+                documentosContainer.innerHTML = ''
 
                 if (data.documentos.length == 0) {
                     ruta.innerHTML = '<a href="/education.html" class="text-green-400 hover:text-green-600 hover:underline">Volver atrás</a>'

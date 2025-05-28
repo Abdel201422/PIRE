@@ -1,3 +1,5 @@
+// js/api/getDocumentosUser.js
+
 import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
     })
     .then(data => {
-        console.log('---> ', data)
+        //console.log('---> ', data)
 
         data.forEach(documento => {
             const a = document.createElement('a')

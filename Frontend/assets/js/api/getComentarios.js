@@ -1,3 +1,5 @@
+// js/api/getComentarios.js
+
 import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
@@ -14,7 +16,7 @@ export function mostrarComentarios(documentoId) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(comentariosContainer)
+            //console.log(comentariosContainer)
             if (!comentariosContainer) return
 
             if (data.error) {
@@ -27,7 +29,6 @@ export function mostrarComentarios(documentoId) {
                 return
             }
 
-            console.log('---------------------------')
             comentariosContainer.innerHTML = ''
 
             data.forEach(comentario => {
@@ -55,7 +56,7 @@ export function mostrarComentarios(documentoId) {
             })
         })
         .catch(err => {
-            console.error('❌ Error al cargar comentarios:', err)
+            //console.error('❌ Error al cargar comentarios:', err)
             if (comentariosContainer) {
                 comentariosContainer.innerHTML = '<p class="text-red-500">Hubo un error al cargar los comentarios.</p>'
             }
@@ -87,7 +88,7 @@ export function sendComentario(comentario, documentoId) {
                 return response.json()
             })
             .then(data => {
-                console.log('✅ Comentario enviado:', data)
+                //console.log('✅ Comentario enviado:', data)
                 alert('Comentario enviado correctamente')
 
                 // Opcional: limpiar el textarea
@@ -96,7 +97,7 @@ export function sendComentario(comentario, documentoId) {
 
             })
             .catch(error => {
-                console.error('❌ Error:', error)
+                //console.error('❌ Error:', error)
                 alert('Hubo un error al enviar el comentario')
             })
     } else {

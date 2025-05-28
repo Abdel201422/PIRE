@@ -1,3 +1,5 @@
+// js/api/dataConfiguracion_perfil.js
+
 import { BACKEND_URL } from '../config.js'
 import { DOC_URL } from '../config.js'
 
@@ -22,16 +24,21 @@ function rellenarPerfilUsuario() {
         const inputNombre = document.getElementById('first-name')
         const inputApellidos = document.getElementById('last-name')
         const inputEmail = document.getElementById('email')
+
         if (inputNombre) inputNombre.value = data.user.nombre
         if (inputApellidos) inputApellidos.value = data.user.apellido
         if (inputEmail) inputEmail.value = data.user.email
+        
         // Cabecera
         const profileName = document.getElementById('profile-name')
         const profileEmail = document.getElementById('profile-email')
+        
         if (profileName) profileName.textContent = data.user.nombreCompleto
         if (profileEmail) profileEmail.textContent = data.user.email
+        
         // Imagen de perfil
         const avatarDivs = document.querySelectorAll('#profile-image-container, #profile-image-preview')
+        
         if (avatarDivs.length > 0) {
           let avatarUrl = data.user.avatar ? `${DOC_URL}/${data.user.avatar}` : ''
           if (avatarUrl) {
