@@ -183,35 +183,3 @@ export function loadBestDocuments() {
                 `<p style="color: red">Error al cargar los mejores documentos.</p>`
         })
 }
-
-// Verificar si el usuario es administrador
-/* export function whoAdmin() {
-    // Verificar si el usuario está autenticado
-    const token = localStorage.getItem('jwt')
-    const enlaceAdministrar = document.getElementById('enlace-administrar')
-
-    if (!token) {
-        console.log('No hay token, el usuario no está autenticado')
-        return
-    }
-
-    fetch(`${BACKEND_URL}/api/users/me`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${token}` },
-    })
-        .then(async response => {
-            if (!response.ok) {
-                const text = await response.text()
-                throw new Error(text)
-            }
-            return response.json()
-        })
-        .then(user => {
-            // Check for 'roles' array (plural) instead of 'role'
-            if (user.roles && user.roles.includes('ROLE_ADMIN')) {
-                enlaceAdministrar.classList.remove('hidden')
-            }
-        })
-        .catch(error => console.error('Error al verificar el rol del usuario:', error))
-
-} */

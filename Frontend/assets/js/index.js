@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupIndexButtons()
 })
 
-/**
- * Configura los eventos para los botones en la página de inicio
- */
 function setupIndexButtons() {
   // Botón principal "¡Empezar ya!"
   const botonEmpezar = document.getElementById('botonEmpezar')

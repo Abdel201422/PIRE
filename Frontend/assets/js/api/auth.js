@@ -1,4 +1,5 @@
-// js/auth.js
+// js/api/auth.js
+
 import { BACKEND_URL } from '../config.js'
 
 export function setupLoginForm() {
@@ -30,7 +31,6 @@ export function setupLoginForm() {
       window.location.href = '/dashboard.html'
 
     } catch (error) {
-      console.error('Error:', error)
       document.getElementById('response').innerHTML =
         `<p style="color: red">Error al iniciar sesión.</p>`
     }
@@ -42,7 +42,6 @@ export function setupLogout() {
 
   if (logoutLink) {
     logoutLink.addEventListener('click', function (e) {
-      console.log('Logout link clicked')
       // Prevenir la acción predeterminada del enlace (que sería navegar a otra página)
       e.preventDefault()
 

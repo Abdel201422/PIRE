@@ -15,6 +15,13 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
+
+        <env name="KERNEL_CLASS" value="App\Kernel" />
+
+        <!-- Variables para JWT -->
+        <env name="JWT_PRIVATE_KEY_PATH" value="/Users/danielmartinez/Documents/_DAW (A distancia)/Proyecto Final/PIRE-deploy/PIRE/Backend/config/jwt/private.pem" />
+        <env name="JWT_PUBLIC_KEY_PATH" value="/Users/danielmartinez/Documents/_DAW (A distancia)/Proyecto Final/PIRE-deploy/PIRE/Backend/config/jwt/public.pem" />
+        <env name="JWT_PASSPHRASE" value="f21bf01b8b2c8e22d0b05a31d5e3ec1afc913e6c4ba46ccb035a56bd5fe331e7" />
     </php>
 
     <testsuites>

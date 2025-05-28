@@ -1,3 +1,4 @@
+// js/upload.js
 import { BACKEND_URL } from './config.js'
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -98,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 })
                 .catch(err => {
-                    console.error('Error:', err)
                     const responseDiv = document.getElementById('response')
                     responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al subir el documento</div>`
                 })

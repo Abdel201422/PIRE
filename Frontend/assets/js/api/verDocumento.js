@@ -71,10 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
-        /* fetch(`${BACKEND_URL}/api/documentos/download/${documentoId}`, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` },
-        }) */
         // Primero obtenemos los datos del documento para obtener la ruta del archivo
         fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
             method: 'GET',
@@ -87,7 +83,6 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             return response.json()
         })
         .then(data => {
-            console.log(data)
             // Construimos la URL del documento usando DOC_URL
             const docUrl = `${DOC_URL}/${data.ruta}`
     
