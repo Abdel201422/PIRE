@@ -47,10 +47,22 @@ document.addEventListener('DOMContentLoaded', function () {
             dropArea.addEventListener('drop', handleDrop, false)
 
             function handleDrop(e) {
-                const dt = e.dataTransfer
+                e.preventDefault()
+                e.stopPropagation()
+
+    if (!e.dataTransfer || !e.dataTransfer.files || e.dataTransfer.files.length === 0) {
+        console.warn('Evento drop no contiene archivos.')
+        return
+    }
+
+    const dt = e.dataTransfer
+    const file = dt.files[0]
+    fileInput.files = dt.files
+    displaySelectedFile(file)
+                /* const dt = e.dataTransfer
                 const file = dt.files[0]
                 fileInput.files = dt.files
-                displaySelectedFile(file)
+                displaySelectedFile(file) */
             }
 
             // Clic en el área para abrir el selector de archivos
