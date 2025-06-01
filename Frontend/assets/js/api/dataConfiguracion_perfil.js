@@ -32,7 +32,7 @@ function rellenarPerfilUsuario() {
         if (inputEmail) inputEmail.value = data.user.email
 
         console.log(inputNombreCompleto)
-        if (inputNombreCompleto) inputNombreCompleto.value = data.user.nombreCompleto
+        if (inputNombreCompleto) inputNombreCompleto.textContent = data.user.nombreCompleto
         
         // Cabecera
         const profileName = document.getElementById('profile-name')
