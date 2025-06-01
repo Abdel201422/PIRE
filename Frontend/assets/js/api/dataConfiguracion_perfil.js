@@ -25,9 +25,13 @@ function rellenarPerfilUsuario() {
         const inputApellidos = document.getElementById('last-name')
         const inputEmail = document.getElementById('email')
 
+        const inputNombreCompleto = document.getElementById('userNameComplete')
+
         if (inputNombre) inputNombre.value = data.user.nombre
         if (inputApellidos) inputApellidos.value = data.user.apellido
         if (inputEmail) inputEmail.value = data.user.email
+
+        if (inputNombreCompleto) inputNombreCompleto.value = data.user.nombreCompleto
         
         // Cabecera
         const profileName = document.getElementById('profile-name')
@@ -45,6 +49,10 @@ function rellenarPerfilUsuario() {
             avatarDivs.forEach(div => {
               div.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="object-cover w-full h-full" />`
             })
+
+            const userAvatar = document.getElementById('user-avatar')
+            userAvatar.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`
+            
           } else {
             avatarDivs.forEach(div => {
               div.innerHTML = `<span class='text-gray-400 flex items-center justify-center w-full h-full'>Sin foto</span>`
