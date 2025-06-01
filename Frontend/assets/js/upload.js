@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     selectedFileDiv.textContent = ''
                 }
             }
-
-            console.log('dropArea:', dropArea) // <-- agrega esto
             
             // Eventos para el drag & drop
             const dragEvents = ['dragenter', 'dragover', 'dragleave', 'drop']
