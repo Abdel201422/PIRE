@@ -1,6 +1,7 @@
 // js/api/getComentarios.js
 
 import { BACKEND_URL } from '../config.js'
+import { DOC_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
 
@@ -41,7 +42,7 @@ export function mostrarComentarios(documentoId) {
                 comentarioDiv.innerHTML = `
                     <div class="flex items-start mb-3">
                         <div class="flex-shrink-0 mr-3">
-                            <img class="h-10 w-10 rounded-full object-cover" src="${BACKEND_URL}/${comentario.user.avatar || 'img/default-avatar.png'}" alt="Avatar">
+                            <img class="h-10 w-10 rounded-full object-cover" src="${DOC_URL}/${comentario.user.avatar || 'img/default-avatar.png'}" alt="Avatar">
                         </div>
                         <div>
                             <p class="text-green-600 font-medium">${comentario.user.nombre}</p>
