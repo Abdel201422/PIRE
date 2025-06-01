@@ -31,6 +31,7 @@ function rellenarPerfilUsuario() {
         if (inputApellidos) inputApellidos.value = data.user.apellido
         if (inputEmail) inputEmail.value = data.user.email
 
+        console.log(inputNombreCompleto)
         if (inputNombreCompleto) inputNombreCompleto.value = data.user.nombreCompleto
         
         // Cabecera
@@ -52,7 +53,7 @@ function rellenarPerfilUsuario() {
 
             const userAvatar = document.getElementById('user-avatar')
             userAvatar.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`
-            
+
           } else {
             avatarDivs.forEach(div => {
               div.innerHTML = `<span class='text-gray-400 flex items-center justify-center w-full h-full'>Sin foto</span>`
