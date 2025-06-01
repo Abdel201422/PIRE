@@ -17,11 +17,6 @@ import { BACKEND_URL } from './config.js'
         }
     }
 
-    if (!dropArea) {
-        console.error('No existe el elemento dropArea')
-        return
-    }
-
     // Eventos para el drag & drop
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, preventDefaults, false)
