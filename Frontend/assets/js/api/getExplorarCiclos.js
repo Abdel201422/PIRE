@@ -15,6 +15,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!explorarCiclos || !tabsContainer) return
 
+    const leftArrow = document.getElementById('leftArrow')
+    const rightArrow = document.getElementById('rightArrow')
+
+    if (leftArrow && rightArrow && tabsContainer) {
+
+        function updateArrows() {
+            if (tabsContainer.scrollLeft > 0) {
+                leftArrow.classList.remove('hidden')
+            } else {
+                leftArrow.classList.add('hidden')
+            }
+
+            if (tabsContainer.scrollLeft + tabsContainer.clientWidth < tabsContainer.scrollWidth - 1) {
+                rightArrow.classList.remove('hidden')
+            } else {
+                rightArrow.classList.add('hidden')
+            }
+        }
+
+        tabsContainer.addEventListener('scroll', updateArrows)
+        updateArrows()
+
+        leftArrow.addEventListener('click', () => {
+            tabsContainer.scrollBy({ left: -150, behavior: 'smooth' })
+        })
+
+        rightArrow.addEventListener('click', () => {
+            tabsContainer.scrollBy({ left: 150, behavior: 'smooth' })
+        })
+    }
+
     fetch(`${BACKEND_URL}/api/ciclos/completos`, {
         method: 'GET',
         headers: { 'Authorization': `Bearer ${token}` },
@@ -103,39 +134,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
             })
 
+            updateArrows()
+
         })
         .catch(error => {
             console.error('Error al cargar los ciclos:', error)
         })
-
-    const leftArrow = document.getElementById('leftArrow')
-    const rightArrow = document.getElementById('rightArrow')
-
-    if (leftArrow && rightArrow && tabsContainer) {
-
-        function updateArrows() {
-            if (tabsContainer.scrollLeft > 0) {
-                leftArrow.classList.remove('hidden')
-            } else {
-                leftArrow.classList.add('hidden')
-            }
-
-            if (tabsContainer.scrollLeft + tabsContainer.clientWidth < tabsContainer.scrollWidth - 1) {
-                rightArrow.classList.remove('hidden')
-            } else {
-                rightArrow.classList.add('hidden')
-            }
-        }
-
-        tabsContainer.addEventListener('scroll', updateArrows)
-        updateArrows()
-
-        leftArrow.addEventListener('click', () => {
-            tabsContainer.scrollBy({ left: -150, behavior: 'smooth' })
-        })
-
-        rightArrow.addEventListener('click', () => {
-            tabsContainer.scrollBy({ left: 150, behavior: 'smooth' })
-        })
-    }
 })
