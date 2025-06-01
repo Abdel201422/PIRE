@@ -58,10 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const cursoCorto = `${partes[0]} ${partes[1]}` // "1º Curso" o "2º Curso"
 
                         const asignaturaDiv = document.createElement('div')
-                        asignaturaDiv.classList.add('flex', 'w-full', 'sm:w-max', 'items-center', 'border-2', 'border-gray-300', 'rounded-full', 'p-2', 'pr-4', 'hover:bg-green-100', 'hover:border-pire-green','transition-all', 'duration-200', 'cursor-pointer'
-)
-
-                        //asignaturaDiv.classList.add('flex', 'w-max', 'items-center', 'border-2', 'border-gray-300', 'rounded-full', 'p-2', 'pr-4', 'hover:bg-green-100', 'hover:border-pire-green', 'transition-all', 'duration-200', 'cursor-pointer')
+                        asignaturaDiv.classList.add('flex', 'w-full', 'sm:w-max', 'items-center', 'border-2', 'border-gray-300', 'rounded-full', 'p-2', 'pr-4', 'hover:bg-green-100', 'hover:border-pire-green', 'transition-all', 'duration-200', 'cursor-pointer')
 
                         asignaturaDiv.innerHTML = `
                         <a href="/asignatura?codigo=${asignatura.codigo}" class="flex items-center">
@@ -75,9 +72,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <span class="text-sm text-gray-400">${cursoCorto}</span>
                                     </div></a>`
 
-                                    //console.log('Código de la asignatura:', asignatura.codigo)
+                        //console.log('Código de la asignatura:', asignatura.codigo)
 
-                        
+
                         asignaturasWrapper.appendChild(asignaturaDiv)
                     })
                 })
@@ -110,4 +107,35 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Error al cargar los ciclos:', error)
         })
+
+    const leftArrow = document.getElementById('leftArrow')
+    const rightArrow = document.getElementById('rightArrow')
+
+    if (leftArrow && rightArrow && tabsContainer) {
+
+        function updateArrows() {
+            if (tabsContainer.scrollLeft > 0) {
+                leftArrow.classList.remove('hidden')
+            } else {
+                leftArrow.classList.add('hidden')
+            }
+
+            if (tabsContainer.scrollLeft + tabsContainer.clientWidth < tabsContainer.scrollWidth - 1) {
+                rightArrow.classList.remove('hidden')
+            } else {
+                rightArrow.classList.add('hidden')
+            }
+        }
+
+        tabsContainer.addEventListener('scroll', updateArrows)
+        updateArrows()
+
+        leftArrow.addEventListener('click', () => {
+            tabsContainer.scrollBy({ left: -150, behavior: 'smooth' })
+        })
+
+        rightArrow.addEventListener('click', () => {
+            tabsContainer.scrollBy({ left: 150, behavior: 'smooth' })
+        })
+    }
 })
