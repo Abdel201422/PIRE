@@ -71,20 +71,20 @@ function filtrarAsignaturas(textoBusqueda) {
 
 // Función para cargar las asignaturas desde la API
 function cargarAsignaturas() {
-    console.log('Cargando asignaturas desde:', `${BACKEND_URL}/api/asignaturas`)
+    //console.log('Cargando asignaturas desde:', `${BACKEND_URL}/api/asignaturas`)
     fetch(`${BACKEND_URL}/api/asignaturas`, {
         method: 'GET',
         headers: { 'Authorization': `Bearer ${token}` },
     })
     .then(response => {
-        console.log('Respuesta API asignaturas:', response.status, response.statusText)
+        //console.log('Respuesta API asignaturas:', response.status, response.statusText)
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`)
         }
         return response.json()
     })
     .then(data => {
-        console.log('Datos de asignaturas recibidos:', data)
+        //console.log('Datos de asignaturas recibidos:', data)
         asignaturas = data
         renderizarTablaAsignaturas(asignaturas)
     })

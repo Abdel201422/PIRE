@@ -84,7 +84,7 @@ function cargarUsuarios() {
         }
     })
     .then(data => {
-        console.log('Datos de usuarios recibidos:', data)
+        //console.log('Datos de usuarios recibidos:', data)
         if (!Array.isArray(data)) {
             throw new Error(data.message || 'Error de autenticación: la respuesta no es un array')
         }
@@ -255,8 +255,8 @@ function guardarUsuario() {
     
     const method = id ? 'PUT' : 'POST'
     
-    console.log('Enviando solicitud a:', url)
-    console.log('Datos:', id ? datos : { ...datos, password: '***' })
+    //console.log('Enviando solicitud a:', url)
+    //console.log('Datos:', id ? datos : { ...datos, password: '***' })
     
     fetch(url, {
         method: method,
@@ -288,7 +288,7 @@ function guardarUsuario() {
         }
     })
     .then(data => {
-        console.log('Respuesta al guardar usuario:', data)
+        //console.log('Respuesta al guardar usuario:', data)
         document.getElementById('modal-usuario').classList.add('hidden')
         cargarUsuarios() // Recargar la lista de usuarios
     })
