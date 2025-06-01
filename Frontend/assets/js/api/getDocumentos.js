@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return
                 }
 
-                console.log(data.asignatura)
+                //console.log(data.asignatura)
 
                 const rutaCiclo = data.asignatura.ciclo
                 const rutaCurso = data.asignatura.curso.match(/\dº Curso/)

@@ -52,7 +52,7 @@ if (query) {
 function mostrarResultados(documentos) {
 
     const documentosContainer = document.getElementById('documentosContainer')
-    console.log(documentos)
+    //console.log(documentos)
     documentos.forEach(documento => {
 
                 const docDiv = document.createElement('div')
