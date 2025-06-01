@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const asignaturaSelect = document.getElementById('asignatura')
             const fileInput = document.getElementById('file')
             const dropArea = document.getElementById('dropArea')
+            if (!dropArea) {
+  console.error('Elemento dropArea no encontrado')
+  return
+}
             const selectedFileDiv = document.getElementById('selectedFile')
             const cancelButton = document.getElementById('cancelButton')
             
