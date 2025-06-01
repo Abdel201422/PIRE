@@ -111,6 +111,9 @@ async function getCursosPorCiclo(codCiclo, token) {
         const cursoSelect = document.getElementById('cursoSelect')
         cursoSelect.innerHTML = '<option value="">Selecciona curso</option>'
 
+        const asignaturaSelect = document.getElementById('asignaturaSelect')
+        asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
+
         cursos.forEach(curso => {
             const option = document.createElement('option')
             option.value = curso.cod_curso
