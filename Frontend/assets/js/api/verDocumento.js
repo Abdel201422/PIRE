@@ -92,9 +92,12 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             
             if (data.ruta.toLowerCase().endsWith('.pdf')) {
             
-                content = `<iframe src="${docUrl}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-                //const encodedUrl = encodeURIComponent(docUrl);
-                //content = `<iframe src="https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodedUrl}" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>`;
+                if (/Mobi|Android/i.test(navigator.userAgent)) {
+                    const encodedUrl = encodeURIComponent(docUrl)
+                    content = `<iframe src="https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodedUrl}" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>`
+                } else {
+                    content = `<iframe src="${docUrl}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
+                }
 
             } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
             
