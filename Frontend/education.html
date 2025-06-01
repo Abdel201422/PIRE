@@ -52,18 +52,19 @@
 
                     <!-- Contenedor de pestañas dinámicas -->
                     <div class="relative flex items-center bg-[var(--color-gray-50)] rounded-3xl p-2 border border-gray-300 mx-4 mb-4 mt-4 max-w-full">
-                        <button id="leftArrow" class="absolute left-0 z-10 bg-white p-2 rounded-full shadow-md hidden">
-                            &#9664;
-                        </button>
+                        <button id="leftArrow" 
+          class="absolute left-[-24px] z-20 bg-white bg-opacity-75 hover:bg-opacity-100 p-2 rounded-full shadow-md flex items-center justify-center">
+    <svg aria-hidden="true" focusable="false" class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="currentColor"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+  </button>
 
                         <div id="tabsContainer"
-                            class="flex max-w-80 sm:max-w-none snap-x snap-mandatory items-start overflow-x-auto custom-scrollbar pl-10 pr-10 w-full">
+                            class="flex max-w-80 sm:max-w-none snap-x snap-mandatory items-start overflow-x-auto custom-scrollbar pl-8 pr-8">
                         </div>
 
-                        <button id="rightArrow"
-                            class="absolute right-0 z-10 bg-white p-2 rounded-full shadow-md hidden">
-                            &#9654;
-                        </button>
+                        <button id="rightArrow" 
+          class="absolute right-[-24px] z-20 bg-white bg-opacity-75 hover:bg-opacity-100 p-2 rounded-full shadow-md flex items-center justify-center">
+    <svg aria-hidden="true" focusable="false" class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="currentColor"><path d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l192-192c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L77.3 256l169.3 169.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-192-192z"/></svg>
+  </button>
                         <!--<div id="tabsContainer" class="flex max-w-80 sm:max-w-none snap-x snap-mandatory items-start overflow-x-auto custom-scrollbar"> </div>-->
                     </div>
 
