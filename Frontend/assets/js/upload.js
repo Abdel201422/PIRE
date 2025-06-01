@@ -19,8 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             console.log('dropArea:', dropArea) // <-- agrega esto
+            
             // Eventos para el drag & drop
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            const dragEvents = ['dragenter', 'dragover', 'dragleave', 'drop']
+            dragEvents.forEach(eventName => {
                 dropArea.addEventListener(eventName, preventDefaults, false)
             })
 
@@ -29,11 +31,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 e.stopPropagation()
             }
 
-            ['dragenter', 'dragover'].forEach(eventName => {
+            const dragEventsOne = ['dragenter', 'dragover']
+            dragEventsOne.forEach(eventName => {
                 dropArea.addEventListener(eventName, highlight, false)
             })
 
-            ['dragleave', 'drop'].forEach(eventName => {
+            const dragEventsTwo = ['dragleave', 'drop']
+            dragEventsTwo.forEach(eventName => {
                 dropArea.addEventListener(eventName, unhighlight, false)
             })
 
