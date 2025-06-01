@@ -179,6 +179,7 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
   const currentPassword = document.getElementById('current-password')?.value
   const newPassword = document.getElementById('new-password')?.value
   const confirmPassword = document.getElementById('confirm-password')?.value
+  const responsePassword = document.getElementById('responsePassword')
 
   if (!currentPassword || !newPassword || !confirmPassword) {
     alert('Por favor, completa todos los campos de contraseña.')
@@ -204,17 +205,26 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        alert('Contraseña cambiada correctamente')
+        
+        responsePassword.innerHTML = ''
+        responsePassword.innerHTML = `<p style="color: green">Contraseña cambiada correctamente</p>`
+
+        //alert('Contraseña cambiada correctamente')
         document.getElementById('current-password').value = ''
         document.getElementById('new-password').value = ''
         document.getElementById('confirm-password').value = ''
       } else {
-        alert('Error al cambiar la contraseña: ' + (data.error || ''))
+      
+        responsePassword.innerHTML = ''
+        responsePassword.innerHTML = `<p style="color: red">Error al cambiar la contraseña: ${data.error}</p>`
+        //alert('Error al cambiar la contraseña: ' + (data.error || ''))
       }
     })
     .catch(err => {
-      alert('Error de red al cambiar la contraseña')
-      console.error(err)
+      responsePassword.innerHTML = ''
+      responsePassword.innerHTML = `<p style="color: red">Error al cambiar la contraseña</p>`
+      //alert('Error de red al cambiar la contraseña')
+      //console.error(err)
     })
 })
 }
