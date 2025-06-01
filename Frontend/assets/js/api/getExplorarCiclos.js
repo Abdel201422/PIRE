@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <span class="text-sm text-gray-400">${cursoCorto}</span>
                                     </div></a>`
 
-                                    console.log('Código de la asignatura:', asignatura.codigo)
+                                    //console.log('Código de la asignatura:', asignatura.codigo)
 
                         
                         asignaturasWrapper.appendChild(asignaturaDiv)

@@ -25,7 +25,7 @@ export function infoUser() {
                 return response.json()
             })
             .then(data => {
-                console.log(data)
+                //console.log(data)
                 const ui = document.getElementById('userInfo')
                 const userName = document.getElementById('userName')
                 const userNameComplete = document.getElementById('userNameComplete')
@@ -119,7 +119,7 @@ export function loadBestDocuments() {
     // Verificar si el contenedor de mejores documentos existe
     const mejoresDocumentos = document.getElementById('seccion-populares')
     if (!mejoresDocumentos) {
-        console.warn('El contenedor de mejores documentos no existe en el DOM')
+        //console.warn('El contenedor de mejores documentos no existe en el DOM')
         // Si no existe, no ejecutamos la lógica
         return
     }
@@ -139,14 +139,14 @@ export function loadBestDocuments() {
             if (data.error) {
                 mejoresDocumentos.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
             } else {
-                console.log(data)
+                //console.log(data)
                 const gridRecursos = document.getElementById('grid-recursos')
 
                 if (gridRecursos) {
                     gridRecursos.innerHTML = ''
 
                     data.forEach(doc => {
-                        console.log(doc)
+                        //console.log(doc)
                         const div = document.createElement('div')
                         div.innerHTML = `
                         <a href="/documento?id=${doc.id}" class="h-full">
