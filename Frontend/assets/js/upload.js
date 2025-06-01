@@ -20,8 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Eventos para el drag & drop
-            if (dropArea) {
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
                 dropArea.addEventListener(eventName, preventDefaults, false)
             })
 
@@ -55,8 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 displaySelectedFile(file)
             }
 
-            }
-            
             // Clic en el área para abrir el selector de archivos
             dropArea.addEventListener('click', function() {
                 fileInput.click()
