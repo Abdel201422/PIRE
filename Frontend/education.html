@@ -22,6 +22,10 @@
                         'pire-background': '#FAF8F4',
                         'pire-background-dashboard': '#FDFBF9',
                     },
+                    backgroundImage: {
+                        'custom-gradient-l': 'linear-gradient(to left, white 70%, transparent)',
+                        'custom-gradient-r': 'linear-gradient(to rigth, white 70%, transparent)',
+                    },
                     fontFamily: {
                         lexend: ['Lexend', 'sans-serif'],
                     },
@@ -49,7 +53,7 @@
                     <h1 class="text-xl font-semibold">Explorar ciclos</h1>
                     <!-- Contenedor de pestañas dinámicas -->
                     <div class="relative flex items-center">
-                        <button id="leftArrow" class="absolute left-0 z-20 p-2 flex items-center justify-center hidden bg-gradient-to-r from-white to-transparent">
+                        <button id="leftArrow" class="absolute left-0 z-20 p-2 flex items-center justify-center hidden bg-custom-gradient-r">
                             <svg aria-hidden="true" focusable="false" class="w-5 h-5 text-gray-600"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="currentColor">
                                 <path
@@ -59,7 +63,7 @@
 
                         <div id="tabsContainer" class="flex max-w-80 sm:max-w-none snap-x snap-mandatory items-start overflow-x-auto custom-scrollbar"></div>
 
-                        <button id="rightArrow" class="absolute right-0 z-20 p-2 flex bg-red items-center justify-center bg-gradient-to-l from-white to-transparent">
+                        <button id="rightArrow" class="absolute right-0 z-20 p-2 flex bg-red items-center justify-center bg-custom-gradient-l">
                             <svg aria-hidden="true" focusable="false" class="w-5 h-5 text-gray-600"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="currentColor">
                                 <path
