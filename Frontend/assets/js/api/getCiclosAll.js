@@ -32,6 +32,11 @@ if (cicloSelect) {
             if (cursoSelect) {
                 cursoSelect.innerHTML = '<option value="">Selecciona curso</option>'
             }
+
+            const asignaturaSelect = document.getElementById('asignaturaSelect')
+            if (asignaturaSelect) {
+                asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
+            }
         }
     })
 }
@@ -140,7 +145,7 @@ async function getAsignaturasPorCurso(codCurso, token) {
         const asignaturaSelect = document.getElementById('asignaturaSelect')
         asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
 
-        console.log(asignaturas)
+        //console.log(asignaturas)
         asignaturas.forEach(asignatura => {
             const option = document.createElement('option')
             option.value = asignatura.codigo
