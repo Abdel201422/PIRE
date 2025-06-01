@@ -9,13 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
             
             const token = localStorage.getItem('jwt')
 
-            if (!dropArea) {
-        console.error('No se encontró el elemento dropArea en el DOM.')
-        return
-    }
-
-    console.log('dropArea:', dropArea)
-
             // Función para mostrar el archivo seleccionado
             function displaySelectedFile(file) {
                 if (file) {
