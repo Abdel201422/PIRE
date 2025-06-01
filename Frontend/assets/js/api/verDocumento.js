@@ -93,7 +93,7 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
             if (data.ruta.toLowerCase().endsWith('.pdf')) {
             
                 const encodedUrl = encodeURIComponent(docUrl)
-                content = `<iframe src="https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodedUrl}" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>`
+                content = `<iframe src="/assets/pdfjs/web/viewer.html?file=${encodedUrl}#toolbar=0" width="100%" height="100%" class="rounded-2xl border-0"></iframe>`
 
             } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
             
