@@ -239,7 +239,38 @@ public function changePassword(Request $request, EntityManagerInterface $entityM
             return $this->json(['error' => 'Error al eliminar el usuario: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+// Eliminar la cuenta del usuario autenticado
+    #[Route('/api/user/delete', name: 'api_user_delete_account', methods: ['DELETE'])]
+    public function deleteAccount(EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return $this->json(['error' => 'No autenticado'], Response::HTTP_UNAUTHORIZED);
+        }
+        try {
+            // Eliminar relaciones (documentos, valoraciones, comentarios)
+            $documentos = $user->getDocumentos();
+            foreach ($documentos as $documento) {
+                $entityManager->remove($documento);
+            }
+            $valoraciones = $user->getValoraciones();
+            foreach ($valoraciones as $valoracion) {
+                $entityManager->remove($valoracion);
+            }
+            $comentarios = $user->getComentarios();
+            foreach ($comentarios as $comentario) {
+                $entityManager->remove($comentario);
+            }
+            // Eliminar usuario
+            $entityManager->remove($user);
+            $entityManager->flush();
+            return $this->json(['success' => true], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            error_log('Error al eliminar cuenta propia: ' . $e->getMessage());
+            return $this->json(['error' => 'Error al eliminar la cuenta: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     // Obtener el usuario actual
     #[Route('/api/users/me', name: 'api_user_me', methods: ['GET'])]
 public function getCurrentUser(): JsonResponse

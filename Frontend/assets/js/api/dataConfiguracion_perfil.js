@@ -69,6 +69,38 @@ document.addEventListener('DOMContentLoaded', function() {
   rellenarPerfilUsuario()
   modificarPerfil()
   modificarPassword()
+  // --- Eliminar cuenta ---
+  const deleteBtn = document.getElementById('delete-account-btn');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', function() {
+      if (!confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) return;
+      const token = localStorage.getItem('jwt');
+      if (!token) {
+        window.location.href = '/login.html';
+        return;
+      }
+      fetch(`${BACKEND_URL}/api/user/delete`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Cuenta eliminada correctamente. ¡Hasta pronto!');
+          localStorage.removeItem('jwt');
+          window.location.href = '/login.html';
+        } else {
+          alert('Error al eliminar la cuenta: ' + (data.error || ''));
+        }
+      })
+      .catch(err => {
+        alert('Error de red al intentar eliminar la cuenta.');
+        console.error(err);
+      });
+    });
+  }
 })
 
 function modificarPerfil() {
