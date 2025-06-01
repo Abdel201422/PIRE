@@ -21,29 +21,28 @@ document.addEventListener('DOMContentLoaded', function () {
     if (leftArrow && rightArrow && tabsContainer) {
 
         function updateArrows() {
-            if (tabsContainer.scrollLeft > 0) {
-                leftArrow.classList.remove('hidden')
-            } else {
-                leftArrow.classList.add('hidden')
-            }
-
-            if (tabsContainer.scrollLeft + tabsContainer.clientWidth < tabsContainer.scrollWidth - 1) {
-                rightArrow.classList.remove('hidden')
-            } else {
-                rightArrow.classList.add('hidden')
-            }
+        if (tabsContainer.scrollLeft > 0) {
+            leftArrow.classList.remove('hidden')
+        } else {
+            leftArrow.classList.add('hidden')
         }
 
-        tabsContainer.addEventListener('scroll', updateArrows)
-        updateArrows()
+        if (tabsContainer.scrollLeft + tabsContainer.clientWidth < tabsContainer.scrollWidth - 1) {
+            rightArrow.classList.remove('hidden')
+        } else {
+            rightArrow.classList.add('hidden')
+        }
+    }
 
-        leftArrow.addEventListener('click', () => {
-            tabsContainer.scrollBy({ left: -150, behavior: 'smooth' })
-        })
+    tabsContainer.addEventListener('scroll', updateArrows)
 
-        rightArrow.addEventListener('click', () => {
-            tabsContainer.scrollBy({ left: 150, behavior: 'smooth' })
-        })
+    leftArrow.addEventListener('click', () => {
+        tabsContainer.scrollBy({ left: -150, behavior: 'smooth' })
+    })
+
+    rightArrow.addEventListener('click', () => {
+        tabsContainer.scrollBy({ left: 150, behavior: 'smooth' })
+    })
     }
 
     fetch(`${BACKEND_URL}/api/ciclos/completos`, {
