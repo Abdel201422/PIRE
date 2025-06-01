@@ -2,104 +2,109 @@
 import { BACKEND_URL } from './config.js'
 
 document.addEventListener('DOMContentLoaded', function () {
-            const fileInput = document.getElementById('file')
-            const dropArea = document.getElementById('dropArea')
-            const selectedFileDiv = document.getElementById('selectedFile')
-            const cancelButton = document.getElementById('cancelButton')
-            
-            const token = localStorage.getItem('jwt')
+    const fileInput = document.getElementById('file')
+    const dropArea = document.getElementById('dropArea')
+    const selectedFileDiv = document.getElementById('selectedFile')
+    const cancelButton = document.getElementById('cancelButton')
 
-            // Función para mostrar el archivo seleccionado
-            function displaySelectedFile(file) {
-                if (file) {
-                    selectedFileDiv.textContent = `Archivo seleccionado: ${file.name}`
-                } else {
-                    selectedFileDiv.textContent = ''
-                }
-            }
+    const token = localStorage.getItem('jwt')
 
-            // Eventos para el drag & drop
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false)
-            })
+    // Función para mostrar el archivo seleccionado
+    function displaySelectedFile(file) {
+        if (file) {
+            selectedFileDiv.textContent = `Archivo seleccionado: ${file.name}`
+        } else {
+            selectedFileDiv.textContent = ''
+        }
+    }
 
-            function preventDefaults(e) {
-                e.preventDefault()
-                e.stopPropagation()
-            }
+    if (!dropArea) {
+        console.error('No existe el elemento dropArea')
+        return
+    }
 
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false)
-            })
+    // Eventos para el drag & drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false)
+    })
 
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false)
-            })
+    function preventDefaults(e) {
+        e.preventDefault()
+        e.stopPropagation()
+    }
 
-            function highlight() {
-                dropArea.classList.add('border-pire-green', 'bg-green-50')
-            }
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false)
+    })
 
-            function unhighlight() {
-                dropArea.classList.remove('border-pire-green', 'bg-green-50')
-            }
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false)
+    })
 
-            dropArea.addEventListener('drop', handleDrop, false)
+    function highlight() {
+        dropArea.classList.add('border-pire-green', 'bg-green-50')
+    }
 
-            function handleDrop(e) {
-                const dt = e.dataTransfer
-                const file = dt.files[0]
-                fileInput.files = dt.files
-                displaySelectedFile(file)
-            }
+    function unhighlight() {
+        dropArea.classList.remove('border-pire-green', 'bg-green-50')
+    }
 
-            // Clic en el área para abrir el selector de archivos
-            dropArea.addEventListener('click', function() {
-                fileInput.click()
-            })
+    dropArea.addEventListener('drop', handleDrop, false)
 
-            fileInput.addEventListener('change', function() {
-                displaySelectedFile(this.files[0])
-            })
+    function handleDrop(e) {
+        const dt = e.dataTransfer
+        const file = dt.files[0]
+        fileInput.files = dt.files
+        displaySelectedFile(file)
+    }
 
-            // Botón cancelar
-            cancelButton.addEventListener('click', function() {
-                window.location.href = 'dashboard.html'
-            })
+    // Clic en el área para abrir el selector de archivos
+    dropArea.addEventListener('click', function () {
+        fileInput.click()
+    })
 
-            // Manejar el envío del formulario
-            document.getElementById('uploadForm').addEventListener('submit', function (e) {
-                e.preventDefault()
+    fileInput.addEventListener('change', function () {
+        displaySelectedFile(this.files[0])
+    })
 
-                const formData = new FormData(this)
-                
-                fetch(`${BACKEND_URL}/api/documentos/upload`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const responseDiv = document.getElementById('response')
-                    if (data.error) {
-                        responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error: ${data.error}</div>`
-                    } else {
-                        responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">${data.message}</div>`
-                        
-                        document.getElementById('uploadForm').reset()
-                        selectedFileDiv.textContent = ''
-                        
-                        // Redirigir después de 2 segundos
-                        setTimeout(function() {
-                            window.location.href = 'dashboard.html'
-                        }, 2000)
-                    }
-                })
-                .catch(err => {
-                    const responseDiv = document.getElementById('response')
-                    responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al subir el documento</div>`
-                })
-            })
+    // Botón cancelar
+    cancelButton.addEventListener('click', function () {
+        window.location.href = 'dashboard.html'
+    })
+
+    // Manejar el envío del formulario
+    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+        e.preventDefault()
+
+        const formData = new FormData(this)
+
+        fetch(`${BACKEND_URL}/api/documentos/upload`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
         })
+            .then(response => response.json())
+            .then(data => {
+                const responseDiv = document.getElementById('response')
+                if (data.error) {
+                    responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error: ${data.error}</div>`
+                } else {
+                    responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">${data.message}</div>`
+
+                    document.getElementById('uploadForm').reset()
+                    selectedFileDiv.textContent = ''
+
+                    // Redirigir después de 2 segundos
+                    setTimeout(function () {
+                        window.location.href = 'dashboard.html'
+                    }, 2000)
+                }
+            })
+            .catch(err => {
+                const responseDiv = document.getElementById('response')
+                responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al subir el documento</div>`
+            })
+    })
+})
