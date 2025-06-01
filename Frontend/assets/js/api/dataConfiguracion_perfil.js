@@ -31,7 +31,6 @@ function rellenarPerfilUsuario() {
         if (inputApellidos) inputApellidos.value = data.user.apellido
         if (inputEmail) inputEmail.value = data.user.email
 
-        console.log(inputNombreCompleto)
         if (inputNombreCompleto) inputNombreCompleto.textContent = data.user.nombreCompleto
         
         // Cabecera
@@ -53,7 +52,7 @@ function rellenarPerfilUsuario() {
 
             const userAvatar = document.getElementById('user-avatar')
             userAvatar.innerHTML = `<img src="${avatarUrl}" alt="Avatar">`
-
+            
           } else {
             avatarDivs.forEach(div => {
               div.innerHTML = `<span class='text-gray-400 flex items-center justify-center w-full h-full'>Sin foto</span>`
@@ -179,7 +178,6 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
   const currentPassword = document.getElementById('current-password')?.value
   const newPassword = document.getElementById('new-password')?.value
   const confirmPassword = document.getElementById('confirm-password')?.value
-  const responsePassword = document.getElementById('responsePassword')
 
   if (!currentPassword || !newPassword || !confirmPassword) {
     alert('Por favor, completa todos los campos de contraseña.')
@@ -205,26 +203,17 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        
-        responsePassword.innerHTML = ''
-        responsePassword.innerHTML = `<p style="color: green">Contraseña cambiada correctamente</p>`
-
-        //alert('Contraseña cambiada correctamente')
+        alert('Contraseña cambiada correctamente')
         document.getElementById('current-password').value = ''
         document.getElementById('new-password').value = ''
         document.getElementById('confirm-password').value = ''
       } else {
-      
-        responsePassword.innerHTML = ''
-        responsePassword.innerHTML = `<p style="color: red">Error al cambiar la contraseña: ${data.error}</p>`
-        //alert('Error al cambiar la contraseña: ' + (data.error || ''))
+        alert('Error al cambiar la contraseña: ' + (data.error || ''))
       }
     })
     .catch(err => {
-      responsePassword.innerHTML = ''
-      responsePassword.innerHTML = `<p style="color: red">Error al cambiar la contraseña</p>`
-      //alert('Error de red al cambiar la contraseña')
-      //console.error(err)
+      alert('Error de red al cambiar la contraseña')
+      console.error(err)
     })
 })
 }
