@@ -2,14 +2,19 @@
 import { BACKEND_URL } from './config.js'
 
 document.addEventListener('DOMContentLoaded', function () {
-            const asignaturaSelect = document.getElementById('asignatura')
             const fileInput = document.getElementById('file')
             const dropArea = document.getElementById('dropArea')
-            console.log('dropArea:', dropArea)
             const selectedFileDiv = document.getElementById('selectedFile')
             const cancelButton = document.getElementById('cancelButton')
             
             const token = localStorage.getItem('jwt')
+
+            if (!dropArea) {
+        console.error('No se encontró el elemento dropArea en el DOM.')
+        return
+    }
+
+    console.log('dropArea:', dropArea)
 
             // Función para mostrar el archivo seleccionado
             function displaySelectedFile(file) {
