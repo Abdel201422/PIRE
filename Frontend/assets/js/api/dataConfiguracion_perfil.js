@@ -198,7 +198,7 @@ function modificarPerfil() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          const responseDiv = document.getElementById('response')
+          const responseDiv = document.getElementById('image-response')
           responseDiv.innerHTML = `<div class='p-3 bg-green-100 text-green-700 rounded-lg'>Imagen de perfil actualizada correctamente</div>`
           setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
           rellenarPerfilUsuario()
@@ -208,13 +208,13 @@ function modificarPerfil() {
           const fileNameSpan = document.getElementById('selected-file-name')
           if (fileNameSpan) fileNameSpan.textContent = 'Ningún archivo seleccionado'
         } else {
-          const responseDiv = document.getElementById('response')
+          const responseDiv = document.getElementById('image-response')
           responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error al actualizar imagen de perfil: ${(data.error || '')}</div>`
           setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
         }
       })
       .catch(err => {
-        const responseDiv = document.getElementById('response')
+        const responseDiv = document.getElementById('image-response')
         responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error de red al subir la imagen</div>`
         setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
         console.error(err)
@@ -273,13 +273,13 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
   const confirmPassword = document.getElementById('confirm-password')?.value
 
   if (!currentPassword || !newPassword || !confirmPassword) {
-    const responseDiv = document.getElementById('response')
+    const responseDiv = document.getElementById('password-response')
     responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Por favor, completa todos los campos de contraseña.</div>`
     setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
     return
   }
   if (newPassword !== confirmPassword) {
-    const responseDiv = document.getElementById('response')
+    const responseDiv = document.getElementById('password-response')
     responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>La nueva contraseña y la confirmación no coinciden.</div>`
     setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
     return
@@ -299,7 +299,7 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
   })
     .then(response => response.json())
     .then(data => {
-      const responseDiv = document.getElementById('response')
+      const responseDiv = document.getElementById('password-response')
       if (data.success) {
         responseDiv.innerHTML = `<div class='p-3 bg-green-100 text-green-700 rounded-lg'>Contraseña cambiada correctamente</div>`
         setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
@@ -312,7 +312,7 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
       }
     })
     .catch(err => {
-      const responseDiv = document.getElementById('response')
+      const responseDiv = document.getElementById('password-response')
       responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error de red al cambiar la contraseña</div>`
       setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
       console.error(err)
