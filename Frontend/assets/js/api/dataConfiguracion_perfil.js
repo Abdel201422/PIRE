@@ -69,39 +69,89 @@ document.addEventListener('DOMContentLoaded', function() {
   rellenarPerfilUsuario()
   modificarPerfil()
   modificarPassword()
-  // --- Eliminar cuenta ---
+  configurarEliminarCuenta()
+})
+
+// Función para configurar la eliminación de cuenta con modal de confirmación
+function configurarEliminarCuenta() {
   const deleteBtn = document.getElementById('delete-account-btn');
+  const modalConfirmar = document.getElementById('modal-confirmar-eliminar');
+  const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar');
+  const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar');
+  
   if (deleteBtn) {
+    // Mostrar modal al hacer clic en el botón de eliminar
     deleteBtn.addEventListener('click', function() {
-      if (!confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) return;
-      const token = localStorage.getItem('jwt');
-      if (!token) {
-        window.location.href = '/login.html';
-        return;
-      }
-      fetch(`${BACKEND_URL}/api/user/delete`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('Cuenta eliminada correctamente. ¡Hasta pronto!');
-          localStorage.removeItem('jwt');
-          window.location.href = '/login.html';
-        } else {
-          alert('Error al eliminar la cuenta: ' + (data.error || ''));
-        }
-      })
-      .catch(err => {
-        alert('Error de red al intentar eliminar la cuenta.');
-        console.error(err);
-      });
+      modalConfirmar.classList.remove('hidden');
     });
   }
-})
+  
+  if (btnCancelarEliminar) {
+    // Ocultar modal al hacer clic en cancelar
+    btnCancelarEliminar.addEventListener('click', function() {
+      modalConfirmar.classList.add('hidden');
+    });
+  }
+  
+  if (btnConfirmarEliminar) {
+    // Eliminar cuenta al confirmar
+    btnConfirmarEliminar.addEventListener('click', function() {
+      eliminarCuenta();
+    });
+  }
+}
+
+// Función para eliminar la cuenta del usuario
+function eliminarCuenta() {
+  const token = localStorage.getItem('jwt');
+  if (!token) {
+    window.location.href = '/login.html';
+    return;
+  }
+  
+  fetch(`${BACKEND_URL}/api/user/delete`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Ocultar el modal
+      document.getElementById('modal-confirmar-eliminar').classList.add('hidden');
+      
+      // Mostrar mensaje de éxito
+      const responseDiv = document.getElementById('response');
+      responseDiv.innerHTML = `<div class='p-3 bg-green-100 text-green-700 rounded-lg'>Cuenta eliminada correctamente. Redirigiendo...</div>`;
+      
+      // Redireccionar después de un breve retraso
+      setTimeout(() => {
+        localStorage.removeItem('jwt');
+        window.location.href = '/login.html';
+      }, 1500);
+    } else {
+      // Mostrar mensaje de error
+      const responseDiv = document.getElementById('response');
+      responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error al eliminar la cuenta: ${(data.error || '')}</div>`;
+      setTimeout(() => { responseDiv.innerHTML = ''; }, 2500);
+      
+      // Ocultar el modal
+      document.getElementById('modal-confirmar-eliminar').classList.add('hidden');
+    }
+  })
+  .catch(err => {
+    // Mostrar mensaje de error
+    const responseDiv = document.getElementById('response');
+    responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error de red al intentar eliminar la cuenta.</div>`;
+    setTimeout(() => { responseDiv.innerHTML = ''; }, 2500);
+    
+    // Ocultar el modal
+    document.getElementById('modal-confirmar-eliminar').classList.add('hidden');
+    
+    console.error(err);
+  });
+}
 
 function modificarPerfil() {
   // --- Imagen de perfil ---
