@@ -148,7 +148,9 @@ function modificarPerfil() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          alert('Imagen de perfil actualizada correctamente')
+          const responseDiv = document.getElementById('response')
+          responseDiv.innerHTML = `<div class='p-3 bg-green-100 text-green-700 rounded-lg'>Imagen de perfil actualizada correctamente</div>`
+          setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
           rellenarPerfilUsuario()
           // Limpiar selección
           imageInput.value = ''
@@ -156,11 +158,15 @@ function modificarPerfil() {
           const fileNameSpan = document.getElementById('selected-file-name')
           if (fileNameSpan) fileNameSpan.textContent = 'Ningún archivo seleccionado'
         } else {
-          alert('Error al actualizar imagen de perfil: ' + (data.error || ''))
+          const responseDiv = document.getElementById('response')
+          responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error al actualizar imagen de perfil: ${(data.error || '')}</div>`
+          setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
         }
       })
       .catch(err => {
-        alert('Error de red al subir la imagen')
+        const responseDiv = document.getElementById('response')
+        responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error de red al subir la imagen</div>`
+        setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
         console.error(err)
       })
     })
@@ -187,15 +193,20 @@ document.getElementById('save-personal-info-btn')?.addEventListener('click', fun
   })
     .then(response => response.json())
     .then(data => {
+      const responseDiv = document.getElementById('response');
       if (data.success) {
-        alert('Perfil actualizado correctamente')
+        responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">Perfil actualizado correctamente</div>`;
+        setTimeout(() => { responseDiv.innerHTML = ''; }, 2500);
         rellenarPerfilUsuario() // refresca los datos
       } else {
-        alert('Error al actualizar perfil: ' + (data.error || '')) 
+        responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al actualizar perfil: ${(data.error || '')}</div>`;
+        setTimeout(() => { responseDiv.innerHTML = ''; }, 2500);
       }
     })
     .catch(err => {
-      alert('Error de red al actualizar el perfil')
+      const responseDiv = document.getElementById('response')
+      responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error de red al actualizar el perfil</div>`
+      setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
       console.error(err)
     })
 })
@@ -212,11 +223,15 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
   const confirmPassword = document.getElementById('confirm-password')?.value
 
   if (!currentPassword || !newPassword || !confirmPassword) {
-    alert('Por favor, completa todos los campos de contraseña.')
+    const responseDiv = document.getElementById('response')
+    responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Por favor, completa todos los campos de contraseña.</div>`
+    setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
     return
   }
   if (newPassword !== confirmPassword) {
-    alert('La nueva contraseña y la confirmación no coinciden.')
+    const responseDiv = document.getElementById('response')
+    responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>La nueva contraseña y la confirmación no coinciden.</div>`
+    setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
     return
   }
   if (newPassword.length < 6) {
@@ -234,17 +249,22 @@ document.getElementById('save-password-btn')?.addEventListener('click', function
   })
     .then(response => response.json())
     .then(data => {
+      const responseDiv = document.getElementById('response')
       if (data.success) {
-        alert('Contraseña cambiada correctamente')
+        responseDiv.innerHTML = `<div class='p-3 bg-green-100 text-green-700 rounded-lg'>Contraseña cambiada correctamente</div>`
+        setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
         document.getElementById('current-password').value = ''
         document.getElementById('new-password').value = ''
         document.getElementById('confirm-password').value = ''
       } else {
-        alert('Error al cambiar la contraseña: ' + (data.error || ''))
+        responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error al cambiar la contraseña: ${(data.error || '')}</div>`
+        setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
       }
     })
     .catch(err => {
-      alert('Error de red al cambiar la contraseña')
+      const responseDiv = document.getElementById('response')
+      responseDiv.innerHTML = `<div class='p-3 bg-red-100 text-red-700 rounded-lg'>Error de red al cambiar la contraseña</div>`
+      setTimeout(() => { responseDiv.innerHTML = ''; }, 2500)
       console.error(err)
     })
 })
