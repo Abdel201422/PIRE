@@ -90,18 +90,25 @@ export function sendComentario(comentario, documentoId) {
             })
             .then(data => {
                 //console.log('✅ Comentario enviado:', data)
-                alert('Comentario enviado correctamente')
-
+                const responseDiv = document.getElementById('comment-response')
+                responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">Comentario enviado correctamente</div>`
+                
                 // Opcional: limpiar el textarea
                 mostrarComentarios(documentoId)
                 document.getElementById('textAreaComentar').value = ''
-
+                
+                // Limpiar el mensaje después de 3 segundos
+                setTimeout(() => {
+                    responseDiv.innerHTML = ''
+                }, 3000)
             })
             .catch(error => {
                 //console.error('❌ Error:', error)
-                alert('Hubo un error al enviar el comentario')
+                const responseDiv = document.getElementById('comment-response')
+                responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Hubo un error al enviar el comentario</div>`
             })
     } else {
-        alert('escribe perro')
+        const responseDiv = document.getElementById('comment-response')
+        responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Por favor, escribe un comentario</div>`
     }
 }

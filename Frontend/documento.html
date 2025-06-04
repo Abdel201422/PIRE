@@ -93,6 +93,7 @@
 
                 <!-- Contenedor para la previsualización del documento -->
                 <div class="bg-white rounded-3xl border-2 border-gray-300 overflow-hidden mb-6">
+                    <div id="document-response" class="px-4 pt-4"></div>
                     <div id="document-preview" class="w-full h-[60vh] sm:h-[70vh]">
                         <!-- Aquí se cargará dinámicamente el contenido del documento -->
                     </div>
@@ -100,6 +101,9 @@
 
                 <!-- Sección de valoración y comentarios -->
                 <div class="bg-white rounded-3xl border-2 border-gray-300 p-6">
+                    <!-- Response para valoración -->
+                    <div id="rating-response" class="mb-4"></div>
+                    
                     <!-- Valoración y Comentar -->
                     <div class="grid md:grid-cols-4 gap-6 mb-8">
                         <!-- Valoración -->
@@ -122,6 +126,8 @@
 
                         <!-- Comentar -->
                         <div class="md:col-span-3 bg-white rounded-3xl border border-gray-300 border-2 p-6">
+                            <!-- Response para comentarios -->
+                            <div id="comment-response" class="mb-4"></div>
                             <h4 class="text-lg font-medium mb-4">Comentar</h4>
                             <textarea id="textAreaComentar" class="w-full p-4 border border-gray-200 rounded-lg mb-4"
                                 placeholder="¿Quieres comentar algo o hacer una pregunta?"></textarea>

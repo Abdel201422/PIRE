@@ -15,8 +15,13 @@ const urlParams = new URLSearchParams(window.location.search)
 const documentoId = urlParams.get('id')
 
 if (!documentoId) {
-    alert('No se ha especificado un documento válido.')
-    window.location.href = '/education.html' // Redirigir si no hay ID
+    document.addEventListener('DOMContentLoaded', () => {
+        const responseDiv = document.getElementById('document-response')
+        responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error: No se ha especificado un documento válido.</div>`
+    })
+    setTimeout(() => {
+        window.location.href = '/education.html' // Redirigir si no hay ID
+    }, 2000)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -118,6 +123,8 @@ function downloadDocumento(documentoContainer, downloadDocument, url) {
         .catch(error => {
                 console.error('Error al cargar el archivo:', error)
                 documentoContainer.innerHTML = '<p>Error al cargar el documento.</p>'
+                const responseDiv = document.getElementById('document-response')
+                responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al cargar el archivo: ${error.message}</div>`
         })
 
         downloadDocument.addEventListener('click', () => {
@@ -189,6 +196,8 @@ function infoDocumento() {
         })
         .catch(error => {
             console.error('Error al cargar la información del documento:', error)
+            const responseDiv = document.getElementById('document-response')
+            responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al cargar la información del documento: ${error.message}</div>`
         })
 }
 
@@ -207,18 +216,26 @@ function puntuarDocumento(documentoId, puntuacion) {
     })
         .then(response => response.json())
         .then(data => {
+            const responseDiv = document.getElementById('rating-response')
             if (data.error) {
-                alert(`Error: ${data.error}`)
+                responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error: ${data.error}</div>`
             } else {
-                alert('Puntuación registrada exitosamente.')
+                responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">Puntuación registrada exitosamente.</div>`
                 //console.log('Puntuación registrada:', data.nuevaPuntuacion)
                 if (data.nuevaPuntuacion) {
                     const ratingValue = document.getElementById('rating-value')
                     ratingValue.textContent = data.nuevaPuntuacion
                 }
+                
+                // Limpiar el mensaje después de 3 segundos
+                setTimeout(() => {
+                    responseDiv.innerHTML = ''
+                }, 3000)
             }
         })
         .catch(err => {
             console.error('Error al puntuar el documento:', err)
+            const responseDiv = document.getElementById('rating-response')
+            responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al puntuar el documento: ${err.message}</div>`
         })
 }
