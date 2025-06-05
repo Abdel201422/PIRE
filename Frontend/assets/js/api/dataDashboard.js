@@ -71,7 +71,7 @@ export function infoUser() {
 
                     if (ultimoDocumento) {
                         ultimoDocumento.textContent = data.user.ultimoDocumento
-                            ? 'Subiste' + data.user.ultimoDocumento.titulo
+                            ? 'Subiste ' + data.user.ultimoDocumento.titulo + ' '
                             : 'No tienes documentos subidos'
                     }
 
