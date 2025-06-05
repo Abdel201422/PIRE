@@ -234,7 +234,7 @@ function puntuarDocumento(documentoId, puntuacion) {
             }
         })
         .catch(err => {
-            console.error('Error al puntuar el documento:', err)
+            //console.error('Error al puntuar el documento:', err)
             const responseDiv = document.getElementById('rating-response')
             responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al puntuar el documento: ${err.message}</div>`
         })
