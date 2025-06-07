@@ -22,6 +22,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 final class DocumentoController extends AbstractController
 {
+     #[Route('/api/documentos/delete/{id}', name: 'api_documento_delete', methods: ['DELETE'])]
+    public function delete(Documento $documento = null, EntityManagerInterface $entityManager): JsonResponse
+    {
+        if (!$documento) {
+            return $this->json(['error' => 'Documento no encontrado'], 404);
+        }
+        $entityManager->remove($documento);
+        $entityManager->flush();
+        return $this->json(['message' => 'Documento eliminado correctamente'], 200);
+    }
     #[Route(name: 'app_documento_index', methods: ['GET'])]
 public function index(DocumentoRepository $documentoRepository): Response
 {
@@ -208,16 +218,16 @@ public function index(DocumentoRepository $documentoRepository): Response
         ]);
     }
 
-    #[Route('/{id}', name: 'app_documento_delete', methods: ['POST'])]
-    public function delete(Request $request, Documento $documento, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$documento->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($documento);
-            $entityManager->flush();
-        }
+    // #[Route('/{id}', name: 'app_documento_delete', methods: ['POST'])]
+    // public function delete(Request $request, Documento $documento, EntityManagerInterface $entityManager): Response
+    // {
+    //     if ($this->isCsrfTokenValid('delete'.$documento->getId(), $request->getPayload()->getString('_token'))) {
+    //         $entityManager->remove($documento);
+    //         $entityManager->flush();
+    //     }
 
-        return $this->redirectToRoute('app_documento_index', [], Response::HTTP_SEE_OTHER);
-    }
+    //     return $this->redirectToRoute('app_documento_index', [], Response::HTTP_SEE_OTHER);
+    // }
 
     // Método para obtener los mejores documentos
     #[Route('/api/documentos/mejores', name: 'api_documentos', methods: ['GET'])]
