@@ -1,4 +1,7 @@
+// js/api/verDocumento.js
+
 import { BACKEND_URL } from '../config.js'
+import { DOC_URL } from '../config.js'
 import { mostrarComentarios, sendComentario } from './getComentarios.js'
 
 const token = localStorage.getItem('jwt')
@@ -12,8 +15,13 @@ const urlParams = new URLSearchParams(window.location.search)
 const documentoId = urlParams.get('id')
 
 if (!documentoId) {
-    alert('No se ha especificado un documento válido.')
-    window.location.href = '/education.html' // Redirigir si no hay ID
+    document.addEventListener('DOMContentLoaded', () => {
+        const responseDiv = document.getElementById('document-response')
+        responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error: No se ha especificado un documento válido.</div>`
+    })
+    setTimeout(() => {
+        window.location.href = '/education.html' // Redirigir si no hay ID
+    }, 2000)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -45,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         star.addEventListener('click', () => {
 
-            puntuacionStar = star.getAttribute('data-value') // Obtener el valor de la estrella seleccionada
-            console.log('Puntuación seleccionada:', puntuacionStar)
+            puntuacionStar = star.getAttribute('data-value')
+            //console.log('Puntuación seleccionada:', puntuacionStar)
 
             // Marcar las estrellas seleccionadas
             stars.forEach(s => {
@@ -70,38 +78,54 @@ document.addEventListener('DOMContentLoaded', () => {
 // Descargar el documento
 function downloadDocumento(documentoContainer, downloadDocument, url) {
     if (documentoContainer && downloadDocument) {
-        fetch(`${BACKEND_URL}/api/documentos/download/${documentoId}`, {
+        fetch(`${BACKEND_URL}/api/documentos/${documentoId}/data`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('No se pudo cargar el archivo.')
-                }
-                return response.blob()
-            })
-            .then(blob => {
-                console.log('Blob:', blob)
-                url = URL.createObjectURL(blob)
-                const mimeType = blob.type
-
-                let content = ''
-                if (mimeType === 'application/pdf') {
-                    content = `<embed src="${url}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
-                } else if (mimeType.startsWith('image/')) {
-                    content = `<div class="overflow-y-auto h-full">
-                <img src="${url}" alt="Documento" class="w-full h-auto rounded shadow" />
-            </div>`
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la información del documento.')
+            }
+            return response.json()
+        })
+        .then(data => {
+            // Construimos la URL del documento usando DOC_URL
+            const docUrl = `${DOC_URL}/${data.ruta}`
+    
+            // Mostramos el documento según su tipo
+            let content = ''
+            
+            if (data.ruta.toLowerCase().endsWith('.pdf')) {
+            
+                if (/Mobi|Android/i.test(navigator.userAgent)) {
+                    const encodedUrl = encodeURIComponent(docUrl)
+                    content = `<iframe src="https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodedUrl}" width="100%" height="100%" class="rounded-2xl" frameborder="0"></iframe>`
                 } else {
-                    content = `<p>El archivo no se puede previsualizar. <a href="${url}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
+                    content = `<iframe src="${docUrl}#toolbar=0" type="application/pdf" width="100%" height="100%" class="rounded-2xl" />`
                 }
 
-                documentoContainer.innerHTML = content
-            })
-            .catch(error => {
+            } else if (data.ruta.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            
+                content = `<div class="overflow-y-auto h-full">
+                    <img src="${docUrl}" alt="Documento" class="w-full h-auto rounded shadow" />
+                </div>`
+            } else {
+                content = `<p>El archivo no se puede previsualizar. <a href="${docUrl}" target="_blank" class="text-blue-500 underline">Descargar</a></p>`
+            }
+
+            documentoContainer.innerHTML = content
+
+            // Configurar el botón de descarga
+            downloadDocument.addEventListener('click', () => {
+                window.open(docUrl, '_blank')
+            }) 
+        })
+        .catch(error => {
                 console.error('Error al cargar el archivo:', error)
                 documentoContainer.innerHTML = '<p>Error al cargar el documento.</p>'
-            })
+                const responseDiv = document.getElementById('document-response')
+                responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al cargar el archivo: ${error.message}</div>`
+        })
 
         downloadDocument.addEventListener('click', () => {
 
@@ -129,9 +153,6 @@ function infoDocumento() {
             return response.json()
         })
         .then(data => {
-            // Aquí puedes manejar los datos del documento
-            console.log(data)
-
             // Datos del documento
             const idTituloDocumento = document.getElementById('idTituloDocumento')
             const descripcionDocumento = document.getElementById('descripcionDocumento')
@@ -145,7 +166,7 @@ function infoDocumento() {
             nameAsignatura.textContent = data.asignatura
 
             const cursoParte = data.curso.match(/\dº Curso/)
-            console.log(cursoParte)
+            //console.log(cursoParte)
             nameCurso.textContent = cursoParte
             nameCiclo.textContent = data.ciclo
             ratingValue.textContent = data.puntuacion
@@ -156,7 +177,7 @@ function infoDocumento() {
 
             const userAvatar = document.getElementById('avatarUsuario')
             if (userAvatar) {
-                userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.usuario.avatar}" alt="Avatar">`
+                userAvatar.innerHTML = `<img src="${DOC_URL}/${data.usuario.avatar}" alt="Avatar">`
             }
 
             const ratingValueTop = document.getElementById('rating-value-top')
@@ -175,13 +196,15 @@ function infoDocumento() {
         })
         .catch(error => {
             console.error('Error al cargar la información del documento:', error)
+            const responseDiv = document.getElementById('document-response')
+            responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al cargar la información del documento: ${error.message}</div>`
         })
 }
 
 // Función para puntuar el documento
 function puntuarDocumento(documentoId, puntuacion) {
 
-    const token = localStorage.getItem('jwt') // Asegúrate de que el usuario esté autenticado
+    const token = localStorage.getItem('jwt')
 
     fetch(`${BACKEND_URL}/api/documentos/${documentoId}/puntuar`, {
         method: 'POST',
@@ -193,18 +216,26 @@ function puntuarDocumento(documentoId, puntuacion) {
     })
         .then(response => response.json())
         .then(data => {
+            const responseDiv = document.getElementById('rating-response')
             if (data.error) {
-                alert(`Error: ${data.error}`)
+                responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error: ${data.error}</div>`
             } else {
-                alert('Puntuación registrada exitosamente.')
-                console.log('Puntuación registrada:', data.nuevaPuntuacion)
+                responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">Puntuación registrada exitosamente.</div>`
+                //console.log('Puntuación registrada:', data.nuevaPuntuacion)
                 if (data.nuevaPuntuacion) {
                     const ratingValue = document.getElementById('rating-value')
                     ratingValue.textContent = data.nuevaPuntuacion
                 }
+                
+                // Limpiar el mensaje después de 3 segundos
+                setTimeout(() => {
+                    responseDiv.innerHTML = ''
+                }, 3000)
             }
         })
         .catch(err => {
-            console.error('Error al puntuar el documento:', err)
+            //console.error('Error al puntuar el documento:', err)
+            const responseDiv = document.getElementById('rating-response')
+            responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Error al puntuar el documento: ${err.message}</div>`
         })
 }

@@ -22,7 +22,7 @@
                         'pire-background-dashboard': '#FDFBF9',
                     },
                     fontFamily: {
-                        lexend: ['Lexend', 'sans'],
+                        lexend: ['Lexend', 'sans-serif'],
                     },
                 }
             }
@@ -37,7 +37,7 @@
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
 
         <!-- Contenido principal -->
-        <div class="flex-1 flex flex-col w-full">
+        <div class="flex-1 flex flex-col w-[100vw] md:w-auto">
             <!-- Header -->
             <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
@@ -45,7 +45,7 @@
             <main class="flex-1 overflow-y-auto p-0 flex-col max-w-6xl mx-auto w-full">
                 <div
                     class="bg-[var(--color-gray-50)] rounded-3xl flex flex-col gap-4 p-6 border-2 border-gray-300 mx-4 mb-4 mt-4 max-w-full">
-                        <span id="ruta">ruta</span>
+                        <span id="ruta"></span>
                         <h2 id="nameAsignatura" class="text-xl font-semibold"></h2>
                         <div id="documentosContainer" class="flex flex-col gap-6">
             <!-- Aquí se cargarán los documentos dinámicamente -->

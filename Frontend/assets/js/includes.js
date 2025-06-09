@@ -3,7 +3,7 @@
 // Carga dinámica del componente header
 document.addEventListener('DOMContentLoaded', () => {
     
-    const headerMainContainer = document.getElementById('header_main');
+    const headerMainContainer = document.getElementById('header_main')
     if (headerMainContainer) {
         fetch('/components/header_main.html')
             .then(response => response.text())

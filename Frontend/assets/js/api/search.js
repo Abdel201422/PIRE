@@ -1,5 +1,5 @@
 // js/search.js
-import { BACKEND_URL } from '../config.js';
+import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
 
@@ -15,8 +15,8 @@ export function searchAll() {
 
             const query = e.target.value.trim()
             if (query.length > 0) {
-                // Redirige a la página de resultados de búsqueda con el término como parámetro
-                window.location.href = `/search.html?query=${encodeURIComponent(query)}`
+                // Redirige a la página search.html con el término como parámetro
+                window.location.href = `/search?query=${encodeURIComponent(query)}`
             }
         }
     })
@@ -24,8 +24,8 @@ export function searchAll() {
 
 export function searchDocument() {
 
-    const params = new URLSearchParams(window.location.search);
-const query = params.get('query');
+    const params = new URLSearchParams(window.location.search)
+const query = params.get('query')
 
 if (query) {
     const inputSearch = document.getElementById('input-busqueda')
@@ -52,7 +52,7 @@ if (query) {
 function mostrarResultados(documentos) {
 
     const documentosContainer = document.getElementById('documentosContainer')
-    console.log(documentos)
+    //console.log(documentos)
     documentos.forEach(documento => {
 
                 const docDiv = document.createElement('div')
@@ -61,11 +61,11 @@ function mostrarResultados(documentos) {
                 let icono = ''
 
                 if (documento.tipo_archivo === 'application/pdf') {
-                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #F87171;">PDF</div>`
+                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #F87171">PDF</div>`
                 } else if (documento.tipo_archivo.startsWith('image/')) {
-                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248);">IMAGEN</div>`
+                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248)">IMAGEN</div>`
                 } else {
-                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #9CA3AF;">ARCHIVO</div>`
+                    icono = `<div class="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color: #9CA3AF">ARCHIVO</div>`
                 }
 
                 docDiv.innerHTML = `${icono}
@@ -100,7 +100,7 @@ function mostrarResultados(documentos) {
 
                 // Evento para redirigir a la página de visualización
                 docDiv.addEventListener('click', () => {
-                    window.location.href = `/documento.html?id=${documento.id}`
+                    window.location.href = `/documento?id=${documento.id}`
                 })
 
                 documentosContainer.append(docDiv)

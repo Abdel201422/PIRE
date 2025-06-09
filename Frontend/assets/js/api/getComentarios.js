@@ -1,4 +1,7 @@
+// js/api/getComentarios.js
+
 import { BACKEND_URL } from '../config.js'
+import { DOC_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
 
@@ -14,7 +17,7 @@ export function mostrarComentarios(documentoId) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(comentariosContainer)
+            //console.log(comentariosContainer)
             if (!comentariosContainer) return
 
             if (data.error) {
@@ -27,7 +30,6 @@ export function mostrarComentarios(documentoId) {
                 return
             }
 
-            console.log('---------------------------')
             comentariosContainer.innerHTML = ''
 
             data.forEach(comentario => {
@@ -40,7 +42,7 @@ export function mostrarComentarios(documentoId) {
                 comentarioDiv.innerHTML = `
                     <div class="flex items-start mb-3">
                         <div class="flex-shrink-0 mr-3">
-                            <img class="h-10 w-10 rounded-full object-cover" src="${BACKEND_URL}/${comentario.user.avatar || 'img/default-avatar.png'}" alt="Avatar">
+                            <img class="h-10 w-10 rounded-full object-cover" src="${DOC_URL}/${comentario.user.avatar || 'img/default-avatar.png'}" alt="Avatar">
                         </div>
                         <div>
                             <p class="text-green-600 font-medium">${comentario.user.nombre}</p>
@@ -55,7 +57,7 @@ export function mostrarComentarios(documentoId) {
             })
         })
         .catch(err => {
-            console.error('❌ Error al cargar comentarios:', err)
+            //console.error('❌ Error al cargar comentarios:', err)
             if (comentariosContainer) {
                 comentariosContainer.innerHTML = '<p class="text-red-500">Hubo un error al cargar los comentarios.</p>'
             }
@@ -87,19 +89,26 @@ export function sendComentario(comentario, documentoId) {
                 return response.json()
             })
             .then(data => {
-                console.log('✅ Comentario enviado:', data)
-                alert('Comentario enviado correctamente')
-
+                //console.log('✅ Comentario enviado:', data)
+                const responseDiv = document.getElementById('comment-response')
+                responseDiv.innerHTML = `<div class="p-3 bg-green-100 text-green-700 rounded-lg">Comentario enviado correctamente</div>`
+                
                 // Opcional: limpiar el textarea
                 mostrarComentarios(documentoId)
                 document.getElementById('textAreaComentar').value = ''
-
+                
+                // Limpiar el mensaje después de 3 segundos
+                setTimeout(() => {
+                    responseDiv.innerHTML = ''
+                }, 3000)
             })
             .catch(error => {
-                console.error('❌ Error:', error)
-                alert('Hubo un error al enviar el comentario')
+                //console.error('❌ Error:', error)
+                const responseDiv = document.getElementById('comment-response')
+                responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Hubo un error al enviar el comentario</div>`
             })
     } else {
-        alert('escribe perro')
+        const responseDiv = document.getElementById('comment-response')
+        responseDiv.innerHTML = `<div class="p-3 bg-red-100 text-red-700 rounded-lg">Por favor, escribe un comentario</div>`
     }
 }

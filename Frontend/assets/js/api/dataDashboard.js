@@ -1,4 +1,5 @@
 import { BACKEND_URL } from '../config.js'
+import { DOC_URL } from '../config.js'
 import { setupLogout } from './auth.js'
 
 setupLogout()
@@ -24,7 +25,7 @@ export function infoUser() {
                 return response.json()
             })
             .then(data => {
-                console.log(data)
+                //console.log(data)
                 const ui = document.getElementById('userInfo')
                 const userName = document.getElementById('userName')
                 const userNameComplete = document.getElementById('userNameComplete')
@@ -70,22 +71,22 @@ export function infoUser() {
 
                     if (ultimoDocumento) {
                         ultimoDocumento.textContent = data.user.ultimoDocumento
-                            ? data.user.ultimoDocumento.titulo
-                            : 'Sin documentos';
+                            ? 'Subiste ' + data.user.ultimoDocumento.titulo
+                            : 'No tienes documentos subidos'
                     }
 
                     if (ultimoDocumentoFecha) {
                         ultimoDocumentoFecha.textContent = data.user.ultimoDocumento
-                            ? data.user.ultimoDocumento.fechaSubida
-                            : '';
+                            ? ' ' + data.user.ultimoDocumento.fechaSubida
+                            : ''
                     }
 
                     if (ultimaPuntuacion) {
-                        ultimaPuntuacion.textContent = data.user.ultimaValoracion
+                        ultimaPuntuacion.textContent = data.user.ultimaValoracion ? 'Recibiste una valoración de ' + data.user.ultimaValoracion + ' estrellas' : 'No has recibido ninguna valoración'
                     }
 
                     if (userAvatar) {
-                        userAvatar.innerHTML = `<img src="${BACKEND_URL}/${data.user.avatar}" alt="Avatar">`
+                        userAvatar.innerHTML = `<img src="${DOC_URL}/${data.user.avatar}" alt="Avatar">`
                     }
 
                     if (userAdmin) {
@@ -118,7 +119,7 @@ export function loadBestDocuments() {
     // Verificar si el contenedor de mejores documentos existe
     const mejoresDocumentos = document.getElementById('seccion-populares')
     if (!mejoresDocumentos) {
-        console.warn('El contenedor de mejores documentos no existe en el DOM')
+        //console.warn('El contenedor de mejores documentos no existe en el DOM')
         // Si no existe, no ejecutamos la lógica
         return
     }
@@ -138,21 +139,21 @@ export function loadBestDocuments() {
             if (data.error) {
                 mejoresDocumentos.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
             } else {
-                console.log(data)
+                //console.log(data)
                 const gridRecursos = document.getElementById('grid-recursos')
 
                 if (gridRecursos) {
-                    gridRecursos.innerHTML = '' // Limpiar contenido previo
+                    gridRecursos.innerHTML = ''
 
                     data.forEach(doc => {
-                        console.log(doc)
+                        //console.log(doc)
                         const div = document.createElement('div')
                         div.innerHTML = `
-                        <a href="/documento.html?id=${doc.id}" class="h-full">
+                        <a href="/documento?id=${doc.id}" class="h-full">
                         <div class="flex flex-col h-full justify-between bg-[var(--color-gray-50)] rounded-3xl p-5 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
                             <div>
                                 <div class="mb-2 text-xs text-green-600">${doc.asignatura}</div>
-                                <h3 class="font-medium text-xl mb-2">${doc.titulo}</h3>
+                                <h3 class="font-medium text-xl mb-2 truncate">${doc.titulo}</h3>
                             </div>
                             <div class="flex items-center justify-end mt-4">
                                 
@@ -182,35 +183,3 @@ export function loadBestDocuments() {
                 `<p style="color: red">Error al cargar los mejores documentos.</p>`
         })
 }
-
-// Verificar si el usuario es administrador
-/* export function whoAdmin() {
-    // Verificar si el usuario está autenticado
-    const token = localStorage.getItem('jwt');
-    const enlaceAdministrar = document.getElementById('enlace-administrar')
-
-    if (!token) {
-        console.log('No hay token, el usuario no está autenticado');
-        return;
-    }
-
-    fetch(`${BACKEND_URL}/api/users/me`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${token}` },
-    })
-        .then(async response => {
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(text);
-            }
-            return response.json();
-        })
-        .then(user => {
-            // Check for 'roles' array (plural) instead of 'role'
-            if (user.roles && user.roles.includes('ROLE_ADMIN')) {
-                enlaceAdministrar.classList.remove('hidden');
-            }
-        })
-        .catch(error => console.error('Error al verificar el rol del usuario:', error));
-
-} */

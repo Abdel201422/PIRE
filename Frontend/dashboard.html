@@ -22,7 +22,7 @@
                         'pire-background-dashboard': '#FDFBF9',
                     },
                     fontFamily: {
-                        lexend: ['Lexend', 'sans'],
+                        lexend: ['Lexend', 'sans-serif'],
                     },
                 }
             }
@@ -38,7 +38,7 @@
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
 
         <!-- Contenido principal -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col w-[100vw] md:w-auto">
             <!-- Header -->
             <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
@@ -49,8 +49,7 @@
                     <!-- Bienvenida -->
                     <div id="seccion-bienvenida"
                         class="col-span-2 bg-white rounded-3xl p-6 border-2 border-gray-300 hover:bg-green-100 hover:border-pire-green transition-all duration-200">
-                        <h1 class="text-4xl font-bold mb-2">Bienvenido, <span id="userName"
-                                class="text-green-400">user</span></h1>
+                        <h1 class="text-4xl font-bold mb-2">Bienvenido, <span id="userName" class="text-green-400"></span></h1>
                         <h2 class="text-xl font-semibold mb-4">¿Listo para compartir, descubrir y aprender algo nuevo
                             hoy?</h2>
                     </div>
@@ -71,12 +70,12 @@
                             <!-- Pillar de la base de datos el ultimo recurso subido por el usuario e insertarlo con esta estructura de ejemplo: -->
                             <li class="flex">
                                 <span class="text-brown-600 mr-2">📚</span>
-                                <p>Subiste "<span id="ultimoDocumento" class="font-bold"></span>" <span id="ultimoDocumentoFecha"></span></p>
+                                <span id="ultimoDocumento" class="truncate inline-block overflow-hidden whitespace-nowrap"></span>&nbsp;<span id="ultimoDocumentoFecha"></span>
                             </li>
                             <!-- Pillar de la base de datos la ultima valoración recibida e insertarla con esta estructura de ejemplo: -->
                             <li class="flex">
                                 <span class="text-yellow-500 mr-2">⭐</span>
-                                <p>Recibiste una valoración de <span id="ultimaPuntuacion" class="font-bold"></span> estrellas</p>
+                                <span id="ultimaPuntuacion"></span>
                             </li>
                         </ul>
                     </div>

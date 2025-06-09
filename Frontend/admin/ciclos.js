@@ -1,62 +1,62 @@
-import { BACKEND_URL } from '/assets/js/config.js';
+import { BACKEND_URL } from '/assets/js/config.js'
 
 // Verificar autenticación
-const token = localStorage.getItem('jwt');
+const token = localStorage.getItem('jwt')
 if (!token) {
-    window.location.href = '/login.html';
+    window.location.href = '/login.html'
 }
 
 // Variables globales
-let ciclos = [];
-let cicloActual = null;
+let ciclos = []
+let cicloActual = null
 
 // Cargar componentes dinámicamente
-import { infoUser } from '/assets/js/api/dataDashboard.js';
+import { infoUser } from '/assets/js/api/dataDashboard.js'
 document.addEventListener('DOMContentLoaded', () => {
-    infoUser();
+    infoUser()
     // Cargar datos de ciclos
-    cargarCiclos();
+    cargarCiclos()
 
     // Configurar eventos de los modales
-    configurarEventosModales();
+    configurarEventosModales()
     
     // Configurar evento de búsqueda
-    configurarBusqueda();
-});
+    configurarBusqueda()
+})
 
 // Función para configurar la búsqueda
 function configurarBusqueda() {
-    const inputBusqueda = document.getElementById('busqueda-ciclos');
+    const inputBusqueda = document.getElementById('busqueda-ciclos')
     
     inputBusqueda.addEventListener('input', () => {
-        filtrarCiclos(inputBusqueda.value.toLowerCase());
-    });
+        filtrarCiclos(inputBusqueda.value.toLowerCase())
+    })
 }
 
 // Función para filtrar ciclos según el texto de búsqueda
 function filtrarCiclos(textoBusqueda) {
-    if (!Array.isArray(ciclos) || ciclos.length === 0) return;
+    if (!Array.isArray(ciclos) || ciclos.length === 0) return
     
     // Si no hay texto de búsqueda, mostrar todos los ciclos
     if (!textoBusqueda.trim()) {
-        renderizarTablaCiclos(ciclos);
-        return;
+        renderizarTablaCiclos(ciclos)
+        return
     }
     
     // Filtrar los ciclos que coinciden con el texto de búsqueda
     const ciclosFiltrados = ciclos.filter(ciclo => {
-        if (!ciclo) return false;
+        if (!ciclo) return false
         
-        const codigo = (ciclo.cod_ciclo || '').toLowerCase();
-        const nombre = (ciclo.nombre || '').toLowerCase();
-        const descripcion = (ciclo.descripcion || '').toLowerCase();
+        const codigo = (ciclo.cod_ciclo || '').toLowerCase()
+        const nombre = (ciclo.nombre || '').toLowerCase()
+        const descripcion = (ciclo.descripcion || '').toLowerCase()
         
         return codigo.includes(textoBusqueda) || 
                nombre.includes(textoBusqueda) || 
-               descripcion.includes(textoBusqueda);
-    });
+               descripcion.includes(textoBusqueda)
+    })
     
-    renderizarTablaCiclos(ciclosFiltrados);
+    renderizarTablaCiclos(ciclosFiltrados)
 }
 
 // Función para cargar los ciclos desde la API
@@ -67,34 +67,34 @@ function cargarCiclos() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+            throw new Error(`Error ${response.status}: ${response.statusText}`)
         }
-        return response.json();
+        return response.json()
     })
     .then(data => {
-        ciclos = data;
-        renderizarTablaCiclos(ciclos);
+        ciclos = data
+        renderizarTablaCiclos(ciclos)
     })
     .catch(error => {
-        console.error('Error al cargar ciclos:', error);
+        console.error('Error al cargar ciclos:', error)
         document.getElementById('tabla-ciclos').innerHTML = `
             <tr>
                 <td colspan="5" class="px-6 py-4 text-center text-red-500">
                     Error al cargar los ciclos. Por favor, intenta de nuevo.
                 </td>
             </tr>
-        `;
+        `
         
         if (error.message.includes('401')) {
-            localStorage.removeItem('jwt');
-            window.location.href = '/login.html';
+            localStorage.removeItem('jwt')
+            window.location.href = '/login.html'
         }
-    });
+    })
 }
 
 // Función para renderizar la tabla de ciclos
 function renderizarTablaCiclos(ciclos) {
-    const tablaCiclos = document.getElementById('tabla-ciclos');
+    const tablaCiclos = document.getElementById('tabla-ciclos')
     
     if (ciclos.length === 0) {
         tablaCiclos.innerHTML = `
@@ -103,11 +103,11 @@ function renderizarTablaCiclos(ciclos) {
                     No hay ciclos disponibles.
                 </td>
             </tr>
-        `;
-        return;
+        `
+        return
     }
     
-    let html = '';
+    let html = ''
     ciclos.forEach(ciclo => {
         html += `
             <tr>
@@ -132,100 +132,100 @@ function renderizarTablaCiclos(ciclos) {
                     </button>
                 </td>
             </tr>
-        `;
-    });
+        `
+    })
     
-    tablaCiclos.innerHTML = html;
+    tablaCiclos.innerHTML = html
     
     // Configurar eventos para los botones de acción
     document.querySelectorAll('[data-accion="editar"]').forEach(btn => {
-        btn.addEventListener('click', () => editarCiclo(btn.dataset.id));
-    });
+        btn.addEventListener('click', () => editarCiclo(btn.dataset.id))
+    })
     
     document.querySelectorAll('[data-accion="eliminar"]').forEach(btn => {
-        btn.addEventListener('click', () => confirmarEliminarCiclo(btn.dataset.id));
-    });
+        btn.addEventListener('click', () => confirmarEliminarCiclo(btn.dataset.id))
+    })
 }
 
 // Función para configurar eventos de los modales
 function configurarEventosModales() {
     // Modal de nuevo ciclo
-    const btnNuevoCiclo = document.getElementById('btn-nuevo-ciclo');
-    const modalCiclo = document.getElementById('modal-ciclo');
-    const btnCancelar = document.getElementById('btn-cancelar');
-    const formCiclo = document.getElementById('form-ciclo');
+    const btnNuevoCiclo = document.getElementById('btn-nuevo-ciclo')
+    const modalCiclo = document.getElementById('modal-ciclo')
+    const btnCancelar = document.getElementById('btn-cancelar')
+    const formCiclo = document.getElementById('form-ciclo')
     
     btnNuevoCiclo.addEventListener('click', () => {
-        document.getElementById('modal-titulo').textContent = 'Nuevo Ciclo';
-        formCiclo.reset();
-        cicloActual = null;
-        modalCiclo.classList.remove('hidden');
-    });
+        document.getElementById('modal-titulo').textContent = 'Nuevo Ciclo'
+        formCiclo.reset()
+        cicloActual = null
+        modalCiclo.classList.remove('hidden')
+    })
     
     btnCancelar.addEventListener('click', () => {
-        modalCiclo.classList.add('hidden');
-    });
+        modalCiclo.classList.add('hidden')
+    })
     
     formCiclo.addEventListener('submit', (e) => {
-        e.preventDefault();
-        guardarCiclo();
-    });
+        e.preventDefault()
+        guardarCiclo()
+    })
     
     // Modal de confirmación para eliminar
-    const modalConfirmar = document.getElementById('modal-confirmar');
-    const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar');
-    const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar');
+    const modalConfirmar = document.getElementById('modal-confirmar')
+    const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar')
+    const btnConfirmarEliminar = document.getElementById('btn-confirmar-eliminar')
     
     btnCancelarEliminar.addEventListener('click', () => {
-        modalConfirmar.classList.add('hidden');
-    });
+        modalConfirmar.classList.add('hidden')
+    })
     
     btnConfirmarEliminar.addEventListener('click', () => {
-        eliminarCiclo();
-    });
+        eliminarCiclo()
+    })
 }
 
 // Función para editar un ciclo
 function editarCiclo(codCiclo) {
-    const ciclo = ciclos.find(c => c.cod_ciclo === codCiclo);
-    if (!ciclo) return;
+    const ciclo = ciclos.find(c => c.cod_ciclo === codCiclo)
+    if (!ciclo) return
     
-    cicloActual = ciclo;
+    cicloActual = ciclo
     
-    document.getElementById('modal-titulo').textContent = 'Editar Ciclo';
-    document.getElementById('codigo').value = ciclo.cod_ciclo;
-    document.getElementById('codigo').disabled = true; // No permitir cambiar el código
-    document.getElementById('nombre').value = ciclo.nombre;
-    document.getElementById('descripcion').value = ciclo.descripcion || '';
+    document.getElementById('modal-titulo').textContent = 'Editar Ciclo'
+    document.getElementById('codigo').value = ciclo.cod_ciclo
+    document.getElementById('codigo').disabled = true // No permitir cambiar el código
+    document.getElementById('nombre').value = ciclo.nombre
+    document.getElementById('descripcion').value = ciclo.descripcion || ''
     
-    document.getElementById('modal-ciclo').classList.remove('hidden');
+    document.getElementById('modal-ciclo').classList.remove('hidden')
 }
 
 // Función para confirmar la eliminación de un ciclo
 function confirmarEliminarCiclo(codCiclo) {
-    cicloActual = ciclos.find(c => c.cod_ciclo === codCiclo);
-    if (!cicloActual) return;
+    cicloActual = ciclos.find(c => c.cod_ciclo === codCiclo)
+    if (!cicloActual) return
     
-    document.getElementById('modal-confirmar').classList.remove('hidden');
+    document.getElementById('modal-confirmar').classList.remove('hidden')
 }
 
 // Función para guardar un ciclo (nuevo o editado)
 function guardarCiclo() {
-    const codigo = document.getElementById('codigo').value;
-    const nombre = document.getElementById('nombre').value;
-    const descripcion = document.getElementById('descripcion').value;
+    const codigo = document.getElementById('codigo').value
+    const nombre = document.getElementById('nombre').value
+    const descripcion = document.getElementById('descripcion').value
     
     const cicloData = {
         cod_ciclo: codigo,
         nombre: nombre,
         descripcion: descripcion
-    };
+    }
     
     const url = cicloActual 
         ? `${BACKEND_URL}/api/ciclos/${cicloActual.cod_ciclo}` // Editar
-        : `${BACKEND_URL}/api/ciclos`; // Nuevo
+        : `${BACKEND_URL}/api/ciclos` // Nuevo
     
-    const method = cicloActual ? 'PUT' : 'POST';
+    const method = cicloActual ? 'PUT' : 'POST'
     
     fetch(url, {
         method: method,
@@ -239,30 +239,30 @@ function guardarCiclo() {
         if (!response.ok) {
             // Capturar la respuesta de error para leer el mensaje
             return response.json().then(errorData => {
-                throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`);
-            });
+                throw new Error(errorData.error || `Error ${response.status}: ${response.statusText}`)
+            })
         }
-        return response.json();
+        return response.json()
     })
     .then(data => {
-        document.getElementById('modal-ciclo').classList.add('hidden');
-        cargarCiclos(); // Recargar la lista de ciclos
+        document.getElementById('modal-ciclo').classList.add('hidden')
+        cargarCiclos() // Recargar la lista de ciclos
     })
     .catch(error => {
-        console.error('Error al guardar ciclo:', error);
+        console.error('Error al guardar ciclo:', error)
         // Mostrar el mensaje de error específico
-        alert(error.message || 'Error al guardar el ciclo. Por favor, intenta de nuevo.');
+        alert(error.message || 'Error al guardar el ciclo. Por favor, intenta de nuevo.')
         
         if (error.message.includes('401')) {
-            localStorage.removeItem('jwt');
-            window.location.href = '/login.html';
+            localStorage.removeItem('jwt')
+            window.location.href = '/login.html'
         }
-    });
+    })
 }
 
 // Función para eliminar un ciclo
 function eliminarCiclo() {
-    if (!cicloActual) return;
+    if (!cicloActual) return
     
     fetch(`${BACKEND_URL}/api/ciclos/${cicloActual.cod_ciclo}`, {
         method: 'DELETE',
@@ -270,21 +270,21 @@ function eliminarCiclo() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+            throw new Error(`Error ${response.status}: ${response.statusText}`)
         }
-        return response.json();
+        return response.json()
     })
     .then(data => {
-        document.getElementById('modal-confirmar').classList.add('hidden');
-        cargarCiclos(); // Recargar la lista de ciclos
+        document.getElementById('modal-confirmar').classList.add('hidden')
+        cargarCiclos() // Recargar la lista de ciclos
     })
     .catch(error => {
-        console.error('Error al eliminar ciclo:', error);
-        alert('Error al eliminar el ciclo. Por favor, intenta de nuevo.');
+        console.error('Error al eliminar ciclo:', error)
+        alert('Error al eliminar el ciclo. Por favor, intenta de nuevo.')
         
         if (error.message.includes('401')) {
-            localStorage.removeItem('jwt');
-            window.location.href = '/login.html';
+            localStorage.removeItem('jwt')
+            window.location.href = '/login.html'
         }
-    });
+    })
 }

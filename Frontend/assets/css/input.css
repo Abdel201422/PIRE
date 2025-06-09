@@ -10,6 +10,14 @@
     --color-orange-100:#FFEACB;
 }
 
+@font-face {
+    font-family: 'Lexend';
+    src: url(../fonts/Lexend-VariableFont_wght.ttf) format('woff2-variations');
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+}
+
 .custom-scrollbar {
   scrollbar-width: none;          /* Firefox */
   -ms-overflow-style: none;       /* IE y Edge */

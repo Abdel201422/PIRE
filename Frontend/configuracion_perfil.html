@@ -21,7 +21,7 @@
             'pire-background-dashboard': '#FDFBF9',
           },
           fontFamily: {
-            lexend: ['Lexend', 'sans'],
+            lexend: ['Lexend', 'sans-serif'],
           },
         }
       }
@@ -35,7 +35,7 @@
     <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
 
     <!-- Contenido principal -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col w-[100vw] md:w-auto">
       <!-- Header -->
       <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
@@ -63,7 +63,7 @@
 
               <!-- Botón de eliminar cuenta -->
               <div>
-                <button class="bg-black text-white px-4 py-2 rounded-3xl hover:bg-gray-800 transition-colors"
+                <button class="bg-black hover:bg-gray-800 text-white rounded-full px-6 py-3 text-sm font-medium transition-all"
                   id="delete-account-btn">
                   Eliminar cuenta
                 </button>
@@ -72,10 +72,11 @@
           </div>
 
           <!-- Información Personal -->
+          <div id="response"></div>
           <div class="bg-white rounded-3xl border-2 border-gray-300 p-6">
             <div class="flex justify-between items-center mb-6">
               <h2 class="text-xl font-semibold">Información personal</h2>
-              <button class="bg-pire-green text-black px-6 py-2 rounded-full hover:bg-opacity-80 transition-colors"
+              <button class="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 text-sm font-medium transition-all"
                 id="save-personal-info-btn">
                 Guardar
               </button>
@@ -111,11 +112,13 @@
             <div class="bg-white rounded-3xl border-2 border-gray-300 p-6 shadow-sm">
               <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-semibold">Imagen de perfil</h2>
-                <button class="bg-pire-green text-black px-6 py-2 rounded-full hover:bg-opacity-80 transition-colors"
+                <button class="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 text-sm font-medium transition-all"
                   id="save-profile-image-btn">
                   Guardar
                 </button>
               </div>
+              <!-- Response div para imagen de perfil -->
+              <div id="image-response" class="mb-4"></div>
 
               <div class="space-y-6">
                 <!-- Previsualización de imagen actual -->
@@ -156,11 +159,13 @@
             <div class="bg-white rounded-3xl border-2 border-gray-300 p-6 shadow-sm">
               <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-semibold">Contraseña</h2>
-                <button class="bg-pire-green text-black px-6 py-2 rounded-full hover:bg-opacity-80 transition-colors"
+                <button class="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 text-sm font-medium transition-all"
                   id="save-password-btn">
                   Guardar
                 </button>
               </div>
+              <!-- Response div para cambio de contraseña -->
+              <div id="password-response" class="mb-4"></div>
 
               <div class="space-y-6">
                 <!-- Contraseña actual -->
@@ -192,6 +197,17 @@
     </div>
   </div>
 
+  <!-- Modal de Confirmación para Eliminar Cuenta -->
+  <div id="modal-confirmar-eliminar" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-xl p-6 w-full max-w-md">
+      <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+      <p class="mb-6">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+      <div class="flex justify-end gap-2">
+        <button id="btn-cancelar-eliminar" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Cancelar</button>
+        <button id="btn-confirmar-eliminar" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Eliminar</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="./assets/js/api/dataConfiguracion_perfil.js"></script>
 </body>

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./assets/css/input.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <!--<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">-->
     <script type="module" src="./assets/js/dashboard.js"></script>
     <script type="module" src="./assets/js/api/dataDashboard.js"></script>
     <script type="module" src="./assets/js/api/getCiclosAll.js"></script>
@@ -23,7 +23,7 @@
                         'pire-background-dashboard': '#FDFBF9',
                     },
                     fontFamily: {
-                        lexend: ['Lexend', 'sans'],
+                        lexend: ['Lexend', 'sans-serif'],
                     },
                 }
             }
@@ -38,7 +38,7 @@
         <div id="sidebar"></div> <!-- Aquí se cargará el Sidebar dinámicamente -->
 
         <!-- Contenido principal -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col w-[100vw] md:w-auto">
             <!-- Header -->
             <div id="header_dashboard"></div> <!-- Aquí se cargará el Header dinámicamente -->
 
@@ -47,46 +47,52 @@
                 <!-- Sección: Formulario -->
                 <div class="mx-auto bg-white rounded-3xl p-6 md:p-8 border-2 border-gray-300">
                     <h1 class="text-2xl font-semibold mb-6">Subir un nuevo documento</h1>
-                    
+
                     <form id="uploadForm" class="space-y-6">
                         <div class="flex gap-4">
                             <div class="w-1/2">
                                 <!-- Ciclo -->
-                                <label for="ciclo" class="block text-sm font-medium text-gray-700 mb-1">Ciclo</label>
+                                <label for="cicloSelect"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Ciclo</label>
                                 <div class="relative">
                                     <select id="cicloSelect" name="ciclo" required
-                                        class="block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-700 focus:border-pire-green focus:ring-pire-green appearance-none">
+                                        class="w-full appearance-none p-2 border-2 border-gray-300 rounded-3xl focus:outline-none focus:border-pire-green">
                                         <option value="">Selecciona ciclo</option>
                                     </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                         <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="w-1/2">
                                 <!-- Curso -->
-                                <label for="curso" class="block text-sm font-medium text-gray-700 mb-1">Curso</label>
-                            <div class="relative">
-                                <select id="cursoSelect" name="curso" required
-                                    class="block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-700 focus:border-pire-green focus:ring-pire-green appearance-none">
-                                    <option value="">Selecciona curso</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                <label for="cursoSelect"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Curso</label>
+                                <div class="relative">
+                                    <select id="cursoSelect" name="curso" required
+                                        class="w-full appearance-none p-2 border-2 border-gray-300 rounded-3xl focus:outline-none focus:border-pire-green">
+                                        <option value="">Selecciona curso</option>
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
+                                        <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                            
+
                         </div>
                         <!-- Asignatura -->
                         <div>
-                            <label for="asignatura" class="block text-sm font-medium text-gray-700 mb-1">Asignatura</label>
+                            <label for="asignaturaSelect"
+                                class="block text-sm font-medium text-gray-700 mb-1">Asignatura</label>
                             <div class="relative">
                                 <select id="asignaturaSelect" name="asignatura" required
-                                    class="block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-700 focus:border-pire-green focus:ring-pire-green appearance-none">
+                                    class="w-full appearance-none p-2 border-2 border-gray-300 rounded-3xl focus:outline-none focus:border-pire-green">
                                     <option value="">Selecciona asignatura</option>
                                 </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                     <i class="fas fa-chevron-down text-xs text-gray-400"></i>
                                 </div>
                             </div>
@@ -94,20 +100,23 @@
 
                         <!-- Descripción -->
                         <div>
-                            <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-                            <textarea id="descripcion" name="descripcion" rows="3" 
-                                class="block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-700 focus:border-pire-green focus:ring-pire-green"
+                            <label for="descripcion"
+                                class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                            <textarea id="descripcion" name="descripcion" rows="3"
+                                class="w-full p-3 border-2 border-gray-300 rounded-3xl focus:outline-none focus:border-pire-green"
                                 placeholder="Describe brevemente el contenido de tu documento..."></textarea>
                         </div>
 
                         <!-- Area de arrastrar y soltar archivo -->
                         <div class="mt-4">
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50" id="dropArea">
+                            <div class="border-2 border-dashed border-gray-300 rounded-3xl p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
+                                id="dropArea">
                                 <div class="h-16 w-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                                     <i class="fas fa-cloud-upload-alt m-auto text-gray-400"></i>
                                 </div>
                                 <h3 class="text-md font-medium text-gray-700">Suelta el archivo aquí</h3>
-                                <p class="text-sm text-gray-500 mt-1">o <span class="text-blue-500 hover:text-blue-600">haz clic para seleccionar</span></p>
+                                <p class="text-sm text-gray-500 mt-1">o <span
+                                        class="text-blue-500 hover:text-blue-600">haz clic para seleccionar</span></p>
                                 <input type="file" id="file" name="file" class="hidden" required>
                             </div>
                             <div id="selectedFile" class="text-sm text-gray-600 mt-2"></div>
@@ -117,12 +126,12 @@
 
                         <!-- Botones -->
                         <div class="flex justify-end space-x-3 mt-6">
-                            <button type="button" id="cancelButton" 
-                                class="px-4 py-2 text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                            <button type="button" id="cancelButton"
+                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full px-6 py-3 text-sm font-medium transition-all">
                                 Cancelar
                             </button>
-                            <button type="submit" 
-                                class="px-4 py-2 text-white bg-pire-green rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-pire-green">
+                            <button type="submit"
+                                class="bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 text-sm font-medium transition-all">
                                 Subir documento
                             </button>
                         </div>

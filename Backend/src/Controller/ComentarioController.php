@@ -96,7 +96,12 @@ class ComentarioController extends AbstractController
         $em->persist($comentario);
         $em->flush();
 
-        return $this->json(['message' => 'Comentario creado exitosamente'], Response::HTTP_CREATED);
+        return $this->json([
+            'message' => 'Comentario creado exitosamente',
+            // Estos campos son usados para las pruebas Unit Test
+            //'id' => $comentario->getId(),
+            //'comentario' => $comentario->getComentario()
+        ], Response::HTTP_CREATED);
     }
 
     // Editar un comentario

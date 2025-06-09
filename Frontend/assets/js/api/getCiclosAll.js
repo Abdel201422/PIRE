@@ -1,3 +1,5 @@
+// js/api/getCiclosAll.js
+
 import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
@@ -7,6 +9,7 @@ if (!token) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    
     // Verificar si el elemento cicloSelect existe antes de llamar a getCiclos
     const cicloSelect = document.getElementById('cicloSelect')
     if (cicloSelect) {
@@ -28,6 +31,11 @@ if (cicloSelect) {
             const cursoSelect = document.getElementById('cursoSelect')
             if (cursoSelect) {
                 cursoSelect.innerHTML = '<option value="">Selecciona curso</option>'
+            }
+
+            const asignaturaSelect = document.getElementById('asignaturaSelect')
+            if (asignaturaSelect) {
+                asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
             }
         }
     })
@@ -77,7 +85,7 @@ async function getCiclos(token) {
         })
 
     } catch (error) {
-        console.error('Error al cargar ciclos:', error)
+        //console.error('Error al cargar ciclos:', error)
 
         if (error.message.includes('401')) {
             localStorage.removeItem('jwt')
@@ -103,6 +111,9 @@ async function getCursosPorCiclo(codCiclo, token) {
         const cursoSelect = document.getElementById('cursoSelect')
         cursoSelect.innerHTML = '<option value="">Selecciona curso</option>'
 
+        const asignaturaSelect = document.getElementById('asignaturaSelect')
+        asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
+
         cursos.forEach(curso => {
             const option = document.createElement('option')
             option.value = curso.cod_curso
@@ -111,7 +122,7 @@ async function getCursosPorCiclo(codCiclo, token) {
         })
 
     } catch (error) {
-        console.error('Error al cargar cursos:', error)
+        //console.error('Error al cargar cursos:', error)
 
         if (error.message.includes('401')) {
             localStorage.removeItem('jwt')
@@ -137,7 +148,7 @@ async function getAsignaturasPorCurso(codCurso, token) {
         const asignaturaSelect = document.getElementById('asignaturaSelect')
         asignaturaSelect.innerHTML = '<option value="">Selecciona asignatura</option>'
 
-        console.log(asignaturas)
+        //console.log(asignaturas)
         asignaturas.forEach(asignatura => {
             const option = document.createElement('option')
             option.value = asignatura.codigo
@@ -146,7 +157,7 @@ async function getAsignaturasPorCurso(codCurso, token) {
         })
 
     } catch (error) {
-        console.error('Error al cargar asignaturas:', error)
+        //console.error('Error al cargar asignaturas:', error)
 
         if (error.message.includes('401')) {
             localStorage.removeItem('jwt')

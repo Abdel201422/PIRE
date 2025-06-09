@@ -1,4 +1,6 @@
-import { BACKEND_URL } from '../config.js';
+// js/api/register.js
+
+import { BACKEND_URL } from '../config.js'
 
 export function setupRegisterForm() {
 
@@ -7,7 +9,7 @@ export function setupRegisterForm() {
 
     if (!form) {
         console.warn('No se encontró el formulario de registro')
-        return;
+        return
     }
 
     form.addEventListener('submit', function (e) {
@@ -29,17 +31,17 @@ export function setupRegisterForm() {
         .then((response) => response.json())
         .then((data) => {
             if (data.error) {
-                responseDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                responseDiv.innerHTML = `<p style="color: red">Error: ${data.error}</p>`
             } else {
-                responseDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
+                responseDiv.innerHTML = `<p style="color: green">${data.message}</p>`
                 setTimeout(() => {
-                    window.location.href = '/login.html';
-                }, 2000);
+                    window.location.href = '/login.html'
+                }, 2000)
             }
         })
         .catch((error) => {
-            console.error('Error:', error);
-            responseDiv.innerHTML = `<p style="color: red;">Error al registrar el usuario.</p>`;
+            console.error('Error:', error)
+            responseDiv.innerHTML = `<p style="color: red">Error al registrar el usuario.</p>`
         })
     })
 }

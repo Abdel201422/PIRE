@@ -1,3 +1,5 @@
+// js/api/getDocumentos.js
+
 import { BACKEND_URL } from '../config.js'
 
 const token = localStorage.getItem('jwt')
@@ -7,12 +9,12 @@ if (!token) {
 }
 
 // Obtener el parámetro "codigo" de la URL
-const urlParams = new URLSearchParams(window.location.search);
-const codigoAsignatura = urlParams.get('codigo');
+const urlParams = new URLSearchParams(window.location.search)
+const codigoAsignatura = urlParams.get('codigo')
 
 if (!codigoAsignatura) {
-    alert('No se ha especificado una asignatura válida.');
-    window.location.href = '/education.html'; // Redirigir si no hay código
+    alert('No se ha especificado una asignatura válida.')
+    window.location.href = '/education.html' // Redirigir si no hay código
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,26 +23,28 @@ document.addEventListener('DOMContentLoaded', () => {
     getDocumentos()
 
     function getDocumentos() {
+        const ruta = document.getElementById('ruta')
+
         fetch(`${BACKEND_URL}/asignatura/${codigoAsignatura}`, {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` },
         })
             .then(response => response.json())
             .then(data => {
-                documentosContainer.innerHTML = '' // Limpiar contenedor
+                documentosContainer.innerHTML = ''
 
                 if (data.documentos.length == 0) {
+                    ruta.innerHTML = '<a href="/education.html" class="text-green-400 hover:text-green-600 hover:underline">Volver atrás</a>'
                     documentosContainer.innerHTML = '<p>No hay documentos disponibles para esta asignatura.</p>'
                     return
                 }
 
-                console.log(data.asignatura)
+                //console.log(data.asignatura)
 
                 const rutaCiclo = data.asignatura.ciclo
                 const rutaCurso = data.asignatura.curso.match(/\dº Curso/)
                 const rutaAsignatura = data.asignatura.nombre
 
-                const ruta = document.getElementById('ruta')
                 ruta.textContent = `${rutaCiclo} > ${rutaCurso} > ${rutaAsignatura}`
 
                 const nameAsignatura = document.getElementById('nameAsignatura')
@@ -56,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (documento.tipo_archivo === 'application/pdf') {
                         icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl bg-red-400">PDF</div>`
                     } else if (documento.tipo_archivo.startsWith('image/')) {
-                        icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248);">IMAGEN</div>`
+                        icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl" style="background-color:rgb(192, 113, 248)">IMAGEN</div>`
                     } else {
                         icono = `<div class="w-full sm:w-32 h-32 rounded-2xl flex items-center justify-center text-white font-bold text-2xl bg-gray-400">ARCHIVO</div>`
                     }
@@ -67,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h3 class="text-lg sm:text-xl font-bold">${documento.nombre}</h3>
                             <p class="text-sm sm:text-base text-gray-500">${documento.descripcion}</p>
                         </div>
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mt-4">
+                        <div class="flex flex-row justify-between items-center gap-2 mt-4">
                             <div class="flex flex-row gap-2 items-center">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 2V4" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 2V4" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 8H21" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 7.99998V18C21 19.1046 20.1046 20 19 20H5C3.89543 20 3 19.1046 3 18V7.99998M21 7.99998V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V7.99998" stroke="#4A4A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 <p class="text-sm text-[#4A4A4A]">${documento.fecha_subida}</p>
@@ -83,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Evento para redirigir a la página de visualización
                     docDiv.addEventListener('click', () => {
-                        window.location.href = `/documento.html?id=${documento.id}`
+                        window.location.href = `/documento?id=${documento.id}`
                     })
 
                     documentosContainer.append(docDiv)
