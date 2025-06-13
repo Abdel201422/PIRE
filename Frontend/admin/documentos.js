@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
             tr.innerHTML = `
                 <td class="px-6 py-4">${doc.id}</td>
                 <td class="px-6 py-4">${doc.titulo}</td>
-                <td class="px-6 py-4">${doc.ruta || ''}</td>
                 <td class="px-6 py-4">${doc.asignatura || ''}</td>
                 <td class="px-6 py-4 text-right">
                     <button class="btn-eliminar-documento px-3 py-1 rounded-md bg-red-100 text-red-700 hover:bg-red-200 hover:text-red-900 transition-colors text-sm font-semibold shadow-sm" data-id="${doc.id}">
