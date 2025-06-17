@@ -64,7 +64,7 @@ PIRE es una plataforma web colaborativa diseñada para centralizar y mejorar el 
 
 1. Clonar el repositorio:
 
-   git clone https://github.com/tu-org/pire.git
+   git clone https://github.com/TRT2NOW/PIRE.git
    cd pire/backend
    
 2. Instalar dependencias PHP:
