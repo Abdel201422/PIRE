@@ -80,7 +80,7 @@ function cargarCiclos() {
         document.getElementById('tabla-ciclos').innerHTML = `
             <tr>
                 <td colspan="5" class="px-6 py-4 text-center text-red-500">
-                    Error al cargar los ciclos. Por favor, intenta de nuevo.
+                    Error al cargar los ciclos. Por favor, intenta  de nuevo.
                 </td>
             </tr>
         `

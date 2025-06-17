@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('btn-confirmar-eliminar').addEventListener('click', function () {
         if (!comentarioActual) return
         const token = localStorage.getItem('jwt')
-        fetch(`http://127.0.0.1:8000/api/comentario/delete/${comentarioActual.id}`, {
+        fetch(`${BACKEND_URL}/api/comentario/delete/${comentarioActual.id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + token
