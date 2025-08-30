@@ -14,7 +14,7 @@ class ValoracionRepository extends ServiceEntityRepository
         parent::__construct($registry, Valoracion::class);
     }
 
-    // Ejemplo: Buscar valoraciones por puntuación mínima
+    //Buscar valoraciones por puntuación mínima
     public function findByPuntuacionGreaterThan(int $puntuacion): array
     {
         return $this->createQueryBuilder('v')

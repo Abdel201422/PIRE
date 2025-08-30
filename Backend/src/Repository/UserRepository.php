@@ -15,7 +15,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
-    // Método requerido para actualizar contraseñas (PasswordUpgraderInterface)
+    // actualizar contraseñas
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {

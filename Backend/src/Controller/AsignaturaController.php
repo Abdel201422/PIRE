@@ -77,7 +77,7 @@ final class AsignaturaController extends AbstractController
             return $this->json($data, Response::HTTP_OK);
         }
         
-        // Si es una petición POST, crear una nueva asignatura
+        // crear una nueva asignatura
         if ($request->isMethod('POST')) {
             $data = json_decode($request->getContent(), true);
 
@@ -157,7 +157,7 @@ final class AsignaturaController extends AbstractController
 
             $asignatura->setNombre($data['nombre']);
 
-            // Si se proporciona un nuevo curso, actualizar la relación
+            //actualizar la relación
             if (!empty($data['curso_id'])) {
                 $curso = $cursoRepository->findOneBy(['cod_curso' => $data['curso_id']]);
                 if (!$curso) {

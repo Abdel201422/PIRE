@@ -98,9 +98,6 @@ class ComentarioController extends AbstractController
 
         return $this->json([
             'message' => 'Comentario creado exitosamente',
-            // Estos campos son usados para las pruebas Unit Test
-            //'id' => $comentario->getId(),
-            //'comentario' => $comentario->getComentario()
         ], Response::HTTP_CREATED);
     }
 

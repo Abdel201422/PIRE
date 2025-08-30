@@ -212,7 +212,7 @@ public function changePassword(Request $request, EntityManagerInterface $entityM
     public function delete(User $user, EntityManagerInterface $entityManager): JsonResponse
     {
         try {
-            // Try to disconnect the user from related entities first
+           
             $documentos = $user->getDocumentos();
             foreach ($documentos as $documento) {
                 $entityManager->remove($documento);
@@ -228,13 +228,13 @@ public function changePassword(Request $request, EntityManagerInterface $entityM
                 $entityManager->remove($comentario);
             }
             
-            // Now we can safely remove the user
+            
             $entityManager->remove($user);
             $entityManager->flush();
 
             return $this->json(['message' => 'Usuario eliminado exitosamente'], Response::HTTP_OK);
         } catch (\Exception $e) {
-            // Log the detailed error
+            
             error_log('Error al eliminar usuario: ' . $e->getMessage());
             return $this->json(['error' => 'Error al eliminar el usuario: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -280,7 +280,7 @@ public function getCurrentUser(): JsonResponse
         return $this->json(['error' => 'Usuario no autenticado'], Response::HTTP_UNAUTHORIZED);
     }
 
-    // Añade estas 2 líneas
+
     $roles = $user->getRoles();
     return $this->json([
         'id' => $user->getId(),
